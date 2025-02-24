@@ -1,6 +1,8 @@
 # Simple node.js restful api template app
 This is a simple template to get you started creating a web app with a restful api backend that connects to a mySQL database.
 
+TEST!!!
+
 ## Setup
 - open a terminal window and run: npm install
 - rename .env.example to .env and replace the placeholder values with your database credentials and a key of your choosing (share this information with your team so they can use the same credentials and key)
