@@ -2,7 +2,7 @@
 This is a simple template to get you started creating a web app with a restful api backend that connects to a mySQL database.
 
 # Testing area!
-test 1
+IT WORKS
 ## Setup
 - open a terminal window and run: npm install (required!!!!)
 - rename .env.example to .env and replace the placeholder values with your database credentials and a key of your choosing (share this information with your team so they can use the same credentials and key) (done! --jake) 
