@@ -1,7 +1,7 @@
 # Simple node.js restful api template app
 This is a simple template to get you started creating a web app with a restful api backend that connects to a mySQL database.
 
-# Testing area!
+# Testing area! Test
 IT WORKS
 PleASE Work
 testing again!
