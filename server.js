@@ -25,17 +25,6 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 });
-
-// Route to serve mainmenu.html
-app.get('/mainmenu', (req, res) => {
-    res.sendFile(__dirname + '/public/mainmenu.html');
-});
-
-// Route to serve meditation.html
-app.get('/meditation', (req, res) => {
-    res.sendFile(__dirname + '/public/meditation.html');
-});
-
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
