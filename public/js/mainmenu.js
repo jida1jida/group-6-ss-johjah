@@ -1,5 +1,8 @@
-// this is just a duplicate of dashboard.js for now! -jake
+// this is just a duplicate of dashboard.js for now, with a few things commented out! -jake
+// you can access this page at localhost:3000/mainmenu until we implement navigation
 
+//ADD ALL EVENT LISTENERS INSIDE DOMCONTENTLOADED
+//AT THE BOTTOM OF DOMCONTENTLOADED, ADD ANY CODE THAT NEEDS TO RUN IMMEDIATELY
 document.addEventListener('DOMContentLoaded', () => {
     
     //////////////////////////////////////////
@@ -17,14 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     // Log out and redirect to login
     logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('jwtToken');
         window.location.href = '/';
     });
 
-    // Refresh list when the button is clicked
-    refreshButton.addEventListener('click', async () => {
-        renderUserList();
-    });
+    // // Refresh list when the button is clicked
+    // refreshButton.addEventListener('click', async () => {
+    //     renderUserList();
+    // });
+
     //////////////////////////////////////////
     //END EVENT LISTENERS
     //////////////////////////////////////////
@@ -48,3 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
 //END OF DOMCONTENTLOADED
 
 
+//////////////////////////////////////////
+//FUNCTIONS TO MANIPULATE THE DOM
+//////////////////////////////////////////
+async function renderUserList() {
+    const userListElement = document.getElementById('userList');
+    userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
+    const users = await DataModel.getUsers(); 
+    users.forEach(user => {
+        const userItem = document.createElement('div');
+        userItem.classList.add('user-item');
+        userItem.textContent = user;
+        userListElement.appendChild(userItem);
+    });
+}
+//////////////////////////////////////////
+//END FUNCTIONS TO MANIPULATE THE DOM
+//////////////////////////////////////////
