@@ -2,7 +2,7 @@
 This is a simple template to get you started creating a web app with a restful api backend that connects to a mySQL database.
 
 # Testing area! Test
-IT WORKS
+IT WORKS test
 PleASE Work
 testing again!
 ## Setup
