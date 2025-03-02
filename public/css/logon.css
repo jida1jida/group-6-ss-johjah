@@ -1,6 +1,8 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(to bottom, purple,white);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
 }
@@ -34,7 +36,7 @@ h1 {
 }
 
 .tab-button.active {
-    background-color: #4caf50;
+    background-color: #45cca5;
     color: white;
 }
 
@@ -62,7 +64,7 @@ input {
 .button {
     width: 100%;
     padding: 10px;
-    background-color: #4caf50;
+    background-color: #45cca5;
     color: white;
     border: none;
     border-radius: 5px;
@@ -70,7 +72,7 @@ input {
 }
 
 .button:hover {
-    background-color: #45a049;
+    background-color: #3ca88a;
 }
 
 .message {
