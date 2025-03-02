@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
+    const meditationButton = document.getElementById('meditationButton');
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -29,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //     renderUserList();
     // });
 
+    // Redirect to the meditation page when the Meditation button is clicked
+    meditationButton.addEventListener('click', () => {
+        window.location.href = '/meditation.html'; // Adjust the path if necessar
+    });
     //////////////////////////////////////////
     //END EVENT LISTENERS
     //////////////////////////////////////////

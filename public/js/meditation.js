@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
+    const homeButton = document.getElementById('homeButton');
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -28,6 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // refreshButton.addEventListener('click', async () => {
     //     renderUserList();
     // });
+
+    // Redirect to the homepage when the Home button is clicked
+    homeButton.addEventListener('click', () => {
+        window.location.href = '/mainmenu.html'; // Redirect to the homepage
+    });
 
     //////////////////////////////////////////
     //END EVENT LISTENERS
