@@ -41,10 +41,9 @@ logonForm.addEventListener('submit', async (event) => {
             messageEl.classList.add('error');
         }
     } catch (error) {
-        // console.error('Error:', error);
-        // messageEl.textContent = 'An error occurred. Please try again later.';
-        // messageEl.classList.add('error');
-        window.location.href = './mainmenu.html';
+        console.error('Error:', error);
+        messageEl.textContent = 'An error occurred. Please try again later.';
+        messageEl.classList.add('error');
     }
 });
 
