@@ -1,6 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-image: linear-gradient(to bottom, purple,white);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
 }
@@ -10,7 +12,7 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 60%;
+    width: 80%;
     margin: 0 auto;
     margin-top: 20px;
 }
@@ -19,6 +21,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header div {
@@ -30,21 +33,34 @@ h1 {
     margin: 0;
 }
 
-#logoutButton {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+p {
+    margin: 75px;
+    font-size: 25px;
+}
+
+button {
     border-radius: 5px;
+    border: none;
+    background-color: #c4c4c4;
+    color: white;
     cursor: pointer;
 }
 
+button:hover {
+    background-color: grey;
+}
+
+#logoutButton {
+    padding: 10px 20px;
+    background-color: #45cca5;
+}
+
 #logoutButton:hover {
-    background-color: #0056b3;
+    background-color: #3ca88a;
 }
 
 #refreshButton {
-    background-color: #28a745; /* Same green color from logon button */
+    background-color: #45cca5; /* Same green color from logon button */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -53,7 +69,7 @@ h1 {
 }
 
 #refreshButton:hover {
-    background-color: #218838; /* Slightly darker green for hover effect */
+    background-color: #3ca88a; /* Slightly darker green for hover effect */
 }
 
 .user-list {

@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Log out and redirect to login
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
-        window.location.href = '/';
+        window.location.href = './logon.html';
     });
 
     // // Refresh list when the button is clicked

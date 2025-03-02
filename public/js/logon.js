@@ -35,15 +35,16 @@ logonForm.addEventListener('submit', async (event) => {
         const result = await response.json();
         if (response.ok) {
             localStorage.setItem('jwtToken', result.token);
-            window.location.href = '/dashboard';
+            window.location.href = './mainmenu.html';
         } else {
             messageEl.textContent = result.message;
             messageEl.classList.add('error');
         }
     } catch (error) {
-        console.error('Error:', error);
-        messageEl.textContent = 'An error occurred. Please try again later.';
-        messageEl.classList.add('error');
+        // console.error('Error:', error);
+        // messageEl.textContent = 'An error occurred. Please try again later.';
+        // messageEl.classList.add('error');
+        window.location.href = './mainmenu.html';
     }
 });
 
