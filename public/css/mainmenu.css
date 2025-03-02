@@ -1,4 +1,4 @@
-/* this is just a duplicate of dashboard.css for now! -jake */
+/* This is the css for the mainmenu */
 
 body {
     font-family: Arial, sans-serif;
@@ -21,6 +21,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header div {
