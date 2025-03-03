@@ -21,6 +21,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/logon.html');
 });
 
+app.get('/logon', (req, res) => {
+    res.sendFile(__dirname + '/public/logon.html');
+});
+
 // Route to serve dashboard.html
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
