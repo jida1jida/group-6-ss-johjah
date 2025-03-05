@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: linear-gradient(to bottom, purple,white);
+    background-image: linear-gradient(to bottom, #622569,#d6d4e0);
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-    background-color: white;
+    background-color: #d6d4e0;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
