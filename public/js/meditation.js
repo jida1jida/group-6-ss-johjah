@@ -1,5 +1,3 @@
-// this is just a duplicate of dashboard.js for now, with a few things commented out! -jake
-// you can access this page at localhost:3000/meditation until we implement navigation
 
 //ADD ALL EVENT LISTENERS INSIDE DOMCONTENTLOADED
 //AT THE BOTTOM OF DOMCONTENTLOADED, ADD ANY CODE THAT NEEDS TO RUN IMMEDIATELY
@@ -11,6 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
     const homeButton = document.getElementById('homeButton');
+
+    // timer buttons
+    const timerDisplay = document.getElementById("timer");
+    const startStopBtn = document.getElementById("startStopBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    // timer variables
+    let timer;
+    let timeLeft = 60;
+    let running = false;
+
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -35,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/mainmenu.html'; // Redirect to the homepage
     });
 
+    // timer buttons
+    startStopBtn.addEventListener("click", startStopTimer);
+    resetBtn.addEventListener("click", resetTimer);
+
     //////////////////////////////////////////
     //END EVENT LISTENERS
     //////////////////////////////////////////
@@ -54,6 +67,46 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////
+
+    // timer functions
+    function updateDisplay() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    function startStopTimer() {
+        if (running) {
+            clearInterval(timer);
+            running = false;
+            startStopBtn.textContent = "Start Timer";
+        } else {
+            timer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timer);
+                    running = false;
+                    startStopBtn.textContent = "Start Timer";
+                }
+            }, 1000);
+            running = true;
+            startStopBtn.textContent = "Stop Timer";
+        }
+    }
+
+    function resetTimer() {
+        clearInterval(timer);  // Stop the timer
+        timeLeft = 60;  // Reset to 1 minute
+        running = false;  // Ensure it's stopped
+        updateDisplay();  // Update the UI
+        startStopBtn.textContent = "Start Timer";  // Reset button text
+    }
+
+    updateDisplay();
+    // end timer functions
+
 });
 //END OF DOMCONTENTLOADED
 

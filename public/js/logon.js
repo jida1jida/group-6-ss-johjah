@@ -52,12 +52,13 @@ createAccountForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const email = document.getElementById('create-email').value;
     const password = document.getElementById('create-password').value;
+    const name = document.getElementById('create-name').value
 
     try {
         const response = await fetch('/api/create-account', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, name }),
         });
 
         const result = await response.json();
