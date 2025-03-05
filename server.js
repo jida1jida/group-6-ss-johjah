@@ -104,10 +104,10 @@ async function authenticateToken(req, res, next) {
 //////////////////////////////////////
 // Route: Create Account
 app.post('/api/create-account', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
+    if (!email || !password  || !name) {
+        return res.status(400).json({ message: 'Email, password, and name are required.' });
     }
 
     try {
@@ -115,8 +115,8 @@ app.post('/api/create-account', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);  // Hash password
 
         const [result] = await connection.execute(
-            'INSERT INTO user (email, password) VALUES (?, ?)',
-            [email, hashedPassword]
+            'INSERT INTO user (email, password, prefname) VALUES (?, ?, ?)',
+            [email, hashedPassword, name]
         );
 
         await connection.end();  // Close connection
