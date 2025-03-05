@@ -36,7 +36,7 @@ h1 {
 }
 
 .tab-button.active {
-    background-color: #45cca5;
+    background-color: #73cad2;
     color: white;
 }
 
@@ -64,7 +64,7 @@ input {
 .button {
     width: 100%;
     padding: 10px;
-    background-color: #45cca5;
+    background-color: #73cad2;
     color: white;
     border: none;
     border-radius: 5px;
@@ -72,7 +72,7 @@ input {
 }
 
 .button:hover {
-    background-color: #3ca88a;
+    background-color: #5b9aa0;
 }
 
 .message {

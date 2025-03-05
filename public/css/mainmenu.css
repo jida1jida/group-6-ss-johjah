@@ -43,26 +43,26 @@ p {
 button {
     border-radius: 5px;
     border: none;
-    background-color: #c4c4c4;
+    background-color: #b8a9c9;
     color: white;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: grey;
+    background-color: #622569;
 }
 
 #logoutButton {
     padding: 10px 20px;
-    background-color: #45cca5;
+    background-color: #73cad2;
 }
 
 #logoutButton:hover {
-    background-color: #3ca88a;
+    background-color: #5b9aa0;
 }
 
 #refreshButton {
-    background-color: #45cca5; /* Same green color from logon button */
+    background-color: #73cad2; /* Same green color from logon button */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -71,7 +71,7 @@ button:hover {
 }
 
 #refreshButton:hover {
-    background-color: #3ca88a; /* Slightly darker green for hover effect */
+    background-color: #5b9aa0; /* Slightly darker green for hover effect */
 }
 
 .user-list {
