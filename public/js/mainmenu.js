@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     meditationButton.addEventListener('click', () => {
         window.location.href = '/meditation.html'; // Adjust the path if necessar
     });
+
+    accountButton.addEventListener('click', () => {
+        window.location.href = '/account.html';
+    });
     //////////////////////////////////////////
     //END EVENT LISTENERS
     //////////////////////////////////////////
