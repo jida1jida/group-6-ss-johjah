@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     } else {
         DataModel.setToken(token);
-        renderUserList();
+        getUserName();
     }
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
@@ -64,16 +64,36 @@ document.addEventListener('DOMContentLoaded', () => {
 //////////////////////////////////////////
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
-async function renderUserList() {
-    const userListElement = document.getElementById('userList');
-    userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
-    const users = await DataModel.getUsers(); 
-    users.forEach(user => {
-        const userItem = document.createElement('div');
-        userItem.classList.add('user-item');
-        userItem.textContent = user;
-        userListElement.appendChild(userItem);
-    });
+
+async function getUserName(){
+    const token = localStorage.getItem('jwtToken');
+
+    try {
+        const response = await fetch('/api/users', {
+            method: 'GET',
+            headers: {
+                'Authorization': token,
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+        
+        const email = JSON.parse(atob(token.split('.')[1])).email; // Decode JWT token
+        const user = data.users.find(u => u.email === email);
+
+        if (user && user.prefname) {
+            welcomeMessage.textContent = `Welcome, ${user.prefname}!`;
+        } else {
+            welcomeMessage.textContent = "Welcome!"; // if no prefname, generic message will display
+        }
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        welcomeMessage.textContent = "Welcome!"; // if error when fetching prefname, generic message will display
+    }
 }
 //////////////////////////////////////////
 //END FUNCTIONS TO MANIPULATE THE DOM
