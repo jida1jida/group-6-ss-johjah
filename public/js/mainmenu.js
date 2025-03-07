@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Log out and redirect to login
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
-        window.location.href = './logon.html';
+        window.location.href = './logon';
     });
 
     // // Refresh list when the button is clicked
@@ -32,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Redirect to the meditation page when the Meditation button is clicked
     meditationButton.addEventListener('click', () => {
-        window.location.href = '/meditation.html'; // Adjust the path if necessar
+        window.location.href = '/meditation'; // Adjust the path if necessar
     });
 
     accountButton.addEventListener('click', () => {
-        window.location.href = '/account.html';
+        window.location.href = '/account';
     });
     //////////////////////////////////////////
     //END EVENT LISTENERS

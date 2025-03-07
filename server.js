@@ -40,6 +40,11 @@ app.get('/meditation', (req, res) => {
     res.sendFile(__dirname + '/public/meditation.html');
 });
 
+// Route to serve account.html
+app.get('/account', (req, res) => {
+    res.sendFile(__dirname + '/public/account.html');
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////

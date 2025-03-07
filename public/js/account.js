@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", async function () {
+    // Navigation buttons
+    const logoutButton = document.getElementById('logoutButton');
+    const homeButton = document.getElementById('homeButton');
+    logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('jwtToken');
+        window.location.href = '/';
+    });
+    homeButton.addEventListener('click', () => {
+        window.location.href = '/mainmenu';
+    });
+    
     const message = document.getElementById("message");
 
     // Fields
