@@ -1,39 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!--This is the screen a user can start a meditation/breathing exercise on.-->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meditation</title>
     <link rel="stylesheet" href="css/pages.css">
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>Meditation</h1>
             <div>
-                <!-- <button id="refreshButton">Refresh List</button> -->
                 <button id="logoutButton">Log Out</button>
                 <button id="homeButton">Back to Home Page</button>
             </div>
         </div>
     </div>
-    <div class="container">
-        <p>This is the meditation page.
-        </p>
 
-        <!-- timer things! -->
-        <div class="timer" id="timer">01:00</div>
+    <div class="container">
+        <p>This is the meditation page.</p>
+
+        <!-- Circular Timer Visualization -->
+        <div class="timer-container">
+            <svg width="150" height="150">
+                <circle cx="75" cy="75" r="60" stroke="#ddd" stroke-width="10" fill="none"/>
+                <circle id="progressCircle" cx="75" cy="75" r="60" stroke="blue" stroke-width="10"
+                        fill="none" stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"/>
+                <text id="timer" x="50%" y="50%" text-anchor="middle" dy="8px" font-size="20px">01:00</text>
+            </svg>
+            <p id="breathText">Breathe In</p>
+        </div>
+
+        <!-- Timer Buttons -->
         <div class="buttonDiv">
             <button id="startStopBtn">Start Timer</button>
             <button id="resetBtn">Reset Timer</button>
         </div>
-
     </div>
 
-    <script src="/js/meditation.js"></script>
+    <!-- Move script tags to the bottom of body -->
     <script src="/js/datamodel.js"></script>
+    <script src="/js/meditation.js"></script>
 </body>
+
 </html>

@@ -4,14 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
-    const refreshButton = document.getElementById('refreshButton');
     const homeButton = document.getElementById('homeButton');
 
     // Timer elements
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
     const resetBtn = document.getElementById("resetBtn");
-
     const progressCircle = document.getElementById("progressCircle");
     const breathText = document.getElementById("breathText");
 
@@ -23,20 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let breathInterval = null;
 
     //////////////////////////////////////////
-    // END ELEMENTS TO ATTACH EVENT LISTENERS
-    //////////////////////////////////////////
-
-
-    //////////////////////////////////////////
     // EVENT LISTENERS
     //////////////////////////////////////////
-    // Log out and redirect to login
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
         window.location.href = '/';
     });
 
-    // Redirect to the homepage when the Home button is clicked
     homeButton.addEventListener('click', () => {
         window.location.href = '/mainmenu.html'; 
     });
@@ -46,36 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener("click", resetTimer);
 
     //////////////////////////////////////////
-    // END EVENT LISTENERS
-    //////////////////////////////////////////
-
-
-    ///////////////////////////////////////////////////////
-    // CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
-    ///////////////////////////////////////////////////////
-    const token = localStorage.getItem('jwtToken');
-    if (!token) {
-        window.location.href = '/';
-    } else {
-        DataModel.setToken(token);
-        renderUserList();
-    }
-
-    updateDisplay();
-    updateCircle();
-
-    //////////////////////////////////////////
-    // END CODE THAT NEEDS TO RUN IMMEDIATELY
-    //////////////////////////////////////////
-
-
-    //////////////////////////////////////////
     // TIMER FUNCTIONS
     //////////////////////////////////////////
     function updateDisplay() {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        let seconds = Math.ceil(timeLeft); // Ensure it shows whole seconds
+        timerDisplay.textContent = `${seconds}s`;
     }
 
     function updateCircle() {
@@ -102,16 +68,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function animateTimer() {
-        if (!running) return; 
-
+        if (!running) return;
+    
         let now = Date.now();
-        timeLeft = Math.max(0, 60 - (now - startTime) / 1000);
-
+        let elapsedTimeInSeconds = (now - startTime) / 1000;  // Time passed in seconds
+    
+        // Calculate remaining time based on elapsed time and elapsedTime (paused time)
+        timeLeft = Math.max(0, 60 - elapsedTimeInSeconds - elapsedTime);
+    
         updateDisplay();
         updateCircle();
-
+    
+        // Continue animation as long as timeLeft is more than 0
         if (timeLeft > 0) {
-            requestAnimationFrame(animateTimer); 
+            requestAnimationFrame(animateTimer);
         } else {
             stopTimer();
         }
@@ -119,19 +89,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startStopTimer() {
         if (running) {
+            // Stop the timer and save elapsed time
             clearInterval(timer);
             clearInterval(breathInterval);
             breathInterval = null;
+            elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Store elapsed time when stopped
             running = false;
             startStopBtn.textContent = "Start Timer";
         } else {
             if (!startTime) {
-                startTime = Date.now() - (60 - timeLeft) * 1000;
+                // First time starting, initialize startTime and set elapsedTime to 0
+                startTime = Date.now();  // Set startTime to current time
+                elapsedTime = 0;  // Reset elapsed time to 0
+            } else {
+                // If the timer was paused, adjust the startTime to resume from the correct point
+                startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
             }
-
-            startBreathingCycle();
-            requestAnimationFrame(animateTimer); 
-
+    
+            startBreathingCycle();  // Start the breathing cycle
+            requestAnimationFrame(animateTimer);  // Start the timer animation
+    
             running = true;
             startStopBtn.textContent = "Stop Timer";
         }
@@ -141,40 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timer);
         clearInterval(breathInterval);
         breathInterval = null;
-
+    
         timeLeft = 60;
+        elapsedTime = 0; // Reset elapsed time
         startTime = null;
         running = false;
-
+    
         updateDisplay();
         updateCircle();
-
+    
         breathText.textContent = "Breathe In";
         breathText.style.opacity = 1;
-
+    
         startStopBtn.textContent = "Start Timer";
     }
-    
-    //////////////////////////////////////////
-    // END TIMER FUNCTIONS
-    //////////////////////////////////////////
 
+    // Initialize Display
+    updateDisplay();
+    updateCircle();
 });
-
-//////////////////////////////////////////
-// FUNCTIONS TO MANIPULATE THE DOM
-//////////////////////////////////////////
-async function renderUserList() {
-    const userListElement = document.getElementById('userList');
-    userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
-    const users = await DataModel.getUsers(); 
-    users.forEach(user => {
-        const userItem = document.createElement('div');
-        userItem.classList.add('user-item');
-        userItem.textContent = user;
-        userListElement.appendChild(userItem);
-    });
-}
-//////////////////////////////////////////
-// END FUNCTIONS TO MANIPULATE THE DOM
-//////////////////////////////////////////

@@ -97,15 +97,17 @@ button:hover {
 
 .timer {
     background-color: white;
-    padding: 30px;
-    border-radius: 100px;
+    padding: 50px;
+    border-radius: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 15%;
-    height: 15%;
+    width: 25vmin; /* Timer width based on viewport size */
+    height: 25vmin; /* Timer height based on viewport size */
     margin: 0 auto;
-    margin-top: 20px;
-    font-size: 5vw;
-    text-align: center  ;
+    font-size: 10vw; /* Adjust size based on viewport */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .timerButton {
@@ -114,4 +116,14 @@ button:hover {
     background-color: #c4c4c4;
     color: white;
     cursor: pointer;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}
+
+#breathText {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
 }
