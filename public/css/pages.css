@@ -1,3 +1,5 @@
+/* css used to style pages in website */
+
 body {
     font-family: Arial, sans-serif;
     background-image: linear-gradient(to bottom, #622569,#d6d4e0);
@@ -21,7 +23,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header div {
@@ -41,26 +42,30 @@ p {
 button {
     border-radius: 5px;
     border: none;
-    background-color: #c4c4c4;
+    background-color: #b8a9c9;
     color: white;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: grey;
+    background-color: #7c6e8c;
 }
 
 #logoutButton {
     padding: 10px 20px;
-    background-color: #45cca5;
+    background-color: #73cad2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #logoutButton:hover {
-    background-color: #3ca88a;
+    background-color: #5b9aa0;
 }
 
 #refreshButton {
-    background-color: #45cca5; /* Same green color from logon button */
+    background-color: #73cad2; /* Same green color from logon button */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -69,7 +74,7 @@ button:hover {
 }
 
 #refreshButton:hover {
-    background-color: #3ca88a; /* Slightly darker green for hover effect */
+    background-color: #5b9aa0; /* Slightly darker green for hover effect */
 }
 
 .user-list {
@@ -79,4 +84,32 @@ button:hover {
 .user-item {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+/* timer things */
+
+.buttonDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.timer {
+    background-color: white;
+    padding: 30px;
+    border-radius: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 15%;
+    height: 15%;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 5vw;
+    text-align: center  ;
+}
+
+.timerButton {
+    border-radius: 5px;
+    border: none;
+    background-color: #c4c4c4;
+    color: white;
+    cursor: pointer;
 }
