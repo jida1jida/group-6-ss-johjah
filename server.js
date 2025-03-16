@@ -40,6 +40,11 @@ app.get('/meditation', (req, res) => {
     res.sendFile(__dirname + '/public/meditation.html');
 });
 
+// Route to serve account.html
+app.get('/account', (req, res) => {
+    res.sendFile(__dirname + '/public/account.html');
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
@@ -174,22 +179,29 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Route: Get All Email Addresses
+// Route: Get All Email Addresses and Prefnames
 app.get('/api/users', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
 
-        const [rows] = await connection.execute('SELECT email FROM user');
+        // Fetch both email and prefname from the database
+        const [rows] = await connection.execute('SELECT email, prefname FROM user');
 
         await connection.end();  // Close connection
 
-        const emailList = rows.map((row) => row.email);
-        res.status(200).json({ emails: emailList });
+        // Map the result to include both email and prefname
+        const usersList = rows.map((row) => ({
+            email: row.email,
+            prefname: row.prefname || ""  // In case prefname is not set, return an empty string
+        }));
+
+        res.status(200).json({ users: usersList });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error retrieving email addresses.' });
+        res.status(500).json({ message: 'Error retrieving user data.' });
     }
 });
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

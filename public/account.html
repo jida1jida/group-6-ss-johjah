@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <link rel="stylesheet" href="css/mainmenu.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Your Account</h1>
+            <div>
+                <button id="logoutButton">Log Out</button>
+                <button id="homeButton">Back to Home Page</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Account Details</h2>
+
+        <!-- Name Section -->
+        <div class="account-section">
+            <label for="name">Name:</label>
+            <span id="nameDisplay"></span>
+            <input type="text" id="nameInput" style="display: none;">
+            <button class="editButton" data-field="name">Edit</button>
+        </div>
+
+        <!-- Email Section -->
+        <div class="account-section">
+            <label for="email">Email:</label>
+            <span id="emailDisplay"></span>
+            <input type="email" id="emailInput" style="display: none;">
+            <button class="editButton" data-field="email">Edit</button>
+        </div>
+
+        <!-- Password Section -->
+        <div class="account-section">
+            <label for="password">Password:</label>
+            <span>********</span> <!-- Hidden password -->
+            <button class="editButton" data-field="password">Edit</button>
+        </div>
+
+        <!-- Password Prompt Modal -->
+        <div id="passwordModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3>Enter your current password</h3>
+                <input type="password" id="verifyPassword" placeholder="Enter current password">
+                <button id="confirmPasswordButton">Confirm</button>
+                <button id="cancelPasswordButton">Cancel</button>
+                <p id="passwordError" style="color: red;"></p>
+            </div>
+        </div>
+
+        <p id="message"></p>
+    </div>
+
+    <script src="js/account.js"></script>
+    <script src="js/datamodel.js"></script>
+</body>
+
+</html>
