@@ -43,18 +43,19 @@ button {
     border-radius: 5px;
     border: none;
     background-color: #b8a9c9;
-    color: white;
+    color: black;
     cursor: pointer;
 }
 
 button:hover {
     background-color: #7c6e8c;
+    color: white;
 }
 
 #logoutButton {
     padding: 10px 20px;
     background-color: #73cad2;
-    color: white;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -62,6 +63,7 @@ button:hover {
 
 #logoutButton:hover {
     background-color: #5b9aa0;
+    color: white;
 }
 
 #refreshButton {
