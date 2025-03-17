@@ -95,15 +95,66 @@ button:hover {
     justify-content: center;
 }
 
+/* This is a test do not delete not permanent yet */
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+/* SVG Styling */
+.timer-svg {
+    width: 150px;
+    height: 150px;
+}
+
+/* Background circle */
+.background-circle {
+    stroke: #ddd;
+    stroke-width: 10;
+    fill: none;
+}
+
+/* Progress circle */
+.progress-circle {
+    stroke: purple;
+    stroke-width: 10;
+    fill: none;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear;
+}
+
+/* Timer text inside the circle */
+.timer-text {
+    font-size: 20px;
+    fill: black;
+    font-weight: bold;
+}
+
+/* Breathing text */
+.breath-text {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* CLOCK SAVE DO NOT DELETE TESTING 
 .timer {
     background-color: white;
     padding: 50px;
     border-radius: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 25vmin; /* Timer width based on viewport size */
-    height: 25vmin; /* Timer height based on viewport size */
+    width: 25vmin;
+    height: 25vmin;
     margin: 0 auto;
-    font-size: 10vw; /* Adjust size based on viewport */
+    font-size: 10vw;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -126,4 +177,4 @@ button:hover {
     text-align: center;
     opacity: 1;
     transition: opacity 1s ease-in-out;
-}
+} */

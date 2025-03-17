@@ -22,8 +22,19 @@
     <div class="container">
         <p>This is the meditation page. The user can take a minute to breathe in and breathe out.</p>
 
-        <!-- Circular Timer Visualization -->
+        <!-- Circular Timer Visualization  TESTING DO NOT DELETE-->
+        
         <div class="timer-container">
+            <svg class="timer-svg" width="150" height="150">
+                <circle class="background-circle" cx="75" cy="75" r="60"/>
+                <circle id="progressCircle" class="progress-circle" cx="75" cy="75" r="60"/>
+                <text id="timer" class="timer-text" x="50%" y="50%" text-anchor="middle" dy="8px">01:00</text>
+            </svg>
+            <p id="breathText" class="breath-text">Breathe In</p>
+        </div>
+
+
+        <!-- <div class="timer-container"> FOR CLOCK DO NOT DELETE TESTING
             <svg width="150" height="150">
                 <circle cx="75" cy="75" r="60" stroke="#ddd" stroke-width="10" fill="none"/>
                 <circle id="progressCircle" cx="75" cy="75" r="60" stroke="purple" stroke-width="10"
@@ -31,7 +42,7 @@
                 <text id="timer" x="50%" y="50%" text-anchor="middle" dy="8px" font-size="20px">01:00</text>
             </svg>
             <p id="breathText">Breathe In</p>
-        </div>
+        </div> -->
 
         <!-- Timer Buttons -->
         <div class="buttonDiv">
