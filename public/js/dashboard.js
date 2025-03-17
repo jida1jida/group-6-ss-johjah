@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     // Log out and redirect to login
     logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('jwtToken');
         window.location.href = '/';
     });
 
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////////////////
     //CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////////////////
+
     // Initial check for the token
     const token = localStorage.getItem('jwtToken');
     if (!token) {
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         DataModel.setToken(token);
         renderUserList();
     }
+
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////
@@ -61,11 +63,35 @@ document.addEventListener('DOMContentLoaded', () => {
 async function renderUserList() {
     const userListElement = document.getElementById('userList');
     userListElement.innerHTML = '<div class="loading-message">Loading user list...</div>';
+
     const users = await DataModel.getUsers(); 
+
+    if (users.length === 0) {
+        userListElement.innerHTML = '<div class="loading-message">No users found.</div>';
+        return;
+    }
+
+    // Clear the loading message
+    userListElement.innerHTML = '';
+
     users.forEach(user => {
         const userItem = document.createElement('div');
         userItem.classList.add('user-item');
-        userItem.textContent = user;
+
+        // Display both email and prefname
+        const emailElement = document.createElement('div');
+        emailElement.classList.add('user-email');
+        emailElement.textContent = `Email: ${user.email}`;
+
+        const prefnameElement = document.createElement('div');
+        prefnameElement.classList.add('user-prefname');
+        prefnameElement.textContent = `Preferred Name: ${user.prefname}`;
+
+        // Append email and prefname to userItem
+        userItem.appendChild(emailElement);
+        userItem.appendChild(prefnameElement);
+
+        // Add the userItem to the user list
         userListElement.appendChild(userItem);
     });
 }

@@ -16,7 +16,7 @@ const DataModel = (function () {
     //LATER.  RIGHT NOW, WE'RE JUST STORING THE JWT TOKEN
     //AND THE LIST OF USERS.
     let token = null;  // Holds the JWT token
-    let users = [];    // Holds the list of user emails
+    let users = [];    // Holds the list of user emails and prefname
 
     //WE CAN CREATE FUNCTIONS HERE TO FETCH DATA FROM THE SERVER
     //AND RETURN IT TO THE CONTROLLER.  THE CONTROLLER CAN THEN
@@ -32,34 +32,40 @@ const DataModel = (function () {
 
         //function to fetch the list of users from the server
         getUsers: async function () {
-            // Check if the token is set
             if (!token) {
                 console.error("Token is not set.");
                 return [];
             }
-
+        
             try {
-                // this is our call to the /api/users route on the server
                 const response = await fetch('/api/users', {
                     method: 'GET',
                     headers: {
-                        // we need to send the token in the headers
                         'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                 });
-
+        
                 if (!response.ok) {
                     console.error("Error fetching users:", await response.json());
                     return [];
                 }
-
+        
                 const data = await response.json();
-                //store the emails in the users variable so we can
-                //use them again later without having to fetch them
-                users = data.emails;
-                //return the emails to the controller
-                //so that it can update the view
+                console.log("Fetched data:", data); // Debugging output
+        
+                // Check if users exist and extract email and prefname if available
+                if (!Array.isArray(data.users)) {
+                    console.error("Expected 'users' to be an array but got:", data.users);
+                    return [];
+                }
+        
+                // The data should now be an array of objects with email and prefname
+                users = data.users.map((user) => ({
+                    email: user.email,
+                    prefname: user.prefname || ""  // Default to an empty string if prefname is missing
+                }));
+        
                 return users;
             } catch (error) {
                 console.error("Error in API call:", error);

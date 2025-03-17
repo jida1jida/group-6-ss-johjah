@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- This page allows the user to login to the application. -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +12,9 @@
 
 <body>
     <div class="container">
-        <h1>Welcome to Node App</h1>
+        <h1>Daily Meditation App</h1>
         <div class="tab">
-            <button class="tab-button active" id="login-tab">Logon</button>
+            <button class="tab-button active" id="login-tab">Login</button>
             <button class="tab-button" id="create-account-tab">Create Account</button>
         </div>
 
@@ -25,7 +27,7 @@
                 <label for="login-password">Password:</label>
                 <input type="password" id="login-password" placeholder="Enter your password" required>
 
-                <button type="submit" class="button">Logon</button>
+                <button type="submit" class="button">Login</button>
             </form>
 
             <!-- Create Account Form -->
@@ -35,6 +37,9 @@
 
                 <label for="create-password">Password:</label>
                 <input type="password" id="create-password" placeholder="Create your password" required>
+
+                <label for="create-name">Preferred Name:</label>
+                <input type="name" id="create-name" placeholder="Enter your preferred name" required>
 
                 <button type="submit" class="button">Create Account</button>
             </form>

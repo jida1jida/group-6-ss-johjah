@@ -21,10 +21,30 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/logon.html');
 });
 
+app.get('/logon', (req, res) => {
+    res.sendFile(__dirname + '/public/logon.html');
+});
+
 // Route to serve dashboard.html
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 });
+
+// Route to serve mainmenu.html
+app.get('/mainmenu', (req, res) => {
+    res.sendFile(__dirname + '/public/mainmenu.html');
+});
+
+// Route to serve meditation.html
+app.get('/meditation', (req, res) => {
+    res.sendFile(__dirname + '/public/meditation.html');
+});
+
+// Route to serve account.html
+app.get('/account', (req, res) => {
+    res.sendFile(__dirname + '/public/account.html');
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
@@ -89,10 +109,10 @@ async function authenticateToken(req, res, next) {
 //////////////////////////////////////
 // Route: Create Account
 app.post('/api/create-account', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
+    if (!email || !password  || !name) {
+        return res.status(400).json({ message: 'Email, password, and name are required.' });
     }
 
     try {
@@ -100,8 +120,8 @@ app.post('/api/create-account', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);  // Hash password
 
         const [result] = await connection.execute(
-            'INSERT INTO user (email, password) VALUES (?, ?)',
-            [email, hashedPassword]
+            'INSERT INTO user (email, password, prefname) VALUES (?, ?, ?)',
+            [email, hashedPassword, name]
         );
 
         await connection.end();  // Close connection
@@ -159,22 +179,29 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Route: Get All Email Addresses
+// Route: Get All Email Addresses and Prefnames
 app.get('/api/users', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
 
-        const [rows] = await connection.execute('SELECT email FROM user');
+        // Fetch both email and prefname from the database
+        const [rows] = await connection.execute('SELECT email, prefname FROM user');
 
         await connection.end();  // Close connection
 
-        const emailList = rows.map((row) => row.email);
-        res.status(200).json({ emails: emailList });
+        // Map the result to include both email and prefname
+        const usersList = rows.map((row) => ({
+            email: row.email,
+            prefname: row.prefname || ""  // In case prefname is not set, return an empty string
+        }));
+
+        res.status(200).json({ users: usersList });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error retrieving email addresses.' });
+        res.status(500).json({ message: 'Error retrieving user data.' });
     }
 });
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
