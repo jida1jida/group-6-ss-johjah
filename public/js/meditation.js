@@ -96,6 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
             elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Store elapsed time when stopped
             running = false;
             startStopBtn.textContent = "Start Timer";
+
+            // Stop the circular progress animation immediately
+            progressCircle.style.transition = "none";  // Disable transition
+            progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset; // Freeze animation
         } else {
             if (!startTime) {
                 // First time starting, initialize startTime and set elapsedTime to 0
@@ -105,10 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // If the timer was paused, adjust the startTime to resume from the correct point
                 startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
             }
-    
+
+            // Re-enable smooth animation when resuming
+            progressCircle.style.transition = "stroke-dashoffset 1s linear";
+
             startBreathingCycle();  // Start the breathing cycle
             requestAnimationFrame(animateTimer);  // Start the timer animation
-    
+
             running = true;
             startStopBtn.textContent = "Stop Timer";
         }
