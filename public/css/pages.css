@@ -113,7 +113,7 @@ button:hover {
 .timerButton {
     border-radius: 5px;
     border: none;
-    background-color: #c4c4c4;
+    background-color: white;
     color: white;
     cursor: pointer;
     padding: 10px 20px;
