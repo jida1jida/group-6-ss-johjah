@@ -1,0 +1,69 @@
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
+
+export default function MeditationApp() {
+  const [mood, setMood] = useState("");
+  const [meditationTime, setMeditationTime] = useState(5);
+  const [streak, setStreak] = useState(0);
+  const [quote, setQuote] = useState("Take a deep breath and relax.");
+  
+  useEffect(() => {
+    fetchQuote();
+  }, []);
+
+  const fetchQuote = async () => {
+    // Mock API Call
+    const quotes = [
+      "Breathe deeply, live fully.",
+      "You are enough, just as you are.",
+      "Peace begins with a single breath."
+    ];
+    setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+  };
+
+  const startMeditation = () => {
+    alert(`Starting ${meditationTime} minutes meditation...`);
+    setStreak(streak + 1);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-50 p-6">
+      <Card className="w-full max-w-md p-6 shadow-lg bg-white rounded-2xl">
+        <CardContent>
+          <h1 className="text-2xl font-bold text-center">Daily Meditation</h1>
+          <p className="text-center text-gray-600 mt-2">{quote}</p>
+          <div className="mt-4">
+            <label className="block font-semibold">How are you feeling today?</label>
+            <Input
+              type="text"
+              placeholder="Enter your mood..."
+              value={mood}
+              onChange={(e) => setMood(e.target.value)}
+              className="mt-2"
+            />
+          </div>
+          <div className="mt-4">
+            <label className="block font-semibold">Choose meditation duration:</label>
+            <select
+              className="mt-2 w-full p-2 border rounded"
+              value={meditationTime}
+              onChange={(e) => setMeditationTime(Number(e.target.value))}
+            >
+              <option value={1}>1 Minute</option>
+              <option value={5}>5 Minutes</option>
+              <option value={10}>10 Minutes</option>
+              <option value={15}>15 Minutes</option>
+            </select>
+          </div>
+          <Button className="w-full mt-4" onClick={startMeditation}>
+            Start Meditation
+          </Button>
+          <p className="text-center mt-4 text-sm">Current Streak: {streak} days</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
