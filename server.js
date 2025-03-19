@@ -202,6 +202,28 @@ app.get('/api/users', authenticateToken, async (req, res) => {
     }
 });
 
+// Route: log a meditation session
+app.post('/api/med-session', authenticateToken, async (req, res) => {
+    const { duration } = req.body;
+    const userEmail = req.user.email;
+
+    try {
+        const connection = await createConnection();
+        await connection.execute(
+            'insert into session_log (email, session_duration_seconds) values (?, ?)',
+            [userEmail, duration || null]
+        );
+        await connection.end();
+
+        res.status(201).json({
+            message: 'Meditation session logged successfully!'});
+    } catch (error) {
+        console.error('Error logging meditation session: ', error);
+        res.status(500).json({message: 'Error logging session!'});
+    }
+
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

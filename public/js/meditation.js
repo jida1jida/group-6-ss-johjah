@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (timeLeft > 0) {
             requestAnimationFrame(animateTimer);
         } else {
-            stopTimer();
+            // stopTimer(); I don't this does anything????? --jake
+            handleMeditationComplete(elapsedTimeInSeconds)
         }
     }
 
@@ -138,6 +139,37 @@ document.addEventListener('DOMContentLoaded', () => {
         breathText.style.opacity = 1;
     
         startStopBtn.textContent = "Start Timer";
+    }
+
+//////////////////////////////////////////
+    // LOGGING FUNCTIONS
+    //////////////////////////////////////////
+
+    async function logMeditationSession(duration) {
+        const token = localStorage.getItem('jwtToken');
+        
+        try {
+            const response = await fetch('/api/med-session', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ duration }),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Failed to log session.");
+            }
+    
+            console.log("Meditation session logged!");
+        } catch (error) {
+            console.error("Error logging session: ", error);
+        }
+    }
+
+    function handleMeditationComplete(duration) {
+        logMeditationSession(duration);
     }
 
     // Initialize Display
