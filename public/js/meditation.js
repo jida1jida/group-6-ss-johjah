@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(animateTimer);
         } else {
             // stopTimer(); I don't this does anything????? --jake
-            handleMeditationComplete(elapsedTimeInSeconds)
+            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise")  // type is hardcoded for now -jake
         }
     }
 
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // LOGGING FUNCTIONS
     //////////////////////////////////////////
 
-    async function logMeditationSession(duration) {
+    async function logMeditationSession(duration, type) {
         const token = localStorage.getItem('jwtToken');
         
         try {
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': token,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ duration }),
+                body: JSON.stringify({ duration, type }),
             });
     
             if (!response.ok) {
@@ -168,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function handleMeditationComplete(duration) {
-        logMeditationSession(duration);
+    function handleMeditationComplete(duration, type) {
+        logMeditationSession(duration, type);
     }
 
     // Initialize Display
