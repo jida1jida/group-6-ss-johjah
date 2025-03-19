@@ -108,7 +108,7 @@ async function fetchAIQuote() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                contents: [{ role: "user", parts: [{ text: "Generate a motivational quote." }] }]
+                contents: [{ role: "user", parts: [{ text:  "Generate a fresh, unique, and inspiring meditation quote. Each quote should be different from the previous ones." }] }]
             })
         });
 
