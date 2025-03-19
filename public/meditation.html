@@ -25,13 +25,21 @@
 
         <!-- Circular Timer Visualization  TESTING DO NOT DELETE-->
         
-        <div class="timer-container">
-            <svg class="timer-svg" width="150" height="150">
-                <circle class="background-circle" cx="75" cy="75" r="60"/>
-                <circle id="progressCircle" class="progress-circle" cx="75" cy="75" r="60"/>
-                <text id="timer" class="timer-text" x="50%" y="50%" text-anchor="middle" dy="8px">01:00</text>
-            </svg>
-            <p id="breathText" class="breath-text">Breathe In</p>
+        <div class="container">
+            <div class="timer-container">
+                <svg class="timer-svg" width="150" height="150">
+                    <circle class="background-circle" cx="75" cy="75" r="60"/>
+                    <circle id="progressCircle" class="progress-circle" cx="75" cy="75" r="60"/>
+                    <text id="timer" class="timer-text" x="50%" y="50%" text-anchor="middle" dy="8px">01:00</text>
+                </svg>
+                <p id="breathText" class="breath-text">Breathe In</p>
+            </div>
+        
+            <!-- Timer Buttons -->
+            <div class="buttonDiv">
+                <button id="startStopBtn">Start Timer</button>
+                <button id="resetBtn">Reset Timer</button>
+            </div>
         </div>
 
 
@@ -44,12 +52,6 @@
             </svg>
             <p id="breathText">Breathe In</p>
         </div> -->
-
-        <!-- Timer Buttons -->
-        <div class="buttonDiv">
-            <button id="startStopBtn">Start Timer</button>
-            <button id="resetBtn">Reset Timer</button>
-        </div>
     </div>
 
     <!-- Move script tags to the bottom of body -->
