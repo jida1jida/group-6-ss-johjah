@@ -207,8 +207,35 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     const { duration, type } = req.body;
     const userEmail = req.user.email;
 
+    // record session info
     try {
         const connection = await createConnection();
+        
+        // streak
+        const [rows] = await connection.execute('SELECT last_session_date FROM user WHERE email = ?', [userEmail]);
+
+        let new_streak = 1;
+        const today = new Date().toISOString().split('T')[0];
+
+        if (rows.length > 0 && rows[0].last_session_date) {
+            const last_session_date = new Date(rows[0].last_session_date);
+            const yesterday = new Date;
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (last_session_date.toISOString().split('T')[0] === today) { // if last session date is today...
+                new_streak = rows[0].streak; // streak is unchanged
+            } else if (last_session_date.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0]) { // if last session date is yesterday...
+                new_streak = rows[0].streak + 1; // increment streak by 1
+            }
+        }
+        
+        // update streak
+        await connection.execute(
+            'update user set streak_count = ?, last_session_date = ? where email = ?',
+            [new_streak, today, userEmail]
+        );
+        
+        // log session
         await connection.execute(
             'insert into session_log (email, session_duration_seconds, session_type) values (?, ?, ?)',
             [userEmail, duration, type || null]
