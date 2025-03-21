@@ -1,5 +1,8 @@
+/* Login page styling */
+
+* { font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+
 body {
-    font-family: Arial, sans-serif;
     background-image: linear-gradient(to bottom,#622569,#d6d4e0);
     background-repeat: no-repeat;
     background-attachment: fixed;
