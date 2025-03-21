@@ -207,8 +207,41 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     const { duration, type } = req.body;
     const userEmail = req.user.email;
 
+    // record session info
     try {
         const connection = await createConnection();
+        
+        // streak
+        const [rows] = await connection.execute(
+            'SELECT last_session_date FROM user WHERE email = ?',
+            [userEmail]
+        );
+
+        let new_streak = 1;
+
+        const now = new Date();
+        const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
+        const yesterday = new Date(now);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const local_yesterday = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
+
+        if (rows.length > 0 && rows[0].last_session_date) {
+            const last_session_date = new Date(rows[0].last_session_date);
+
+            if (last_session_date.toLocaleDateString('en-CA') === local_date) { // if last session date is today...
+                new_streak = rows[0].streak; // streak is unchanged
+            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday.toLocaleDateString('en-CA')) { // if last session date is yesterday...
+                new_streak = rows[0].streak + 1; // increment streak by 1
+            }
+        }
+        
+        // update streak
+        await connection.execute(
+            'update user set streak_count = ?, last_session_date = ? where email = ?',
+            [new_streak, local_date, userEmail]
+        );
+        
+        // log session
         await connection.execute(
             'insert into session_log (email, session_duration_seconds, session_type) values (?, ?, ?)',
             [userEmail, duration, type || null]
@@ -223,6 +256,29 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     }
 
 });
+
+// Route: get streak information
+app.get('/api/streak', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            'select streak from user where email = ?',
+            [userEmail]
+        );
+        await connection.end();
+
+        if (rows.length === 0) {
+            return res.status(404).json({message: 'User not found!'});
+        }
+
+        res.status(200).json({streak: rows[0].streak});
+    } catch (error) {
+        console.error('Error fetching streak: ', error);
+        res.status(500).json({ message: 'Error fetching streak!'});
+    }
+})
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
