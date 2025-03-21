@@ -212,7 +212,10 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         const connection = await createConnection();
         
         // streak
-        const [rows] = await connection.execute('SELECT last_session_date FROM user WHERE email = ?', [userEmail]);
+        const [rows] = await connection.execute(
+            'SELECT last_session_date FROM user WHERE email = ?',
+            [userEmail]
+        );
 
         let new_streak = 1;
         const today = new Date().toISOString().split('T')[0];
@@ -250,6 +253,29 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     }
 
 });
+
+// Route: get streak information
+app.get('/api/streak', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            'select streak from user where email = ?',
+            [userEmail]
+        );
+        await connection.end();
+
+        if (rows.length === 0) {
+            return res.status(404).json({message: 'User not found!'});
+        }
+
+        res.status(200).json({streak: rows[0].streak});
+    } catch (error) {
+        console.error('Error fetching streak: ', error);
+        res.status(500).json({ message: 'Error fetching streak!'});
+    }
+})
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
