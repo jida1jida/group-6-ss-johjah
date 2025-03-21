@@ -10,9 +10,34 @@
     <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
-    <div class="container">
+
+    <div class="grid-container">
+        <div class="grid-item container header">
+            <h1 id="welcomeMessage">Welcome!</h1>
+            <div>
+                <button id="logoutButton">Log Out</button>
+                <button id="accountButton">Account</button>
+                <button id="meditationButton">Meditation</button>
+            </div>
+        </div>
+        <div class="grid-item container streak">
+            <p>This is the home page when users successfully login. 
+                Their streak can be seen in this container.
+            </p>
+        </div>
+        <div class="grid-item container quote">
+            <h2>Daily Motivation</h2>
+            <p id="quoteContainer">Loading...</p>
+        </div>
+        <div class="grid-item container meditate">
+            <h2>Meditation</h2>
+            <p>In here, the user can start meditation, or customize how their meditation layout.</p>
+        </div>
+    </div>
+
+    <!-- <div class="container">
         <div class="header">
-            <h1 id="welcomeMessage">Welcome!</h1>  <!--Default welcome message is "Welcome!", the actual message can be changed in mainmenu.js-->
+            <h1 id="welcomeMessage">Welcome!</h1>
             <div>
                 <button id="logoutButton">Log Out</button>
                 <button id="accountButton">Account</button>
@@ -36,7 +61,7 @@
     <div class="container">
         <h2>Box</h2>
         <p id="">Woof</p>
-    </div>   
+    </div>    -->
     <script src="/js/mainmenu.js"></script>
     <script src="/js/datamodel.js"></script>
 </body>

@@ -11,6 +11,19 @@ body {
     padding: 0;
 }
 
+.grid-container {
+    display              : grid;          /* turn on Grid layout      */
+    grid-template-columns: repeat(6, 1fr);/* Creates a 6-column grid  */
+    grid-template-rows   : repeat(5, 1fr);/* Create 5 rows in the grid*/
+    /* gap                  : 10px;          Gap between grid items   */
+    /* margin               : 0 auto;        Center the container     */
+    padding-bottom: 50px;
+}
+.grid-item {
+    border-radius: 10px;
+    padding      : 3%;
+}
+
 .container {
     background-color: #d6d4e0;
     padding: 30px;
@@ -23,14 +36,38 @@ body {
 
 /* menu at the top of the screen */
 .header {
-    display: flex;
+    /* display: flex; */
     justify-content: space-between;
     align-items: center;
+    grid-column     : 1 / 7;
+    grid-row        : 0 / 4;
 }
 
 .header div {
     display: flex;
     gap: 10px;
+}
+
+/* streak on the big, left side of the screen */
+.streak {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 1 / 4;
+    grid-row        : 2 / 6;
+}
+
+.quote {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 4 / 7;
+    grid-row        : 2 / 4;
+}
+
+.meditate {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 4 / 7;
+    grid-row        : 4 / 6;
 }
 
 h1 {
