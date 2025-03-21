@@ -13,7 +13,7 @@ body {
     background-color: #d6d4e0;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
     width: 80%;
     margin: 0 auto;
     margin-top: 20px;
@@ -103,6 +103,11 @@ button:hover {
     align-items: center;
     justify-content: center;
     margin-top: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 50px;
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
 }
 
 /* SVG Styling */
