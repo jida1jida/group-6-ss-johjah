@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (timeLeft > 0) {
             requestAnimationFrame(animateTimer);
         } else {
-            stopTimer();
+            // stopTimer(); I don't this does anything????? --jake
+            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise")  // type is hardcoded for now -jake
         }
     }
 
@@ -96,6 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
             elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Store elapsed time when stopped
             running = false;
             startStopBtn.textContent = "Start Timer";
+
+            // Stop the circular progress animation immediately
+            progressCircle.style.transition = "none";  // Disable transition
+            progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset; // Freeze animation
         } else {
             if (!startTime) {
                 // First time starting, initialize startTime and set elapsedTime to 0
@@ -105,10 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // If the timer was paused, adjust the startTime to resume from the correct point
                 startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
             }
-    
+
+            // Re-enable smooth animation when resuming
+            progressCircle.style.transition = "stroke-dashoffset 1s linear";
+
             startBreathingCycle();  // Start the breathing cycle
             requestAnimationFrame(animateTimer);  // Start the timer animation
-    
+
             running = true;
             startStopBtn.textContent = "Stop Timer";
         }
@@ -131,6 +139,37 @@ document.addEventListener('DOMContentLoaded', () => {
         breathText.style.opacity = 1;
     
         startStopBtn.textContent = "Start Timer";
+    }
+
+//////////////////////////////////////////
+    // LOGGING FUNCTIONS
+    //////////////////////////////////////////
+
+    async function logMeditationSession(duration, type) {
+        const token = localStorage.getItem('jwtToken');
+        
+        try {
+            const response = await fetch('/api/med-session', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ duration, type }),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Failed to log session.");
+            }
+    
+            console.log("Meditation session logged!");
+        } catch (error) {
+            console.error("Error logging session: ", error);
+        }
+    }
+
+    function handleMeditationComplete(duration, type) {
+        logMeditationSession(duration, type);
     }
 
     // Initialize Display

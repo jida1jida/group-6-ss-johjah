@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         DataModel.setToken(token);
         getUserName();
+        fetchAIQuote(); // Fetch the AI-generated quote when the page loads
+
     }
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
@@ -95,6 +97,30 @@ async function getUserName(){
         welcomeMessage.textContent = "Welcome!"; // if error when fetching prefname, generic message will display
     }
 }
+
+async function fetchAIQuote() {
+    const quoteContainer = document.getElementById('quoteContainer');
+
+    try {
+        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDW692uBKbYpliX9sYUXgCGZ0ELFfrPkhM', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text:  "Generate a fresh, unique, and inspiring meditation quote. Each quote should be different from the previous ones." }] }]
+            })
+        });
+
+        const data = await response.json();
+        const quote = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Stay mindful and present.";
+        quoteContainer.textContent = `"${quote}"`;
+    } catch (error) {
+        console.error("Error fetching AI quote:", error);
+        quoteContainer.textContent = "Error generating quote.";
+    }
+}
+
 //////////////////////////////////////////
 //END FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////

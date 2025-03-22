@@ -1,7 +1,9 @@
 /* css used to style pages in website */
 
+* { font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+
+/* background and website text style */
 body {
-    font-family: Arial, sans-serif;
     background-image: linear-gradient(to bottom, #622569,#d6d4e0);
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -9,25 +11,63 @@ body {
     padding: 0;
 }
 
+.grid-container {
+    display              : grid;          /* turn on Grid layout      */
+    grid-template-columns: repeat(6, 1fr);/* Creates a 6-column grid  */
+    grid-template-rows   : repeat(5, 1fr);/* Create 5 rows in the grid*/
+    /* gap                  : 10px;          Gap between grid items   */
+    /* margin               : 0 auto;        Center the container     */
+    padding-bottom: 50px;
+}
+.grid-item {
+    border-radius: 10px;
+    padding      : 30%;
+}
+
 .container {
     background-color: #d6d4e0;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
     width: 80%;
     margin: 0 auto;
     margin-top: 20px;
 }
 
+/* Header at the top of the screen (Welcome + account button) */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    grid-column     : 1 / 7;
+    grid-row        : 0 / 4;
 }
 
 .header div {
     display: flex;
     gap: 10px;
+}
+
+/* Streak */
+.streak {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 1 / 4;
+    grid-row        : 2 / 6;
+}
+
+.quote {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 4 / 7;
+    grid-row        : 2 / 4;
+}
+
+.meditate {
+    justify-content: space-between;
+    align-items: center;
+    grid-column     : 4 / 7;
+    grid-row        : 4 / 6;
 }
 
 h1 {
@@ -42,6 +82,8 @@ p {
 button {
     border-radius: 5px;
     border: none;
+    width: 150px;
+    height: 75px;
     background-color: #b8a9c9;
     color: black;
     cursor: pointer;
@@ -95,15 +137,71 @@ button:hover {
     justify-content: center;
 }
 
+/* This is a test do not delete not permanent yet */
+
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding: 50px;
+    box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
+    border-radius: 100px;
+}
+
+/* SVG Styling */
+.timer-svg {
+    width: 150px;
+    height: 150px;
+}
+
+/* Background circle */
+.background-circle {
+    stroke: #ddd;
+    stroke-width: 10;
+    fill: none;
+}
+
+/* Progress circle */
+.progress-circle {
+    stroke: purple;
+    stroke-width: 10;
+    fill: none;
+    stroke-dasharray: 377;
+    stroke-dashoffset: 377;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s linear;
+}
+
+/* Timer text inside the circle */
+.timer-text {
+    font-size: 20px;
+    fill: black;
+    font-weight: bold;
+}
+
+/* Breathing text */
+.breath-text {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* CLOCK SAVE DO NOT DELETE TESTING 
 .timer {
     background-color: white;
     padding: 50px;
     border-radius: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 25vmin; /* Timer width based on viewport size */
-    height: 25vmin; /* Timer height based on viewport size */
+    width: 25vmin;
+    height: 25vmin;
     margin: 0 auto;
-    font-size: 10vw; /* Adjust size based on viewport */
+    font-size: 10vw;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -113,7 +211,7 @@ button:hover {
 .timerButton {
     border-radius: 5px;
     border: none;
-    background-color: #c4c4c4;
+    background-color: white;
     color: white;
     cursor: pointer;
     padding: 10px 20px;
@@ -126,4 +224,4 @@ button:hover {
     text-align: center;
     opacity: 1;
     transition: opacity 1s ease-in-out;
-}
+} */
