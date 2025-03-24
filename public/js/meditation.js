@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     homeButton.addEventListener('click', () => {
-        window.location.href = '/mainmenu'; 
+        window.location.href = '/mainmenu.html'; 
     });
 
     // Timer event listeners
