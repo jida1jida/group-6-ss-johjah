@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton');
     const refreshButton = document.getElementById('refreshButton');
     const meditationButton = document.getElementById('meditationButton');
+    const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
+
     //////////////////////////////////////////
     //END ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -37,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     accountButton.addEventListener('click', () => {
         window.location.href = '/account';
+    });
+
+    meditationCustomizeButton.addEventListener('click', () => {
+        window.location.href = '/customize';
     });
     //////////////////////////////////////////
     //END EVENT LISTENERS
