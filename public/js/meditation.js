@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     homeButton.addEventListener('click', () => {
-        window.location.href = '/mainmenu.html';
+        window.location.href = '/mainmenu.html'; 
     });
 
 

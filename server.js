@@ -45,6 +45,11 @@ app.get('/account', (req, res) => {
     res.sendFile(__dirname + '/public/account.html');
 })
 
+// Route to serve customize.html
+app.get('/customize', (req, res) => {
+    res.sendFile(__dirname + '/public/customize.html');
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
