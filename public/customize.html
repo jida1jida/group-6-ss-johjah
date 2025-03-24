@@ -1,13 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- This page allows the user to customize their meditation settings -->
-<!-- This page may be temporary, just to implement the feature -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Customize Meditation</title>
     <link rel="stylesheet" href="css/pages.css">
+    <style>
+        #imageGallery img {
+            width: 120px;
+            margin: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, border 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        #imageGallery img:hover {
+            transform: scale(1.05);
+            border-color: #ccc;
+        }
+
+        #imagePreviewContainer img {
+            max-width: 150px;
+            margin: 10px;
+        }
+
+        #timer {
+            font-size: 2rem;
+            margin: 20px 0;
+        }
+
+        svg {
+            width: 150px;
+            height: 150px;
+        }
+
+        circle {
+            fill: none;
+            stroke: #4CAF50;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        #breathText {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            opacity: 1;
+            transition: opacity 1s;
+        }
+
+        .controls button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -16,10 +64,11 @@
             <h1>Customize Meditation</h1>
             <div>
                 <button id="logoutButton">Log Out</button>
-                <button id="meditationButton">Back to Meditation</button>
+                <button id="homeButton">Back to Meditation</button>
             </div>
         </div>
     </div>
+
     <div class="container">
         <p>
             This is the customize meditation page. The user can press buttons to edit their meditation settings.
@@ -27,7 +76,204 @@
             This page may be temporary and adjusted to our vision.
         </p>
     </div>
-</body>
 
+    <!-- Image Gallery -->
+    <div id="imageGallery">
+        <img src="/images/calm1.jpg" class="selectable-image">
+        <img src="/images/calm2.jpg" class="selectable-image">
+        <img src="/images/calm3.jpg" class="selectable-image">
+    </div>
+
+    <!-- Selected Image Preview -->
+    <div id="imagePreviewContainer"></div>
+
+    <!-- Meditation Controls -->
+    <div id="timer">60s</div>
+    <svg>
+        <circle id="progressCircle" r="60" cx="75" cy="75" stroke-dasharray="377" stroke-dashoffset="377" />
+    </svg>
+    <div id="breathText">Breathe In</div>
+    <div class="controls">
+        <button id="startStopBtn">Start Timer</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.getElementById('logoutButton');
+            const homeButton = document.getElementById('homeButton');
+            const timerDisplay = document.getElementById("timer");
+            const startStopBtn = document.getElementById("startStopBtn");
+            const resetBtn = document.getElementById("resetBtn");
+            const progressCircle = document.getElementById("progressCircle");
+            const breathText = document.getElementById("breathText");
+            const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+
+            let timer;
+            let timeLeft = 60;
+            let running = false;
+            let startTime = null;
+            let breathInterval = null;
+            let elapsedTime = 0;
+            let selectedImages = [];
+
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('jwtToken');
+                window.location.href = '/';
+            });
+
+            homeButton.addEventListener('click', () => {
+                window.location.href = '/mainmenu.html';
+            });
+
+            startStopBtn.addEventListener("click", startStopTimer);
+            resetBtn.addEventListener("click", resetTimer);
+
+            // Image selection logic
+            const galleryImages = document.querySelectorAll('.selectable-image');
+            galleryImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    const src = img.src;
+
+                    if (selectedImages.includes(src)) {
+                        selectedImages = selectedImages.filter(item => item !== src);
+                        img.style.border = '';
+                    } else {
+                        selectedImages.push(src);
+                        img.style.border = '3px solid #4CAF50';
+                    }
+
+                    updateSelectedPreviews();
+                });
+            });
+
+            function updateSelectedPreviews() {
+                imagePreviewContainer.innerHTML = '';
+                selectedImages.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    imagePreviewContainer.appendChild(img);
+                });
+            }
+
+            function updateDisplay() {
+                let seconds = Math.ceil(timeLeft);
+                timerDisplay.textContent = `${seconds}s`;
+            }
+
+            function updateCircle() {
+                const progress = timeLeft / 60;
+                progressCircle.style.strokeDashoffset = 377 * progress;
+            }
+
+            function startBreathingCycle() {
+                if (breathInterval) return;
+
+                let inhale = true;
+                breathText.textContent = "Breathe In";
+                breathText.style.opacity = 1;
+
+                breathInterval = setInterval(() => {
+                    inhale = !inhale;
+                    breathText.style.opacity = 0;
+
+                    setTimeout(() => {
+                        breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
+                        breathText.style.opacity = 1;
+                    }, 1000);
+                }, 4000);
+            }
+
+            function animateTimer() {
+                if (!running) return;
+
+                let now = Date.now();
+                let elapsedTimeInSeconds = (now - startTime) / 1000;
+                timeLeft = Math.max(0, 60 - elapsedTimeInSeconds - elapsedTime);
+
+                updateDisplay();
+                updateCircle();
+
+                if (timeLeft > 0) {
+                    requestAnimationFrame(animateTimer);
+                } else {
+                    handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise");
+                }
+            }
+
+            function startStopTimer() {
+                if (running) {
+                    clearInterval(timer);
+                    clearInterval(breathInterval);
+                    breathInterval = null;
+                    elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                    running = false;
+                    startStopBtn.textContent = "Start Timer";
+                    progressCircle.style.transition = "none";
+                    progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset;
+                } else {
+                    if (!startTime) {
+                        startTime = Date.now();
+                        elapsedTime = 0;
+                    } else {
+                        startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000;
+                    }
+
+                    progressCircle.style.transition = "stroke-dashoffset 1s linear";
+                    startBreathingCycle();
+                    requestAnimationFrame(animateTimer);
+                    running = true;
+                    startStopBtn.textContent = "Stop Timer";
+                }
+            }
+
+            function resetTimer() {
+                clearInterval(timer);
+                clearInterval(breathInterval);
+                breathInterval = null;
+                timeLeft = 60;
+                elapsedTime = 0;
+                startTime = null;
+                running = false;
+
+                updateDisplay();
+                updateCircle();
+                breathText.textContent = "Breathe In";
+                breathText.style.opacity = 1;
+                startStopBtn.textContent = "Start Timer";
+            }
+
+            async function logMeditationSession(duration, type) {
+                const token = localStorage.getItem('jwtToken');
+
+                try {
+                    const response = await fetch('/api/med-session', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': token,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ duration, type }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to log session.");
+                    }
+
+                    console.log("Meditation session logged!");
+                } catch (error) {
+                    console.error("Error logging session: ", error);
+                }
+            }
+
+            function handleMeditationComplete(duration, type) {
+                logMeditationSession(duration, type);
+            }
+
+            updateDisplay();
+            updateCircle();
+        });
+    </script>
+</body>
 
 </html>

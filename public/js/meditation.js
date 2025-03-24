@@ -1,24 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     //////////////////////////////////////////
-    // ELEMENTS TO ATTACH EVENT LISTENERS
+    // ELEMENTS
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
-
-    // Timer elements
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
     const resetBtn = document.getElementById("resetBtn");
     const progressCircle = document.getElementById("progressCircle");
     const breathText = document.getElementById("breathText");
+    const imageGallery = document.getElementById("imageGallery");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
 
-    // Timer variables
+    // Variables
     let timer;
     let timeLeft = 60;
     let running = false;
     let startTime = null;
     let breathInterval = null;
+    let elapsedTime = 0;
+    let selectedImages = [];
 
     //////////////////////////////////////////
     // EVENT LISTENERS
@@ -32,15 +34,43 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/mainmenu.html'; 
     });
 
-    // Timer event listeners
     startStopBtn.addEventListener("click", startStopTimer);
     resetBtn.addEventListener("click", resetTimer);
+
+    // Image Selection from Gallery
+    const galleryImages = document.querySelectorAll('.selectable-image');
+    galleryImages.forEach(img => {
+        img.addEventListener('click', () => {
+            const src = img.src;
+
+            if (selectedImages.includes(src)) {
+                selectedImages = selectedImages.filter(item => item !== src);
+                img.style.border = '';
+            } else {
+                selectedImages.push(src);
+                img.style.border = '3px solid #4CAF50';
+            }
+
+            updateSelectedPreviews();
+        });
+    });
+
+    function updateSelectedPreviews() {
+        imagePreviewContainer.innerHTML = '';
+        selectedImages.forEach(src => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.style.maxWidth = '150px';
+            img.style.margin = '10px';
+            imagePreviewContainer.appendChild(img);
+        });
+    }
 
     //////////////////////////////////////////
     // TIMER FUNCTIONS
     //////////////////////////////////////////
     function updateDisplay() {
-        let seconds = Math.ceil(timeLeft); // Ensure it shows whole seconds
+        let seconds = Math.ceil(timeLeft);
         timerDisplay.textContent = `${seconds}s`;
     }
 
@@ -58,64 +88,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
         breathInterval = setInterval(() => {
             inhale = !inhale;
-            breathText.style.opacity = 0; // Fade out
+            breathText.style.opacity = 0;
 
             setTimeout(() => {
                 breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
-                breathText.style.opacity = 1; // Fade in
+                breathText.style.opacity = 1;
             }, 1000);
-        }, 4000); // Every 4 seconds, switch between inhale and exhale
+        }, 4000);
     }
 
     function animateTimer() {
         if (!running) return;
-    
+
         let now = Date.now();
-        let elapsedTimeInSeconds = (now - startTime) / 1000;  // Time passed in seconds
-    
-        // Calculate remaining time based on elapsed time and elapsedTime (paused time)
+        let elapsedTimeInSeconds = (now - startTime) / 1000;
+
         timeLeft = Math.max(0, 60 - elapsedTimeInSeconds - elapsedTime);
-    
+
         updateDisplay();
         updateCircle();
-    
-        // Continue animation as long as timeLeft is more than 0
+
         if (timeLeft > 0) {
             requestAnimationFrame(animateTimer);
         } else {
-            // stopTimer(); I don't this does anything????? --jake
-            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise")  // type is hardcoded for now -jake
+            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise");
         }
     }
 
     function startStopTimer() {
         if (running) {
-            // Stop the timer and save elapsed time
             clearInterval(timer);
             clearInterval(breathInterval);
             breathInterval = null;
-            elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Store elapsed time when stopped
+            elapsedTime = Math.floor((Date.now() - startTime) / 1000);
             running = false;
             startStopBtn.textContent = "Start Timer";
-
-            // Stop the circular progress animation immediately
-            progressCircle.style.transition = "none";  // Disable transition
-            progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset; // Freeze animation
+            progressCircle.style.transition = "none";
+            progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset;
         } else {
             if (!startTime) {
-                // First time starting, initialize startTime and set elapsedTime to 0
-                startTime = Date.now();  // Set startTime to current time
-                elapsedTime = 0;  // Reset elapsed time to 0
+                startTime = Date.now();
+                elapsedTime = 0;
             } else {
-                // If the timer was paused, adjust the startTime to resume from the correct point
-                startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
+                startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000;
             }
 
-            // Re-enable smooth animation when resuming
             progressCircle.style.transition = "stroke-dashoffset 1s linear";
-
-            startBreathingCycle();  // Start the breathing cycle
-            requestAnimationFrame(animateTimer);  // Start the timer animation
+            startBreathingCycle();
+            requestAnimationFrame(animateTimer);
 
             running = true;
             startStopBtn.textContent = "Stop Timer";
@@ -126,25 +146,24 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timer);
         clearInterval(breathInterval);
         breathInterval = null;
-    
+
         timeLeft = 60;
-        elapsedTime = 0; // Reset elapsed time
+        elapsedTime = 0;
         startTime = null;
         running = false;
-    
+
         updateDisplay();
         updateCircle();
-    
+
         breathText.textContent = "Breathe In";
         breathText.style.opacity = 1;
-    
+
         startStopBtn.textContent = "Start Timer";
     }
 
-//////////////////////////////////////////
+    //////////////////////////////////////////
     // LOGGING FUNCTIONS
     //////////////////////////////////////////
-
     async function logMeditationSession(duration, type) {
         const token = localStorage.getItem('jwtToken');
         
@@ -157,11 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({ duration, type }),
             });
-    
+
             if (!response.ok) {
                 throw new Error("Failed to log session.");
             }
-    
+
             console.log("Meditation session logged!");
         } catch (error) {
             console.error("Error logging session: ", error);
@@ -172,7 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
         logMeditationSession(duration, type);
     }
 
-    // Initialize Display
+    //////////////////////////////////////////
+    // INITIALIZE
+    //////////////////////////////////////////
     updateDisplay();
     updateCircle();
 });
