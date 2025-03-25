@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
-        window.location.href = '/.logon';
+        window.location.href = '/logon';
     });
 
     homeButton.addEventListener('click', () => {
