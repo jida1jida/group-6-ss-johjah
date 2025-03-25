@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
+    const meditationButton = document.getElementById('meditationButton');
 
     // TIMER ELEMENTS
     const timerDisplay = document.getElementById("timer");
