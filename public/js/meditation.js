@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
 
-
     // TIMER ELEMENTS
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
@@ -33,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
-        window.location.href = '/';
+        window.location.href = '/.logon';
     });
 
     homeButton.addEventListener('click', () => {
-        window.location.href = '/mainmenu.html'; 
+        window.location.href = '/mainmenu'; 
     });
 
     // Timer event listeners
