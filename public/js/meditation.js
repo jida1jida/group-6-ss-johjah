@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeButton = document.getElementById('homeButton');
 
 
-    // Timer elements
+    // TIMER ELEMENTS
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
     const resetBtn = document.getElementById("resetBtn");
@@ -15,13 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const breathText = document.getElementById("breathText");
 
 
-    // Timer variables
+    // TIMER VARIABLES
+    let userTimer = 60; // This allows the user to change how long they want to meditate
+
     let timer;
-    let timeLeft = 60;
+    let timeLeft = userTimer;
     let running = false;
     let startTime = null;
     let breathInterval = null;
-
 
     //////////////////////////////////////////
     // EVENT LISTENERS
@@ -31,16 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     });
 
-
     homeButton.addEventListener('click', () => {
         window.location.href = '/mainmenu.html'; 
     });
 
-
     // Timer event listeners
     startStopBtn.addEventListener("click", startStopTimer);
     resetBtn.addEventListener("click", resetTimer);
-
 
     //////////////////////////////////////////
     // TIMER FUNCTIONS
@@ -50,16 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
         timerDisplay.textContent = `${seconds}s`;
     }
 
-
     function updateCircle() {
-        const progress = timeLeft / 60;
+        const progress = timeLeft / userTimer;
         progressCircle.style.strokeDashoffset = 377 * progress;
     }
 
-
     function startBreathingCycle() {
         if (breathInterval) return;
-
 
         let inhale = true;
         breathText.textContent = "Breathe In";
@@ -78,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000); // Every 4 seconds, switch between inhale and exhale
     }
 
-
     function animateTimer() {
         if (!running) return;
    
@@ -86,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let elapsedTimeInSeconds = (now - startTime) / 1000;  // Time passed in seconds
    
         // Calculate remaining time based on elapsed time and elapsedTime (paused time)
-        timeLeft = Math.max(0, 60 - elapsedTimeInSeconds - elapsedTime);
+        timeLeft = Math.max(0, userTimer - elapsedTimeInSeconds - elapsedTime);
    
         updateDisplay();
         updateCircle();
@@ -111,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
             running = false;
             startStopBtn.textContent = "Start Timer";
 
-
             // Stop the circular progress animation immediately
             progressCircle.style.transition = "none";  // Disable transition
             progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset; // Freeze animation
@@ -122,17 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 elapsedTime = 0;  // Reset elapsed time to 0
             } else {
                 // If the timer was paused, adjust the startTime to resume from the correct point
-                startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
+                startTime = Date.now() - (userTimer - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
             }
 
-
             // Re-enable smooth animation when resuming
-            progressCircle.style.transition = "stroke-dashoffset 1s linear";
-
+            progressCircle.style.transition = "stroke-dashoffset 0s linear";
 
             startBreathingCycle();  // Start the breathing cycle
             requestAnimationFrame(animateTimer);  // Start the timer animation
-
 
             running = true;
             startStopBtn.textContent = "Stop Timer";
@@ -145,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(breathInterval);
         breathInterval = null;
    
-        timeLeft = 60;
+        timeLeft = userTimer;
         elapsedTime = 0; // Reset elapsed time
         startTime = null;
         running = false;
