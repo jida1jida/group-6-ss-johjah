@@ -24,7 +24,6 @@
         <p>This is the meditation page. The user can take a minute to breathe in and breathe out.</p>
 
         <!-- Circular Timer Visualization  TESTING DO NOT DELETE-->
-        
         <div class="timer-container">
             <svg class="timer-svg" width="150" height="150">
                 <circle class="background-circle" cx="75" cy="75" r="60"/>
@@ -33,11 +32,12 @@
             </svg>
             <p id="breathText" class="breath-text">Breathe In</p>
 
-                        <!-- Timer Buttons -->
+            <!-- Timer Buttons -->
             <div class="buttonDiv">
                 <button id="startStopBtn">Start Timer</button>
                 <button id="resetBtn">End Timer</button>
             </div>
+<<<<<<< HEAD
 
         <!-- <div class="timer-container"> FOR CLOCK DO NOT DELETE TESTING
             <svg width="150" height="150">
@@ -48,11 +48,22 @@
             </svg>
             <p id="breathText">Breathe In </p>
         </div> -->
+=======
+        </div>
+>>>>>>> d9e8f7ae015932e482a60e78c1fddddafbc07e3f
     </div>
 
     <div class="container">
         <h2>Relaxing Music</h2>
         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZqd5JICZI0u?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <!-- ✅ Image Upload Feature -->
+    <div class="container">
+        <h2>Customize Your Meditation Space</h2>
+        <label for="imageUpload"><strong>Select a background image:</strong></label>
+        <input type="file" id="imageUpload" accept="image/*">
+        <img id="previewImage" src="" alt="Image Preview" style="max-width: 100%; max-height: 300px; display: none; border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
     </div>
 
     <!-- Move script tags to the bottom of body -->
@@ -61,3 +72,4 @@
 </body>
 
 </html>
+
