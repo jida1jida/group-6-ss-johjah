@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     // EVENT LISTENERS
     //////////////////////////////////////////
+    meditationButton.addEventListener('click', () => {
+        window.location.href = '/meditation';
+    });
+
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
         window.location.href = '/';
