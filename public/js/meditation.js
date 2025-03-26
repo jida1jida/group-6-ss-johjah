@@ -27,9 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     // EVENT LISTENERS
     //////////////////////////////////////////
-    meditationButton.addEventListener('click', () => {
-        window.location.href = '/meditation';
-    });
+    if (meditationButton) {
+        meditationButton.addEventListener('click', () => {
+            window.location.href = '/meditation';
+        });
+    }
 
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('jwtToken');
