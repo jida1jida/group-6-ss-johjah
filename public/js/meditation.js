@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
                 breathText.style.opacity = 1; // Fade in
             }, 1000);
-        }, 4000); // Every 4 seconds, switch between inhale and exhale
+        }, 4000); // Every 4 seconds, switch between inhale and exhale 
     }
 
     function animateTimer() {
