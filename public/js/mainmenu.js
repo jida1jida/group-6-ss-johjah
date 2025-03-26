@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         DataModel.setToken(token);
         getUserName();
         fetchAIQuote(); // Fetch the AI-generated quote when the page loads
+        fetchUserStreak(); // Fetch the user's streak
 
     }
     //////////////////////////////////////////
@@ -150,6 +151,41 @@ async function fetchAIQuote() {
         quoteContainer.textContent = "Error generating quote.";
     }
 }
+
+async function fetchUserStreak() {
+    const token = localStorage.getItem('jwtToken');
+    try {
+        const response = await fetch('/api/streak', {
+            method: 'GET',
+            headers: {
+                'Authorization': token
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('User streak:', data.streak);
+        
+        // show streak information (streak count and last date) on the homepage
+        const formattedDate = new Date(data.lastSessionDate).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        if (data.streak == 1) { // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
+            streakMessage.innerHTML = `Your current streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+        } else {
+            streakMessage.innerHTML = `Your current streak is ${data.streak} days!<br><br>You last meditated on ${formattedDate}`;
+        }
+
+    } catch (error) {
+        console.error('Error fetching streak:', error);
+    }
+}
+
 
 //////////////////////////////////////////
 // END FUNCTIONS TO MANIPULATE THE DOM

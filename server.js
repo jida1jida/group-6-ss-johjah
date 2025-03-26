@@ -228,14 +228,15 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
         const yesterday = new Date(now);
         yesterday.setDate(yesterday.getDate() - 1);
-        const local_yesterday = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
+        const local_yesterday_date = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000);
+        const local_yesterday = local_yesterday_date.toLocaleDateString('en-CA');
 
         if (rows.length > 0 && rows[0].last_session_date) {
             const last_session_date = new Date(rows[0].last_session_date);
 
             if (last_session_date.toLocaleDateString('en-CA') === local_date) { // if last session date is today...
                 new_streak = rows[0].streak; // streak is unchanged
-            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday.toLocaleDateString('en-CA')) { // if last session date is yesterday...
+            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday) { // if last session date is yesterday...
                 new_streak = rows[0].streak + 1; // increment streak by 1
             }
         }
@@ -269,7 +270,7 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
         const [rows] = await connection.execute(
-            'select streak from user where email = ?',
+            'select streak_count, last_session_date from user where email = ?',
             [userEmail]
         );
         await connection.end();
@@ -278,10 +279,14 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
             return res.status(404).json({message: 'User not found!'});
         }
 
-        res.status(200).json({streak: rows[0].streak});
+        res.status(200).json({
+            streak: rows[0].streak_count, 
+            lastSessionDate: rows[0].last_session_date 
+        });
+        console.log(rows[0])
     } catch (error) {
-        console.error('Error fetching streak: ', error);
-        res.status(500).json({ message: 'Error fetching streak!'});
+        console.error('Error fetching streak info: ', error);
+        res.status(500).json({ message: 'Error fetching streak info!'});
     }
 })
 

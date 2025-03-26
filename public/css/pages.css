@@ -53,6 +53,8 @@ body {
     align-items: center;
     grid-column     : 1 / 4;
     grid-row        : 2 / 6;
+    font-weight: bold;
+    font-size: 40px;
 }
 
 .quote {
