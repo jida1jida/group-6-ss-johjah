@@ -228,14 +228,15 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
         const yesterday = new Date(now);
         yesterday.setDate(yesterday.getDate() - 1);
-        const local_yesterday = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
+        const local_yesterday_date = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000);
+        const local_yesterday = local_yesterday_date.toLocaleDateString('en-CA');
 
         if (rows.length > 0 && rows[0].last_session_date) {
             const last_session_date = new Date(rows[0].last_session_date);
 
             if (last_session_date.toLocaleDateString('en-CA') === local_date) { // if last session date is today...
                 new_streak = rows[0].streak; // streak is unchanged
-            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday.toLocaleDateString('en-CA')) { // if last session date is yesterday...
+            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday) { // if last session date is yesterday...
                 new_streak = rows[0].streak + 1; // increment streak by 1
             }
         }
