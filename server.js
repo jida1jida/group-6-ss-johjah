@@ -270,7 +270,7 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
         const [rows] = await connection.execute(
-            'select streak from user where email = ?',
+            'select streak_count, last_session_date from user where email = ?',
             [userEmail]
         );
         await connection.end();
@@ -279,10 +279,14 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
             return res.status(404).json({message: 'User not found!'});
         }
 
-        res.status(200).json({streak: rows[0].streak});
+        res.status(200).json({
+            streak: rows[0].streak_count, 
+            lastSessionDate: rows[0].last_session_date 
+        });
+        console.log(rows[0])
     } catch (error) {
-        console.error('Error fetching streak: ', error);
-        res.status(500).json({ message: 'Error fetching streak!'});
+        console.error('Error fetching streak info: ', error);
+        res.status(500).json({ message: 'Error fetching streak info!'});
     }
 })
 
