@@ -176,7 +176,7 @@ async function fetchUserStreak() {
             day: 'numeric'
         });
         if (data.streak == 1) { // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
-            streakMessage.innerHTML = `Your current streak is ${data.streak} day!<br><br>You last meditated on ${formattedDate}`;
+            streakMessage.innerHTML = `Your current streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
         } else {
             streakMessage.innerHTML = `Your current streak is ${data.streak} days!<br><br>You last meditated on ${formattedDate}`;
         }
