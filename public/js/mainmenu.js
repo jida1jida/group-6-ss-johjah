@@ -20,11 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     //EVENT LISTENERS
     //////////////////////////////////////////
+
+    // Dropdown menu
+    function toggleDropdown() {
+        var menu = document.getElementById("dropdown-menu");
+        menu.classList.toggle("show");
+    }
+    
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropdown-button')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains("show")) {
+                    openDropdown.classList.remove("show");
+                }
+            }
+        }
+    }
+
+    const dropdownButton = document.querySelector(".dropdown-button");
+    dropdownButton.addEventListener("click", toggleDropdown)
+
+
     // Log out and redirect to login
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('jwtToken');
-        window.location.href = './logon';
-    });
+    if (logoutButton) { // Check if the button exists
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('jwtToken');
+            window.location.href = './logon'; // Redirect to login page
+        });
+    }
 
     // // Refresh list when the button is clicked
     // refreshButton.addEventListener('click', async () => {
@@ -64,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////
-});
+
 //END OF DOMCONTENTLOADED
 
 
@@ -127,5 +152,6 @@ async function fetchAIQuote() {
 }
 
 //////////////////////////////////////////
-//END FUNCTIONS TO MANIPULATE THE DOM
+// END FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
+})
