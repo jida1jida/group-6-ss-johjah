@@ -212,13 +212,13 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     const { duration, type } = req.body;
     const userEmail = req.user.email;
 
-    // record session info
+    // get session info
     try {
         const connection = await createConnection();
         
         // streak
         const [rows] = await connection.execute(
-            'SELECT last_session_date FROM user WHERE email = ?',
+            'SELECT * FROM user WHERE email = ?',
             [userEmail]
         );
 
@@ -235,9 +235,9 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
             const last_session_date = new Date(rows[0].last_session_date);
 
             if (last_session_date.toLocaleDateString('en-CA') === local_date) { // if last session date is today...
-                new_streak = rows[0].streak; // streak is unchanged
+                new_streak = rows[0].streak_count; // streak is unchanged
             } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday) { // if last session date is yesterday...
-                new_streak = rows[0].streak + 1; // increment streak by 1
+                new_streak = rows[0].streak_count + 1; // increment streak by 1
             }
         }
         
