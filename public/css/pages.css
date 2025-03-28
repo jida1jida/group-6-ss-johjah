@@ -252,7 +252,9 @@ button:hover {
     display: block;
 }
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: gray;
+    color: white;
+    cursor: pointer;
 }
 
 .dropdown-content.show {
