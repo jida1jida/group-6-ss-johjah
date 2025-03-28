@@ -98,96 +98,121 @@ document.addEventListener('DOMContentLoaded', () => {
 //FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
 
-async function getUserName(){
-    const token = localStorage.getItem('jwtToken');
+    async function getUserName(){
+        const token = localStorage.getItem('jwtToken');
 
-    try {
-        const response = await fetch('/api/users', {
-            method: 'GET',
-            headers: {
-                'Authorization': token,
-                'Content-Type': 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error("Failed to fetch user data");
-        }
-
-        const data = await response.json();
-        
-        const email = JSON.parse(atob(token.split('.')[1])).email; // Decode JWT token
-        const user = data.users.find(u => u.email === email);
-
-        if (user && user.prefname) {
-            welcomeMessage.textContent = `Welcome, ${user.prefname}!`;
-        } else {
-            welcomeMessage.textContent = "Welcome!"; // if no prefname, generic message will display
-        }
-    } catch (error) {
-        console.error("Error fetching user data:", error);
-        welcomeMessage.textContent = "Welcome!"; // if error when fetching prefname, generic message will display
-    }
-}
-
-async function fetchAIQuote() {
-    const quoteContainer = document.getElementById('quoteContainer');
-
-    try {
-        const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDW692uBKbYpliX9sYUXgCGZ0ELFfrPkhM', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                contents: [{ role: "user", parts: [{ text:  "Generate a fresh, unique, and inspiring meditation quote. Each quote should be different from the previous ones." }] }]
-            })
-        });
-
-        const data = await response.json();
-        const quote = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Stay mindful and present.";
-        quoteContainer.textContent = `"${quote}"`;
-    } catch (error) {
-        console.error("Error fetching AI quote:", error);
-        quoteContainer.textContent = "Error generating quote.";
-    }
-}
-
-async function fetchUserStreak() {
-    const token = localStorage.getItem('jwtToken');
-    try {
-        const response = await fetch('/api/streak', {
-            method: 'GET',
-            headers: {
-                'Authorization': token
+        try {
+            const response = await fetch('/api/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error("Failed to fetch user data");
             }
-        });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+            
+            const email = JSON.parse(atob(token.split('.')[1])).email; // Decode JWT token
+            const user = data.users.find(u => u.email === email);
+
+            if (user && user.prefname) {
+                welcomeMessage.textContent = `Welcome, ${user.prefname}!`;
+            } else {
+                welcomeMessage.textContent = "Welcome!"; // if no prefname, generic message will display
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+            welcomeMessage.textContent = "Welcome!"; // if error when fetching prefname, generic message will display
         }
-
-        const data = await response.json();
-        console.log('User streak:', data.streak);
-        
-        // show streak information (streak count and last date) on the homepage
-        const formattedDate = new Date(data.lastSessionDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        if (data.streak == 1) { // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
-            streakMessage.innerHTML = `Your current streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
-        } else if (!data.streak) {
-            streakMessage.innerHTML = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
-        } else {
-            streakMessage.innerHTML = `Your current streak is ${data.streak} days!<br><br>You last meditated on ${formattedDate}`;
-        }
-
-    } catch (error) {
-        console.error('Error fetching streak:', error);
     }
-}
 
+    async function fetchAIQuote() {
+        const quoteContainer = document.getElementById('quoteContainer');
+
+        try {
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDW692uBKbYpliX9sYUXgCGZ0ELFfrPkhM', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{ role: "user", parts: [{ text:  "Generate a fresh, unique, and inspiring meditation quote. Each quote should be different from the previous ones." }] }]
+                })
+            });
+
+            const data = await response.json();
+            const quote = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Stay mindful and present.";
+            quoteContainer.textContent = `"${quote}"`;
+        } catch (error) {
+            console.error("Error fetching AI quote:", error);
+            quoteContainer.textContent = "Error generating quote.";
+        }
+    }
+
+    async function fetchUserStreak() {
+        const token = localStorage.getItem('jwtToken');
+        try {
+            const response = await fetch('/api/streak', {
+                method: 'GET',
+                headers: {
+                    'Authorization': token
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('User streak:', data.streak);
+            
+            // show streak information (streak count and last date) on the homepage
+            const formattedDate = new Date(data.lastSessionDate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            if (data.streak == 1) { // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
+                streakMessage.innerHTML = `Your current streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+            } else if (!data.streak) {
+                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
+            } else {
+                streakMessage.innerHTML = `Your current streak is ${data.streak} days!<br><br>You last meditated on ${formattedDate}`;
+            }
+
+        } catch (error) {
+            console.error('Error fetching streak:', error);
+        }
+    }
+
+    // MESSAGE BOX TEST //
+    const modal = document.getElementById("myModal");
+    const openModalBtn = document.getElementById("openModal");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    
+    openModalBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+    
+    cancelBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+    
+    confirmBtn.addEventListener("click", () => {
+        alert("Confirmed!");
+        modal.style.display = "none";
+    });
+    
+    // Close if clicking outside modal
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
 
 //////////////////////////////////////////
 // END FUNCTIONS TO MANIPULATE THE DOM
