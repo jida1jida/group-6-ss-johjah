@@ -1,6 +1,3 @@
-// this is just a duplicate of dashboard.js for now, with a few things commented out! -jake
-// you can access this page at localhost:3000/mainmenu until we implement navigation
-
 //ADD ALL EVENT LISTENERS INSIDE DOMCONTENTLOADED
 //AT THE BOTTOM OF DOMCONTENTLOADED, ADD ANY CODE THAT NEEDS TO RUN IMMEDIATELY
 document.addEventListener('DOMContentLoaded', () => {
@@ -51,11 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // // Refresh list when the button is clicked
-    // refreshButton.addEventListener('click', async () => {
-    //     renderUserList();
-    // });
-
     // Redirect to the meditation page when the Meditation button is clicked
     meditationButton.addEventListener('click', () => {
         window.location.href = '/meditation'; // Adjust the path if necessar
@@ -84,7 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
         DataModel.setToken(token);
         getUserName();
         fetchAIQuote(); // Fetch the AI-generated quote when the page loads
-        fetchUserStreak(); // Fetch the user's streak
+        resetStreakIfNeeded().then(() => { // resets streak to 0 if needed, then...
+            console.log('Reset check done, now fetching streak');
+            fetchUserStreak(); // display streak info on main menu
+        })
 
     }
     //////////////////////////////////////////
@@ -175,16 +170,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 month: 'long',
                 day: 'numeric'
             });
-            if (data.streak == 1) { // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
-                streakMessage.innerHTML = `Your current streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
-            } else if (!data.streak) {
-                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
+
+            if (data.streak === 1) {
+                // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
+                streakMessage.innerHTML = `Your current meditation streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+            } else if (data.streak > 1) {
+                // streak > 1
+                streakMessage.innerHTML = `Your current meditation streak is ${data.streak} days! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+            } else if (data.streak === 0 && data.lastSessionDate) {
+                // streak is 0, but they HAVE meditated before
+                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You last meditated on ${formattedDate}`;
             } else {
-                streakMessage.innerHTML = `Your current streak is ${data.streak} days!<br><br>You last meditated on ${formattedDate}`;
+                // streak is 0, and they have NOT meditated before
+                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
             }
 
         } catch (error) {
             console.error('Error fetching streak:', error);
+        }
+    }
+
+    async function resetStreakIfNeeded() {
+        const token = localStorage.getItem('jwtToken');
+        try {
+            const response = await fetch ('/api/reset-streak-if-needed', {
+                method: 'POST',
+                headers: {
+                    'Authorization': token
+                }
+            });
+
+            const data = await response.json();
+            console.log(data.message);
+            fetchUserStreak(); // refreshes streak message, in case streak was reset
+        } catch (error) {
+            console.error('Error resetting streak: ', error);
         }
     }
 

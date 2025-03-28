@@ -290,6 +290,51 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
     }
 })
 
+// Route: reset user's streak to 0 if needed.
+app.post('/api/reset-streak-if-needed', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+    
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            'select streak_count, last_session_date from user where email = ?',
+            [userEmail]
+        );
+
+        if (rows.length === 0) {  // user not found, throw error
+            await connection.end();
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const user = rows[0];
+        const now = new Date();
+        const lastSessionDate = new Date(user.last_session_date);
+        const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const local_yesterday_date = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000);
+
+        const lastSessionWasYesterday = lastSessionDate.toDateString() === yesterday.toDateString();
+        const lastSessionWasToday = lastSessionDate.toDateString() === local_date.toDateString();
+
+        // If last session is neither yesterday nor today, reset streak to 0
+        if (!lastSessionWasYesterday && !lastSessionWasToday && user.streak_count > 0) {
+            await connection.execute(
+                'update user set streak_count = 0 where email = ?',
+                [userEmail]
+            );
+            await connection.end();
+            return res.status(200).json({ message: 'Streak reset to 0 for user ', userEmail});
+        }
+
+        await connection.end();
+        res.status(200).json({ message: `No changes to streak for ${userEmail}`});
+    } catch (error) {
+        console.error('Error checking/resetting streak:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
