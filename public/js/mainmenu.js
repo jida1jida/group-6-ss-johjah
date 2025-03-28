@@ -191,21 +191,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // MESSAGE BOX TEST //
     const modal = document.getElementById("myModal");
     const openModalBtn = document.getElementById("openModal");
-    const confirmBtn = document.getElementById("confirmBtn");
     const cancelBtn = document.getElementById("cancelBtn");
     
     openModalBtn.addEventListener("click", () => {
         modal.style.display = "block";
     });
     
-    cancelBtn.addEventListener("click", () => {
+    cancelButton.addEventListener("click", () => {
         modal.style.display = "none";
     });
     
-    confirmBtn.addEventListener("click", () => {
-        alert("Confirmed!");
-        modal.style.display = "none";
-    });
     
     // Close if clicking outside modal
     window.addEventListener("click", (event) => {
