@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resetStreakIfNeeded().then(() => { // resets streak to 0 if needed, then...
             console.log('Reset check done, now fetching streak');
             fetchUserStreak(); // display streak info on main menu
+            fetchWeeklyMeditation(); // display weekly meditation stats
         })
 
     }
@@ -156,35 +157,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Authorization': token
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const data = await response.json();
             console.log('User streak:', data.streak);
-            
-            // show streak information (streak count and last date) on the homepage
-            const formattedDate = new Date(data.lastSessionDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-
+    
+            const streakMessage = document.getElementById('streakMessage');
+    
+            // Save the existing weekly stats if present
+            const existingWeeklyStats = streakMessage.querySelector('.weekly-stats')?.outerHTML || '';
+    
+            let streakText = '';
             if (data.streak === 1) {
-                // says DAY instead of DAYS if streak is 1 day (just a grammar thing)
-                streakMessage.innerHTML = `Your current meditation streak is ${data.streak} day! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+                streakText = `Your current meditation streak is ${data.streak} day! 🔥<br><br>You last meditated on ${new Date(data.lastSessionDate).toLocaleDateString()}`;
             } else if (data.streak > 1) {
-                // streak > 1
-                streakMessage.innerHTML = `Your current meditation streak is ${data.streak} days! 🔥🔥<br><br>You last meditated on ${formattedDate}`;
+                streakText = `Your current meditation streak is ${data.streak} days! 🔥<br><br>You last meditated on ${new Date(data.lastSessionDate).toLocaleDateString()}`;
             } else if (data.streak === 0 && data.lastSessionDate) {
-                // streak is 0, but they HAVE meditated before
-                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You last meditated on ${formattedDate}`;
+                streakText = `You do not currently have a streak!<br><br>You last meditated on ${new Date(data.lastSessionDate).toLocaleDateString()}`;
             } else {
-                // streak is 0, and they have NOT meditated before
-                streakMessage.innerHTML = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
+                streakText = `You do not currently have a streak!<br><br>You have never meditated. 😭`;
             }
-
+    
+            // Preserve weekly stats
+            streakMessage.innerHTML = streakText + existingWeeklyStats;
+    
         } catch (error) {
             console.error('Error fetching streak:', error);
         }
@@ -205,6 +204,47 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchUserStreak(); // refreshes streak message, in case streak was reset
         } catch (error) {
             console.error('Error resetting streak: ', error);
+        }
+    }
+
+    async function fetchWeeklyMeditation() {
+        const token = localStorage.getItem('jwtToken');
+        try {
+            const response = await fetch('/api/weekly-med-stats', {
+                method: 'GET',
+                headers: {
+                    'Authorization': token
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log('Weekly meditation minutes:', data.totalMinutes);
+    
+            const streakMessage = document.getElementById('streakMessage');
+            if (!streakMessage) {
+                console.error('streakMessage div not found.');
+                return;
+            }
+    
+            let weeklyStatsMessage = data.totalMinutes > 0 
+                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 🌿`
+                : `<br>You haven't meditated yet this week. Let's start today! 🧘‍♂️`;
+    
+            // Ensure previous weekly stats are removed before appending a new one
+            let existingStats = streakMessage.querySelector('.weekly-stats');
+            if (existingStats) {
+                existingStats.remove();
+            }
+    
+            // Append weekly stats
+            streakMessage.innerHTML += `<br><div class="weekly-stats">${weeklyStatsMessage}</div>`;
+    
+        } catch (error) {
+            console.error('Error fetching weekly meditation minutes:', error);
         }
     }
 

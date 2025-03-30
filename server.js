@@ -335,6 +335,42 @@ app.post('/api/reset-streak-if-needed', authenticateToken, async (req, res) => {
     }
 });
 
+// Route: get user's weekly meditation statistics to display on homepage
+app.get('/api/weekly-med-stats', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+    
+    try {
+        const connection = await createConnection();
+
+        // Find the most recent Sunday
+        const today = new Date();
+        const daysSinceSunday = today.getDay(); // set day number (Sunday = 0 ... Saturday = 6)
+        const lastSunday = new Date(today);
+        lastSunday.setDate(today.getDate() - daysSinceSunday);
+        lastSunday.setHours(0, 0, 0, 0); // set time to midnight
+        const formattedLastSunday = lastSunday.toISOString().split('T')[0];
+
+        // Get total meditation minutes since last Sunday
+        const [rows] = await connection.execute(
+            `select sum(session_duration_seconds) AS totalSeconds
+             FROM session_log
+             WHERE email = ? AND session_date >= ?`,
+            [userEmail, formattedLastSunday]
+        );
+
+        await connection.end();
+
+        totalMinutes = rows[0].totalSeconds / 60;
+
+        res.status(200).json({ totalMinutes: totalMinutes || 0 });
+        console.log(`Med mins for week starting ${formattedLastSunday}: ${totalMinutes}`);
+    } catch (error) {
+        console.error('Error fetching weekly meditation data:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
