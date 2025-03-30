@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-   
+    const bg = localStorage.getItem('meditationBackground');
+    if (bg) {
+        const bgContainer = document.getElementById('backgroundImageContainer');
+        if (bgContainer) {
+            bgContainer.style.backgroundImage = `url(${bg})`;
+        }
+    }
+
     //////////////////////////////////////////
     // ELEMENTS TO ATTACH EVENT LISTENERS
     //////////////////////////////////////////
@@ -223,4 +230,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
 
