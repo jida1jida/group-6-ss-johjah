@@ -94,9 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Continue animation as long as timeLeft is more than 0
         if (timeLeft > 0) {
             requestAnimationFrame(animateTimer);
+            // console.log(timeLeft); debug for jake :)
         } else {
             // stopTimer(); I don't this does anything????? --jake
-            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise")  // type is hardcoded for now -jake
+            handleMeditationComplete(userTimer, "Breathing Exercise");
         }
     }
 
