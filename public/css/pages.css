@@ -12,16 +12,16 @@ body {
 }
 
 .grid-container {
-    display              : grid;          /* turn on Grid layout      */
-    grid-template-columns: repeat(6, 1fr);/* Creates a 6-column grid  */
-    grid-template-rows   : repeat(5, 1fr);/* Create 5 rows in the grid*/
-    /* gap                  : 10px;          Gap between grid items   */
-    /* margin               : 0 auto;        Center the container     */
-    padding-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Ensure consistent column widths */
+    gap: 10px; /* Adjust spacing */
+    width: 90%; /* Ensure consistency in width */
+    margin: 0 auto; /* Centering */
 }
+
 .grid-item {
     border-radius: 10px;
-    padding      : 30%;
+    padding: 20px; /* Reduce padding */
 }
 
 .container {
@@ -29,17 +29,20 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
-    width: 80%;
+    width: 100%; /* Stretch to fit grid */
+    max-width: 90%; /* Prevent too much stretching */
     margin: 0 auto;
     margin-top: 20px;
 }
 
 /* Header at the top of the screen (Welcome + account button) */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    grid-column: 1 / 7;
+    grid-column: 1 / 7; /* Spans full grid width */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #d6d4e0;
+    border-radius: 10px;
 }
 
 .header div {
@@ -49,26 +52,22 @@ body {
 
 /* Streak */
 .streak {
+    grid-column: 1 / 4;
+    grid-row: 2 / 4;
     justify-content: space-between;
     align-items: center;
-    grid-column     : 1 / 4;
-    grid-row        : 2 / 6;
     font-weight: bold;
     font-size: 40px;
 }
 
 .quote {
-    justify-content: space-between;
-    align-items: center;
-    grid-column     : 4 / 7;
-    grid-row        : 2 / 4;
+    grid-column: 4 / 7;
+    grid-row: 2 / 3;
 }
 
 .meditate {
-    justify-content: space-between;
-    align-items: center;
-    grid-column     : 4 / 7;
-    grid-row        : 4 / 6;
+    grid-column: 4 / 7;
+    grid-row: 3 / 4;
 }
 
 h1 {
