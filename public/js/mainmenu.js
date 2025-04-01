@@ -18,6 +18,30 @@ document.addEventListener('DOMContentLoaded', () => {
     //EVENT LISTENERS
     //////////////////////////////////////////
 
+    window.onload = function() {
+        const loadingScreen = document.getElementById("loadingScreen");
+        const content = document.getElementById("content");
+    
+        // Show the content immediately
+        content.style.display = "block";
+    
+        // Show the loading screen initally
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.opacity = 1;
+    
+        // Simulate loading process by showing loading screen for 2 seconds
+        setTimeout(function() {
+            loadingScreen.style.transition = "opacity 1s ease-out";
+            loadingScreen.style.opacity = 0;
+    
+            // After fading out, hides the loading screen
+            setTimeout(function() {
+                loadingScreen.style.display = "none";
+            }, 1000);
+        }, 1800);
+        // a bit of a delay
+    };
+
     // Dropdown menu
     function toggleDropdown() {
         var menu = document.getElementById("dropdown-menu");

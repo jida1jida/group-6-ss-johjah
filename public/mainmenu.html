@@ -10,51 +10,58 @@
     <link rel="stylesheet" href="css/pages.css">
 </head>
 <body>
-    <div class="grid-container">
-        <div class="grid-item container header">
-            <h1 id="welcomeMessage">Welcome!</h1>
-            <div class="dropdown">
-                <button class="dropdown-button" onclick="toggleDropdown()">User Settings</button>
-                <div class="dropdown-content" id="dropdown-menu">
-                    <a id="accountButton">Edit Account</a>
-                    <a id="logoutButton">Logout</a>
-                </div>
 
-            </div>
-        </div>
-
-        <div class="grid-item container streak" id="streakMessage">
-            <p>Loading...</p>
-        </div>
-        <div class="grid-item container quote">
-            <h2>Daily Motivation</h2>
-            <p id="quoteContainer">Loading...</p>
-        </div>
-        <div class="grid-item container meditate">
-            <h2>Meditation</h2>
-            <p>In here, the user can start meditation, or customize how their meditation layout.</p>
-            <div>
-                <!-- <button id="meditationButton">Start Meditation</button> -->
-
-                <button id="openModal">Start Meditation</button>
-                <div id="myModal" class="modal">
-                    <div class="modal-content">
-                        <p>These are your meditation settings:</p>
-                        <p>Would you like to start?</p>
-                        <div class="modal-buttons">
-                            <button id="meditationButton">Start Meditation</button>
-                            <button id="cancelButton">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                <button id="meditationCustomizeButton">Meditation Settings</button>
-            </div>
-        </div>
+    <div class="loading-overlay" id="loadingScreen">
+        <h2>Loading...</h2>
     </div>
 
-    <footer>
-        <p>&copy; JOHJAH 2025</p>
-    </footer>
+    <div class="content" id="content">
+        <div class="grid-container">
+            <div class="grid-item container header">
+                <h1 id="welcomeMessage">Welcome!</h1>
+                <div class="dropdown">
+                    <button class="dropdown-button" onclick="toggleDropdown()">User Settings</button>
+                    <div class="dropdown-content" id="dropdown-menu">
+                        <a id="accountButton">Edit Account</a>
+                        <a id="logoutButton">Logout</a>
+                    </div>
+    
+                </div>
+            </div>
+    
+            <div class="grid-item container streak" id="streakMessage">
+                <p>Loading...</p>
+            </div>
+            <div class="grid-item container quote">
+                <h2>Daily Motivation</h2>
+                <p id="quoteContainer">Loading...</p>
+            </div>
+            <div class="grid-item container meditate">
+                <h2>Meditation</h2>
+                <p>In here, the user can start meditation, or customize how their meditation layout.</p>
+                <div>
+                    <!-- <button id="meditationButton">Start Meditation</button> -->
+    
+                    <button id="openModal">Start Meditation</button>
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <p>These are your meditation settings:</p>
+                            <p>Would you like to start?</p>
+                            <div class="modal-buttons">
+                                <button id="meditationButton">Start Meditation</button>
+                                <button id="cancelButton">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="meditationCustomizeButton">Meditation Settings</button>
+                </div>
+            </div>
+        </div>
+    
+        <footer>
+            <p>&copy; JOHJAH 2025</p>
+        </footer>
+    </div>
 
     <script src="/js/mainmenu.js"></script>
     <script src="/js/datamodel.js"></script>
