@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     
             let weeklyStatsMessage = data.totalMinutes > 0 
-                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 🌿`
+                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 💜`
                 : `<br>You haven't meditated yet this week. Let's start today! 🧘‍♂️`;
     
             // Ensure previous weekly stats are removed before appending a new one

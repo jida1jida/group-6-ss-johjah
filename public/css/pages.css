@@ -227,41 +227,6 @@ button:hover {
     transition: opacity 1s ease-in-out;
 }
 
-/* CLOCK SAVE DO NOT DELETE TESTING 
-.timer {
-    background-color: white;
-    padding: 50px;
-    border-radius: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 25vmin;
-    height: 25vmin;
-    margin: 0 auto;
-    font-size: 10vw;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.timerButton {
-    border-radius: 5px;
-    border: none;
-    background-color: white;
-    color: white;
-    cursor: pointer;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-}
-
-#breathText {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-} */
-
-
 /* Dropdown test code */
 .dropdown {
     position: relative;
@@ -271,7 +236,7 @@ button:hover {
     display: none;
     position: absolute;
     top: 100%;
-    background-color: white;
+    background-color: #EDE5F8;
     min-width: 150px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -286,7 +251,7 @@ button:hover {
     display: block;
 }
 .dropdown-content a:hover {
-    background-color: gray;
+    background-color: #7c6e8c;
     color: white;
     cursor: pointer;
 }
@@ -307,7 +272,7 @@ button:hover {
 }
 
 .modal-content {
-    background: white;
+    background: #EDE5F8;
     padding: 20px;
     width: 500px;
     margin: 15% auto;
