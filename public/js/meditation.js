@@ -16,13 +16,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // TIMER VARIABLES
-    let userTimer = 60; // This allows the user to change how long they want to meditate
+    // let userTimer = 60; // This allows the user to change how long they want to meditate
+    let userTimer = localStorage.getItem('meditationDuration') ? parseInt(localStorage.getItem('meditationDuration')) : 60;
+        // default 60 seconds, OR whatever the user selected
+
 
     let timeLeft = userTimer;
     let running = false;
     let startTime = null;
     let elapsedTime = 0;
     let breathInterval = null;
+
+    // BUTTONS FOR CUSTOMIZABLE TIME
+    const buttons = document.querySelectorAll('.med-time-btn');
+    let selectedDuration = "60" // default 60 seconds
+    document.querySelectorAll('.med-time-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            buttons.forEach(btn => btn.classList.remove('selected')) // remove "selected" from other buttons
+            event.target.classList.add('selected'); // make only the clicked button "selected"
+            const duration = event.target.getAttribute('data-duration'); 
+            console.log(`User selected ${duration} seconds`)
+            localStorage.setItem('meditationDuration', duration); 
+        });
+    });
 
     //////////////////////////////////////////
     // EVENT LISTENERS
