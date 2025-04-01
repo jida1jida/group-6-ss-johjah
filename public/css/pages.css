@@ -129,6 +129,11 @@ button:hover {
     color: white;
 }
 
+.med-time-btn.selected {
+    background-color: #7c6e8c;
+    color: white;
+}
+
 #logoutButton {
     padding: 10px 20px;
     background-color: #73cad2;
