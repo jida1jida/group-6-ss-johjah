@@ -177,8 +177,6 @@ button:hover {
     justify-content: center;
 }
 
-/* This is a test do not delete not permanent yet */
-
 .timer-container {
     display: flex;
     flex-direction: column;
