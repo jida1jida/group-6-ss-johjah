@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById("cancelBtn");
     
     openModalBtn.addEventListener("click", () => {
+        localStorage.setItem('meditationDuration', 60); // override to default 60-second session
         modal.style.display = "block";
     });
     
