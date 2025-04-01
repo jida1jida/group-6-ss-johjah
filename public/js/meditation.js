@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
     const meditationButton = document.getElementById('meditationButton');
+    const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
+
 
     // TIMER ELEMENTS
     const timerDisplay = document.getElementById("timer");
@@ -56,6 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     homeButton.addEventListener('click', () => {
         window.location.href = '/mainmenu'; 
+    });
+
+    meditationCustomizeButton.addEventListener('click', () => {
+        window.location.href = '/customize';
     });
 
     // Timer event listeners
