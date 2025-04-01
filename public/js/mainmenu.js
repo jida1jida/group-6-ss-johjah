@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(function() {
                 loadingScreen.style.display = "none";
             }, 1000);
-        }, 1800);
+        }, 2000);
         // a bit of a delay
     };
 
