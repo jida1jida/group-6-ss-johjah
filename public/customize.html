@@ -1,64 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<!-- This page allows the user to customize their meditation settings -->
+<!-- This page may be temporary, just to implement the feature --> 
 <head>
-  <!-- Meta Information -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customize Meditation</title>
-  <link rel="stylesheet" href="css/pages.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/pages.css">
 </head>
 
 <body>
-  <!-- Header Section -->
-  <div class="container">
-    <div class="header">
-      <h1>Customize Meditation</h1>
-      <div>
-        <button id="logoutButton">Log Out</button>
-        <button id="meditationButton">Back to Meditation</button>
-      </div>
+        <div class="container">
+            <header>
+                <h1>Customize Meditation</h1>
+                <div>
+                    <button id="logoutButton">Log Out</button>
+                    <button id="homeButton">Back to Home Page</button>
+                    <button id="meditationButton">Start Meditation</button>
+                </div>
+            </header>
+        </div>
+
+    <div class="container">
+            <label>Breathing Technique:</label>
+            <div class="hover-text">
+                <button>Box Technique</button>
+                <div class="description">Box Technique: Breathe in 4 seconds. Hold for 4 seconds. Breathe out 4 seconds. Pause for 4 seconds and repeat. Need more help? Click here.</div>                
+            </div>
+            <div class="hover-text">
+                <button>4/7/8 Technique</button>
+                <div class="description">4/7/8 Technique: Breathe for 4 seconds. Hold for 7 seconds. Let it out for 8 seconds and repeat. Need more help? Click here.</div>                
+            </div>            
+            <div class="hover-text">
+                <button>Bellow's Breathe</button>
+                <div class="description">Bellow's Breathe: With only your nostrils, breathe in and out using the full capacity of your lungs quickly. Need more help? Click here.</div>                
+            </div>
+        <br>
+        <div>
+            <label>Timer:</label>
+            <div class="hover-text">
+                <button class="med-time-btn" data-duration="60">1 minute</button>
+                <div class="description">1 minute (60 seconds) for meditation</div>
+            </div>
+            <div class="hover-text">
+                <button class="med-time-btn" data-duration="300">5 minutes</button>
+                <div class="description">5 minutes (300 seconds) for meditation</div>
+            </div>
+            <div class="hover-text">
+                <button class="med-time-btn" data-duration="600">10 minutes</button>
+                <div class="description">10 minutes (600 seconds) for meditation</div>
+            </div>
+            <div class="hover-text">
+                <button class="med-time-btn" data-duration="900">15 minutes</button>
+                <div class="description">15 minutes (900 seconds) for meditation</div>
+            </div>
+        </div>
+        <br>
+        <div>
+            <label>Audio Cues:</label>
+            <button>On</button>
+            <button>Off</button>
+        </div>
+        <br>
+        <div>
+            <label>Music:</label>
+            <button>Edit</button>
+            <button>Off</button>
+        </div>
+        <br>
+        <div>
+            <label>Background:</label>
+            <input type="file" id="backgroundUpload" accept="image/*" style="display:none;">
+            <button id="backgroundEditButton">Edit</button>
+            <button id="backgroundDefaultButton">Default</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Info Section -->
-  <div class="container">
-    <p>
-      This is the customize meditation page. You can upload a background image, adjust the timer, and change music.
-    </p>
-  </div>
+    <footer>
+        <p>&copy; S. S. JOHJAH 2025</p>
+    </footer>
 
-  <!-- Upload Background Image -->
-  <div class="container">
-    <h3>Upload Background Image</h3>
-    <input type="file" id="backgroundUpload" accept="image/*" />
-  </div>
-
-  <script>
-    // Save uploaded image to localStorage
-    document.getElementById("backgroundUpload").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (file && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          localStorage.setItem("meditationBackground", e.target.result);
-          alert("Background image saved! Head to the meditation page to see it.");
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Button navigation
-    document.getElementById("logoutButton").addEventListener("click", () => {
-      localStorage.removeItem("jwtToken");
-      window.location.href = "/";
-    });
-
-    document.getElementById("meditationButton").addEventListener("click", () => {
-      window.location.href = "meditation.html";
-    });
-  </script>
+    <script src="js/meditation2.js"></script>
 </body>
-
 </html>
 
