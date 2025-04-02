@@ -310,3 +310,30 @@ button:hover {
     opacity: 1;
     visibility: visible;
 }
+
+#backgroundImageContainer {
+    /* Position it behind all other elements */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  
+    /* Make sure it stays behind other content */
+    z-index: -1;
+  
+    /* Background properties */
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  
+    /* Control how translucent the image is */
+    opacity: 0.5; /* 50% opacity, tweak as needed */
+  }
+
+/* This class will fade elements to near-invisibility */
+.faded {
+    opacity: 0.2;            /* or 0 for fully invisible */
+    transition: opacity 0.5s ease-in-out;  
+    /* pointer-events: none;  <-- Uncomment if you also want to disable clicks */
+}
