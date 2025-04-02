@@ -10,13 +10,13 @@
 
 <body>
     <div class="container">
-        <div class="header">
+        <header>
             <h1>Your Account</h1>
             <div>
                 <button id="logoutButton">Log Out</button>
                 <button id="homeButton">Back to Home Page</button>
             </div>
-        </div>
+        </header>
     </div>
 
     <div class="container">
@@ -24,7 +24,7 @@
 
         <!-- Name Section -->
         <div class="account-section">
-            <label for="name">Name:</label>
+            <label for="nameInput">Name:</label>
             <span id="nameDisplay"></span>
             <input type="text" id="nameInput" style="display: none;">
             <button class="editButton" data-field="name">Edit</button>
@@ -32,7 +32,7 @@
         <br>
         <!-- Email Section -->
         <div class="account-section">
-            <label for="email">Email:</label>
+            <label for="emailInput">Email:</label>
             <span id="emailDisplay"></span>
             <input type="email" id="emailInput" style="display: none;">
             <button class="editButton" data-field="email">Edit</button>
@@ -40,7 +40,7 @@
         <br>
         <!-- Password Section -->
         <div class="account-section">
-            <label for="password">Password:</label>
+            <label for="verifyPassword">Password:</label>
             <span>********</span> <!-- Hidden password -->
             <button class="editButton" data-field="password">Edit</button>
         </div>
@@ -58,6 +58,10 @@
 
         <p id="message"></p>
     </div>
+
+    <footer>
+        <p>&copy; S. S. JOHJAH 2025</p>
+    </footer>
 
     <script src="js/account.js"></script>
     <script src="js/datamodel.js"></script>

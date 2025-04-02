@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeLeft = userTimer;
     let running = false;
     let startTime = null;
+    let elapsedTime = 0;
     let breathInterval = null;
     let elapsedTime = 0;
   

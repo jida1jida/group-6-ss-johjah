@@ -96,5 +96,5 @@ async function renderUserList() {
     });
 }
 //////////////////////////////////////////
-//END FUNCTIONS TO MANIPULATE THE DOM
+//END FUNCTIONS TO MANIPULATE THE DOM 
 //////////////////////////////////////////

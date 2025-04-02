@@ -18,6 +18,30 @@ document.addEventListener('DOMContentLoaded', () => {
     //EVENT LISTENERS
     //////////////////////////////////////////
 
+    window.onload = function() {
+        const loadingScreen = document.getElementById("loadingScreen");
+        const content = document.getElementById("content");
+    
+        // Show the content immediately
+        content.style.display = "block";
+    
+        // Show the loading screen initally
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.opacity = 1;
+    
+        // Simulate loading process by showing loading screen for 2 seconds
+        setTimeout(function() {
+            loadingScreen.style.transition = "opacity 1s ease-out";
+            loadingScreen.style.opacity = 0;
+    
+            // After fading out, hides the loading screen
+            setTimeout(function() {
+                loadingScreen.style.display = "none";
+            }, 1000);
+        }, 2000);
+        // a bit of a delay
+    };
+
     // Dropdown menu
     function toggleDropdown() {
         var menu = document.getElementById("dropdown-menu");
@@ -231,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     
             let weeklyStatsMessage = data.totalMinutes > 0 
-                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 🌿`
+                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 💜`
                 : `<br>You haven't meditated yet this week. Let's start today! 🧘‍♂️`;
     
             // Ensure previous weekly stats are removed before appending a new one
@@ -254,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById("cancelBtn");
     
     openModalBtn.addEventListener("click", () => {
+        localStorage.setItem('meditationDuration', 60); // override to default 60-second session
         modal.style.display = "block";
     });
     
