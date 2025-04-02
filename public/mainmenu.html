@@ -14,15 +14,18 @@
     <div class="grid-container">
         <div class="grid-item container header">
             <h1 id="welcomeMessage">Welcome!</h1>
-            <div>
-                <button id="logoutButton">Log Out</button>
-                <button id="accountButton">Account</button>
+            <div class="dropdown">
+                <button class="dropdown-button" onclick="toggleDropdown()">User Settings</button>
+                <div class="dropdown-content" id="dropdown-menu">
+                    <a id="accountButton">Edit Account</a>
+                    <a id="logoutButton">Logout</a>
+                </div>
+
+                <!-- <button id="accountButton">Account</button> -->
             </div>
         </div>
-        <div class="grid-item container streak">
-            <p>This is the home page when users successfully login. 
-                Their streak can be seen in this container.
-            </p>
+        <div class="grid-item container streak" id="streakMessage">
+            <p>Loading...</p>
         </div>
         <div class="grid-item container quote">
             <h2>Daily Motivation</h2>
@@ -32,7 +35,19 @@
             <h2>Meditation</h2>
             <p>In here, the user can start meditation, or customize how their meditation layout.</p>
             <div>
-                <button id="meditationButton">Start Meditation</button>
+                <!-- <button id="meditationButton">Start Meditation</button> -->
+
+                <button id="openModal">Start Meditation</button>
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <p>These are your meditation settings:</p>
+                        <p>Would you like to start?</p>
+                        <div class="modal-buttons">
+                            <button id="meditationButton">Start Meditation</button>
+                            <button id="cancelButton">Cancel</button>
+                        </div>
+                    </div>
+                </div>
                 <button id="meditationCustomizeButton">Meditation Settings</button>
             </div>
         </div>

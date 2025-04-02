@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- This page allows the user to customize their meditation settings -->
-<!-- This page may be temporary, just to implement the feature -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/pages.css">
+  <!-- Meta Information -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customize Meditation</title>
+  <link rel="stylesheet" href="css/pages.css" />
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Customize Meditation</h1>
-            <div>
-                <button id="logoutButton">Log Out</button>
-                <button id="meditationButton">Back to Meditation</button>
-            </div>
-        </div>
+  <!-- Header Section -->
+  <div class="container">
+    <div class="header">
+      <h1>Customize Meditation</h1>
+      <div>
+        <button id="logoutButton">Log Out</button>
+        <button id="meditationButton">Back to Meditation</button>
+      </div>
     </div>
+  </div>
 
-    <div class="container">
-        <p>
-            This is the customize meditation page. The user can press buttons to edit their meditation settings.
-            Settings include changing background, adjusting their timer, and changing music.
-            This page may be temporary and adjusted to our vision.
-        </p>
-    </div>
+  <!-- Info Section -->
+  <div class="container">
+    <p>
+      This is the customize meditation page. You can upload a background image, adjust the timer, and change music.
+    </p>
+  </div>
 
-    <div class="container">
-        <h3>Upload Background Image</h3>
-        <input type="file" id="backgroundUpload" accept="image/*">
-    </div>
+  <!-- Upload Background Image -->
+  <div class="container">
+    <h3>Upload Background Image</h3>
+    <input type="file" id="backgroundUpload" accept="image/*" />
+  </div>
 
-    <script>
-        document.getElementById('backgroundUpload').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                localStorage.setItem('meditationBackground', e.target.result);
-                alert("Background image saved!");
-            };
-            if (file) reader.readAsDataURL(file);
-        });
+  <script>
+    // Save uploaded image to localStorage
+    document.getElementById("backgroundUpload").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          localStorage.setItem("meditationBackground", e.target.result);
+          alert("Background image saved! Head to the meditation page to see it.");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
 
-        document.getElementById("meditationButton").addEventListener("click", () => {
-            window.location.href = "meditation.html";
-        });
-    </script>
+    // Button navigation
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      localStorage.removeItem("jwtToken");
+      window.location.href = "/";
+    });
+
+    document.getElementById("meditationButton").addEventListener("click", () => {
+      window.location.href = "meditation.html";
+    });
+  </script>
 </body>
 
 </html>
+

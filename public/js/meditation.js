@@ -1,234 +1,158 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Set background inside the meditation box
     const bg = localStorage.getItem('meditationBackground');
     if (bg) {
-        const bgContainer = document.getElementById('backgroundImageContainer');
-        if (bgContainer) {
-            bgContainer.style.backgroundImage = `url(${bg})`;
-        }
+      const bgContainer = document.getElementById('backgroundImageContainer');
+      if (bgContainer) {
+        bgContainer.style.backgroundImage = `url(${bg})`;
+        bgContainer.style.position = 'absolute';
+        bgContainer.style.top = 0;
+        bgContainer.style.left = 0;
+        bgContainer.style.width = '100%';
+        bgContainer.style.height = '100%';
+        bgContainer.style.backgroundSize = 'cover';
+        bgContainer.style.backgroundPosition = 'center';
+        bgContainer.style.backgroundRepeat = 'no-repeat';
+        bgContainer.style.zIndex = 0;
+        bgContainer.style.opacity = 0.3; // Optional fade effect
+      }
     }
-
-    //////////////////////////////////////////
-    // ELEMENTS TO ATTACH EVENT LISTENERS
-    //////////////////////////////////////////
+  
+    // Elements
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
-
-
-    // Timer elements
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
     const resetBtn = document.getElementById("resetBtn");
     const progressCircle = document.getElementById("progressCircle");
     const breathText = document.getElementById("breathText");
-
-
+  
     // Timer variables
+    let userTimer = 60;
     let timer;
-    let timeLeft = 60;
+    let timeLeft = userTimer;
     let running = false;
     let startTime = null;
     let breathInterval = null;
-
-
-    //////////////////////////////////////////
-    // EVENT LISTENERS
-    //////////////////////////////////////////
+    let elapsedTime = 0;
+  
+    // Event Listeners
     logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('jwtToken');
-        window.location.href = '/';
+      localStorage.removeItem('jwtToken');
+      window.location.href = '/logon';
     });
-
-
+  
     homeButton.addEventListener('click', () => {
-        window.location.href = '/mainmenu.html'; 
+      window.location.href = '/mainmenu';
     });
-
-
-    // Timer event listeners
+  
     startStopBtn.addEventListener("click", startStopTimer);
     resetBtn.addEventListener("click", resetTimer);
-
-
-    //////////////////////////////////////////
-    // TIMER FUNCTIONS
-    //////////////////////////////////////////
-    function updateDisplay() {
-        let seconds = Math.ceil(timeLeft); // Ensure it shows whole seconds
-        timerDisplay.textContent = `${seconds}s`;
+  
+    // Timer Functions
+    npm run devfunction updateDisplay() {
+      let seconds = Math.ceil(timeLeft);
+      timerDisplay.textContent = `${seconds}s`;
     }
-
-
+  
     function updateCircle() {
-        const progress = timeLeft / 60;
-        progressCircle.style.strokeDashoffset = 377 * progress;
+      const progress = timeLeft / userTimer;
+      progressCircle.style.strokeDashoffset = 377 * progress;
     }
-
-
+  
     function startBreathingCycle() {
-        if (breathInterval) return;
-
-
-        let inhale = true;
-        breathText.textContent = "Breathe In";
-        breathText.style.opacity = 1;
-
-
-        breathInterval = setInterval(() => {
-            inhale = !inhale;
-            breathText.style.opacity = 0; // Fade out
-
-
-            setTimeout(() => {
-                breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
-                breathText.style.opacity = 1; // Fade in
-            }, 1000);
-        }, 4000); // Every 4 seconds, switch between inhale and exhale
+      if (breathInterval) return;
+      let inhale = true;
+      breathText.textContent = "Breathe In";
+      breathText.style.opacity = 1;
+  
+      breathInterval = setInterval(() => {
+        inhale = !inhale;
+        breathText.style.opacity = 0;
+        setTimeout(() => {
+          breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
+          breathText.style.opacity = 1;
+        }, 1000);
+      }, 4000);
     }
-
-
+  
     function animateTimer() {
-        if (!running) return;
-   
-        let now = Date.now();
-        let elapsedTimeInSeconds = (now - startTime) / 1000;  // Time passed in seconds
-   
-        // Calculate remaining time based on elapsed time and elapsedTime (paused time)
-        timeLeft = Math.max(0, 60 - elapsedTimeInSeconds - elapsedTime);
-   
-        updateDisplay();
-        updateCircle();
-   
-        // Continue animation as long as timeLeft is more than 0
-        if (timeLeft > 0) {
-            requestAnimationFrame(animateTimer);
-        } else {
-            // stopTimer(); I don't this does anything????? --jake
-            handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise")  // type is hardcoded for now -jake
-        }
+      if (!running) return;
+      let now = Date.now();
+      let elapsedTimeInSeconds = (now - startTime) / 1000;
+      timeLeft = Math.max(0, userTimer - elapsedTimeInSeconds - elapsedTime);
+      updateDisplay();
+      updateCircle();
+      if (timeLeft > 0) {
+        requestAnimationFrame(animateTimer);
+      } else {
+        handleMeditationComplete(elapsedTimeInSeconds, "Breathing Exercise");
+      }
     }
-
-
+  
     function startStopTimer() {
-        if (running) {
-            // Stop the timer and save elapsed time
-            clearInterval(timer);
-            clearInterval(breathInterval);
-            breathInterval = null;
-            elapsedTime = Math.floor((Date.now() - startTime) / 1000); // Store elapsed time when stopped
-            running = false;
-            startStopBtn.textContent = "Start Timer";
-
-
-            // Stop the circular progress animation immediately
-            progressCircle.style.transition = "none";  // Disable transition
-            progressCircle.style.strokeDashoffset = progressCircle.style.strokeDashoffset; // Freeze animation
-        } else {
-            if (!startTime) {
-                // First time starting, initialize startTime and set elapsedTime to 0
-                startTime = Date.now();  // Set startTime to current time
-                elapsedTime = 0;  // Reset elapsed time to 0
-            } else {
-                // If the timer was paused, adjust the startTime to resume from the correct point
-                startTime = Date.now() - (60 - timeLeft - elapsedTime) * 1000; // Resume based on elapsed time
-            }
-
-
-            // Re-enable smooth animation when resuming
-            progressCircle.style.transition = "stroke-dashoffset 1s linear";
-
-
-            startBreathingCycle();  // Start the breathing cycle
-            requestAnimationFrame(animateTimer);  // Start the timer animation
-
-
-            running = true;
-            startStopBtn.textContent = "Stop Timer";
-        }
-    }
-
-
-    function resetTimer() {
+      if (running) {
         clearInterval(timer);
         clearInterval(breathInterval);
         breathInterval = null;
-   
-        timeLeft = 60;
-        elapsedTime = 0; // Reset elapsed time
-        startTime = null;
+        elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         running = false;
-   
-        updateDisplay();
-        updateCircle();
-   
-        breathText.textContent = "Breathe In";
-        breathText.style.opacity = 1;
-   
         startStopBtn.textContent = "Start Timer";
-    }
-
-
-    //////////////////////////////////////////
-    // LOGGING FUNCTIONS
-    //////////////////////////////////////////
-
-
-    async function logMeditationSession(duration, type) {
-        const token = localStorage.getItem('jwtToken');
-       
-        try {
-            const response = await fetch('/api/med-session', {
-                method: 'POST',
-                headers: {
-                    'Authorization': token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ duration, type }),
-            });
-   
-            if (!response.ok) {
-                throw new Error("Failed to log session.");
-            }
-   
-            console.log("Meditation session logged!");
-        } catch (error) {
-            console.error("Error logging session: ", error);
+        progressCircle.style.transition = "none";
+      } else {
+        if (!startTime) {
+          startTime = Date.now();
+          elapsedTime = 0;
+        } else {
+          startTime = Date.now() - (userTimer - timeLeft - elapsedTime) * 1000;
         }
+        progressCircle.style.transition = "stroke-dashoffset 0s linear";
+        startBreathingCycle();
+        requestAnimationFrame(animateTimer);
+        running = true;
+        startStopBtn.textContent = "Stop Timer";
+      }
     }
-
-
+  
+    function resetTimer() {
+      clearInterval(timer);
+      clearInterval(breathInterval);
+      breathInterval = null;
+      timeLeft = userTimer;
+      elapsedTime = 0;
+      startTime = null;
+      running = false;
+      updateDisplay();
+      updateCircle();
+      breathText.textContent = "Breathe In";
+      breathText.style.opacity = 1;
+      startStopBtn.textContent = "Start Timer";
+    }
+  
+    async function logMeditationSession(duration, type) {
+      const token = localStorage.getItem('jwtToken');
+      try {
+        const response = await fetch('/api/med-session', {
+          method: 'POST',
+          headers: {
+            'Authorization': token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ duration, type }),
+        });
+        if (!response.ok) throw new Error("Failed to log session.");
+        console.log("Meditation session logged!");
+      } catch (error) {
+        console.error("Error logging session: ", error);
+      }
+    }
+  
     function handleMeditationComplete(duration, type) {
-        logMeditationSession(duration, type);
+      logMeditationSession(duration, type);
     }
-
-
-    // Initialize Display
+  
+    // Initial setup
     updateDisplay();
     updateCircle();
-
-
-    //////////////////////////////////////////
-    // IMAGE PREVIEW FUNCTIONALITY
-    //////////////////////////////////////////
-    const imageInput = document.getElementById("imageUpload");
-    const preview = document.getElementById("previewImage");
-
-    if (imageInput && preview) {
-        imageInput.addEventListener("change", function () {
-            const file = imageInput.files[0];
-            if (file && file.type.startsWith("image/")) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = "block";
-                };
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-                preview.style.display = "none";
-            }
-        });
-    }
-
-});
-
-
+  });
+  

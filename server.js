@@ -212,13 +212,13 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
     const { duration, type } = req.body;
     const userEmail = req.user.email;
 
-    // record session info
+    // get session info
     try {
         const connection = await createConnection();
         
         // streak
         const [rows] = await connection.execute(
-            'SELECT last_session_date FROM user WHERE email = ?',
+            'SELECT * FROM user WHERE email = ?',
             [userEmail]
         );
 
@@ -228,15 +228,16 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
         const yesterday = new Date(now);
         yesterday.setDate(yesterday.getDate() - 1);
-        const local_yesterday = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000).toLocaleDateString('en-CA');
+        const local_yesterday_date = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000);
+        const local_yesterday = local_yesterday_date.toLocaleDateString('en-CA');
 
         if (rows.length > 0 && rows[0].last_session_date) {
             const last_session_date = new Date(rows[0].last_session_date);
 
             if (last_session_date.toLocaleDateString('en-CA') === local_date) { // if last session date is today...
-                new_streak = rows[0].streak; // streak is unchanged
-            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday.toLocaleDateString('en-CA')) { // if last session date is yesterday...
-                new_streak = rows[0].streak + 1; // increment streak by 1
+                new_streak = rows[0].streak_count; // streak is unchanged
+            } else if (last_session_date.toLocaleDateString('en-CA') === local_yesterday) { // if last session date is yesterday...
+                new_streak = rows[0].streak_count + 1; // increment streak by 1
             }
         }
         
@@ -269,7 +270,7 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
     try {
         const connection = await createConnection();
         const [rows] = await connection.execute(
-            'select streak from user where email = ?',
+            'select streak_count, last_session_date from user where email = ?',
             [userEmail]
         );
         await connection.end();
@@ -278,12 +279,97 @@ app.get('/api/streak', authenticateToken, async (req, res) => {
             return res.status(404).json({message: 'User not found!'});
         }
 
-        res.status(200).json({streak: rows[0].streak});
+        res.status(200).json({
+            streak: rows[0].streak_count, 
+            lastSessionDate: rows[0].last_session_date 
+        });
+        console.log(rows[0])
     } catch (error) {
-        console.error('Error fetching streak: ', error);
-        res.status(500).json({ message: 'Error fetching streak!'});
+        console.error('Error fetching streak info: ', error);
+        res.status(500).json({ message: 'Error fetching streak info!'});
     }
 })
+
+// Route: reset user's streak to 0 if needed.
+app.post('/api/reset-streak-if-needed', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+    
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            'select streak_count, last_session_date from user where email = ?',
+            [userEmail]
+        );
+
+        if (rows.length === 0) {  // user not found, throw error
+            await connection.end();
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        const user = rows[0];
+        const now = new Date();
+        const lastSessionDate = new Date(user.last_session_date);
+        const local_date = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const local_yesterday_date = new Date(yesterday.getTime() - yesterday.getTimezoneOffset() * 60000);
+
+        const lastSessionWasYesterday = lastSessionDate.toDateString() === yesterday.toDateString();
+        const lastSessionWasToday = lastSessionDate.toDateString() === local_date.toDateString();
+
+        // If last session is neither yesterday nor today, reset streak to 0
+        if (!lastSessionWasYesterday && !lastSessionWasToday && user.streak_count > 0) {
+            await connection.execute(
+                'update user set streak_count = 0 where email = ?',
+                [userEmail]
+            );
+            await connection.end();
+            return res.status(200).json({ message: 'Streak reset to 0 for user ', userEmail});
+        }
+
+        await connection.end();
+        res.status(200).json({ message: `No changes to streak for ${userEmail}`});
+    } catch (error) {
+        console.error('Error checking/resetting streak:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// Route: get user's weekly meditation statistics to display on homepage
+app.get('/api/weekly-med-stats', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+    
+    try {
+        const connection = await createConnection();
+
+        // Find the most recent Sunday
+        const today = new Date();
+        const daysSinceSunday = today.getDay(); // set day number (Sunday = 0 ... Saturday = 6)
+        const lastSunday = new Date(today);
+        lastSunday.setDate(today.getDate() - daysSinceSunday);
+        lastSunday.setHours(0, 0, 0, 0); // set time to midnight
+        const formattedLastSunday = lastSunday.toISOString().split('T')[0];
+
+        // Get total meditation minutes since last Sunday
+        const [rows] = await connection.execute(
+            `select sum(session_duration_seconds) AS totalSeconds
+             FROM session_log
+             WHERE email = ? AND session_date >= ?`,
+            [userEmail, formattedLastSunday]
+        );
+
+        await connection.end();
+
+        totalMinutes = rows[0].totalSeconds / 60;
+
+        res.status(200).json({ totalMinutes: totalMinutes || 0 });
+        console.log(`Med mins for week starting ${formattedLastSunday}: ${totalMinutes}`);
+    } catch (error) {
+        console.error('Error fetching weekly meditation data:', error);
+        res.status(500).json({ message: 'Server error.' });
+    }
+
+});
 
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
