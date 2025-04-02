@@ -253,10 +253,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('streakMessage div not found.');
                 return;
             }
-    
-            let weeklyStatsMessage = data.totalMinutes > 0 
-                ? `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 💜`
-                : `<br>You haven't meditated yet this week. Let's start today! 🧘‍♂️`;
+            
+            let weeklyStatsMessage = '';
+            if (data.totalMinutes === 1) {
+                // Grammar: 1 *minute*
+                weeklyStatsMessage = `<br>You have meditated for <strong>${data.totalMinutes} minute</strong> this week. Keep going! 💜`;
+            } else if (data.totalMinutes > 1) {
+                weeklyStatsMessage = `<br>You have meditated for <strong>${data.totalMinutes} minutes</strong> this week. Keep going! 💜`;
+            } else if (data.totalMinutes === 0) {
+                weeklyStatsMessage = `<br>You haven't meditated yet this week. Let's start today! 🧘‍♂️`;
+            }
     
             // Ensure previous weekly stats are removed before appending a new one
             let existingStats = streakMessage.querySelector('.weekly-stats');
