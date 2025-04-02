@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elements
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');
+    const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
     const timerDisplay = document.getElementById("timer");
     const startStopBtn = document.getElementById("startStopBtn");
     const resetBtn = document.getElementById("resetBtn");
@@ -44,6 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
     homeButton.addEventListener('click', () => {
       window.location.href = '/mainmenu';
+    });
+
+    meditationCustomizeButton.addEventListener('click', () => {
+      window.location.href = '/customize';
     });
   
     startStopBtn.addEventListener("click", startStopTimer);

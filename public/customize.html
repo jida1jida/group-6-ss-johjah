@@ -12,18 +12,19 @@
 </head>
 
 <body>
-        <div class="container">
-            <header>
-                <h1>Customize Meditation</h1>
-                <div>
-                    <button id="logoutButton">Log Out</button>
-                    <button id="homeButton">Back to Home Page</button>
-                    <button id="meditationButton">Start Meditation</button>
-                </div>
-            </header>
-        </div>
+    <div class="container">
+        <header>
+            <h1>Customize Meditation</h1>
+            <div>
+                <button id="logoutButton">Log Out</button>
+                <button id="homeButton">Back to Home Page</button>
+                <button id="meditationButton">Start Meditation</button>
+            </div>
+        </header>
+    </div>
 
     <div class="container">
+        <div>
             <label>Breathing Technique:</label>
             <div class="hover-text">
                 <button>Box Technique</button>
@@ -37,6 +38,7 @@
                 <button>Bellow's Breathe</button>
                 <div class="description">Bellow's Breathe: With only your nostrils, breathe in and out using the full capacity of your lungs quickly. Need more help? Click here.</div>                
             </div>
+        </div>
         <br>
         <div>
             <label>Timer:</label>
@@ -60,21 +62,39 @@
         <br>
         <div>
             <label>Audio Cues:</label>
-            <button>On</button>
-            <button>Off</button>
+            <div class="hover-text">
+                <button>Enable</button>
+                <div class="description">Enable audio phrases to instruct the user.</div>
+            </div>
+            <div class="hover-text">
+                <button>Disable</button>
+                <div class="description">Disable audio cues for a quieter experience.</div>
+            </div>
         </div>
         <br>
         <div>
             <label>Music:</label>
-            <button>Edit</button>
-            <button>Off</button>
+            <div class="hover-text">
+                <button>Edit</button>
+                <div class="description">Choose a relaxing song for your meditation.</div>
+            </div>            
+            <div class="hover-text">
+                <button>Disable</button>
+                <div class="description">Disable music for a quieter experience.</div>
+            </div>
         </div>
         <br>
         <div>
             <label>Background:</label>
             <input type="file" id="backgroundUpload" accept="image/*" style="display:none;">
-            <button id="backgroundEditButton">Edit</button>
-            <button id="backgroundDefaultButton">Default</button>
+            <div class="hover-text">
+                <button id="backgroundEditButton">Edit</button>
+                <div class="description">Import your own image as your meditation background.</div>
+            </div>
+            <div class="hover-text">
+                <button id="backgroundDefaultButton">Default</button>
+                <div class="description">Set the background back to normal.</div>
+            </div>
         </div>
     </div>
 
