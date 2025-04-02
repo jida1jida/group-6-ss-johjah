@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let startTime = null;
     let elapsedTime = 0;
     let breathInterval = null;
-    let elapsedTime = 0;
   
     // Event Listeners
     logoutButton.addEventListener('click', () => {
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resetBtn.addEventListener("click", resetTimer);
   
     // Timer Functions
-    npm run devfunction updateDisplay() {
+    function updateDisplay() {
       let seconds = Math.ceil(timeLeft);
       timerDisplay.textContent = `${seconds}s`;
     }
