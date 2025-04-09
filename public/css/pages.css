@@ -328,6 +328,6 @@ button:hover {
 /* This class will fade elements to near-invisibility */
 .faded {
     opacity: 0.2;            /* or 0 for fully invisible */
-    transition: opacity 0.5s ease-in-out;  
+    transition: opacity 2s ease-in-out;  
     /* pointer-events: none;  <-- Uncomment if you also want to disable clicks */
 }
