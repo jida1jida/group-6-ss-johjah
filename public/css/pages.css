@@ -100,13 +100,11 @@ header {
     grid-row: 3 / 4; }
 
 h1 {
-    margin: 0;
-}
+    margin: 0; }
 
 p {
     margin: 75px;
-    font-size: 25px;
-}
+    font-size: 25px; }
 
 button {
     border-radius: 5px;
@@ -115,18 +113,15 @@ button {
     height: 75px;
     background-color: #b8a9c9;
     color: black;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
 button:hover {
     background-color: #7c6e8c;
-    color: white;
-}
+    color: white; }
 
 .med-time-btn.selected {
     background-color: #572984;
-    color: white;
-}
+    color: white; }
 
 #logoutButton {
     padding: 10px 20px;
@@ -134,13 +129,11 @@ button:hover {
     color: black;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
 #logoutButton:hover {
     background-color: #5b9aa0;
-    color: white;
-}
+    color: white; }
 
 #refreshButton {
     background-color: #73cad2; /* Same green color from logon button */
@@ -148,28 +141,23 @@ button:hover {
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
 #refreshButton:hover {
-    background-color: #5b9aa0; /* Slightly darker green for hover effect */
-}
+    background-color: #5b9aa0; }
 
 .user-list {
-    margin-top: 20px;
-}
+    margin-top: 20px; }
 
 .user-item {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
+    border-bottom: 1px solid #ddd; }
 
 /* timer things */
 
 .buttonDiv{
     display: flex;
-    justify-content: center;
-}
+    justify-content: center; }
 
 .timer-container {
     display: flex;
@@ -181,21 +169,18 @@ button:hover {
     margin-right: 30%;
     padding: 50px;
     box-shadow: 0 4px  8px rgba(0, 0, 0, 0.2);
-    border-radius: 100px;
-}
+    border-radius: 100px; }
 
 /* SVG Styling */
 .timer-svg {
     width: 150px;
-    height: 150px;
-}
+    height: 150px; }
 
 /* Background circle */
 .background-circle {
     stroke: #ddd;
     stroke-width: 10;
-    fill: none;
-}
+    fill: none; }
 
 /* Progress circle */
 .progress-circle {
@@ -205,15 +190,13 @@ button:hover {
     stroke-dasharray: 377;
     stroke-dashoffset: 377;
     stroke-linecap: round;
-    transition: stroke-dashoffset 1s linear;
-}
+    transition: stroke-dashoffset 1s linear; }
 
 /* Timer text inside the circle */
 .timer-text {
     font-size: 20px;
     fill: black;
-    font-weight: bold;
-}
+    font-weight: bold; }
 
 /* Breathing text */
 .breath-text {
@@ -221,14 +204,13 @@ button:hover {
     font-weight: bold;
     text-align: center;
     opacity: 1;
-    transition: opacity 1s ease-in-out;
-}
+    transition: opacity 1s ease-in-out; }
 
-/* Dropdown test code */
+/* Dropdown code for user settings menu */
 .dropdown {
     position: relative;
-    display: inline-block;
-}
+    display: inline-block; }
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -239,25 +221,23 @@ button:hover {
     border-radius: 5px;
     overflow: hidden;
     visibility: hidden;
-    opacity: 0;
-}
+    opacity: 0; }
+
 .dropdown-content a {
     color: black;
     padding: 10px;
     text-decoration: none;
-    display: block;
-}
+    display: block; }
+
 .dropdown-content a:hover {
     background-color: #7c6e8c;
     color: white;
-    cursor: pointer;
-}
+    cursor: pointer; }
 
 .dropdown-content.show {
     display: block;
     visibility: visible;
-    opacity: 1;
-}
+    opacity: 1; }
 
 /* Message box test */
 /* Hidden by default */
