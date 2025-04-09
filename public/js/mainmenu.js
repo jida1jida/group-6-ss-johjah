@@ -278,6 +278,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function fetchUserMedDays() {
+        const token = localStorage.getItem('jwtToken');
+        try {
+            const response = await fetch ('/api/med-days', {
+                method: 'GET',
+                headers: {
+                    'Authorization': token
+                }
+            });
+            const data = await response.json();
+            return data.dates;
+        } catch (error) {
+            console.error('Error fetching calendar data! ', error)
+            return [];
+        }
+    }
+
     // MESSAGE BOX TEST //
     const modal = document.getElementById("myModal");
     const openModalBtn = document.getElementById("openModal");
