@@ -371,6 +371,26 @@ app.get('/api/weekly-med-stats', authenticateToken, async (req, res) => {
 
 });
 
+// Route: get a json list of the days the user meditated for the calendar
+app.get('/api/med-days/calendar', authenticateToken, async(req, res) => {
+    const userEmail = req.user.email;
+
+    try{
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            'select distinct date(session_time) as med_session_date from session_log where email = ?',
+            [userEmail]
+        );
+        await connection.end();
+
+        const dates = rows.map(row => row.med_session_date.toISOString().split('T')[0]);
+        res.json({ dates });
+    } catch (error) {
+        console.error('Error fetching meditation days! ', error);
+        res.status(500).json({ message: 'Server error!' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
