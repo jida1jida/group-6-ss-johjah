@@ -372,7 +372,7 @@ app.get('/api/weekly-med-stats', authenticateToken, async (req, res) => {
 });
 
 // Route: get a json list of the days the user meditated for the calendar
-app.get('/api/med-days/calendar', authenticateToken, async(req, res) => {
+app.get('/api/med-days', authenticateToken, async(req, res) => {
     const userEmail = req.user.email;
 
     try{
