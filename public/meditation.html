@@ -16,7 +16,13 @@
         <div class="header">
             <h1>Meditation</h1>
             <div>
-                <button id="logoutButton">Log Out</button>
+                <div class="dropdown">
+                    <button class="dropdown-button" onclick="toggleDropdown()">User Settings</button>
+                    <div class="dropdown-content" id="dropdown-menu">
+                        <a id="accountButton">Edit Account</a>
+                        <a id="logoutButton">Logout</a>
+                    </div>
+                </div>
                 <button id="homeButton">Back to Home Page</button>
                 <button id="meditationCustomizeButton">Meditation Settings</button>
             </div>
@@ -62,6 +68,7 @@
 
     <footer> <p>&copy; S. S. JOHJAH 2025</p> </footer>
 
+    <script src="/js/menubuttons.js"></script>
     <script src="/js/datamodel.js"></script>
     <script src="/js/customize.js"></script>
 </body>

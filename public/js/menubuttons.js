@@ -40,12 +40,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.location.href = '/meditation'; // Adjust the path if necessar
     });
 
-    accountButton.addEventListener('click', () => {
-        window.location.href = '/account';
-    });
+    if (accountButton) {
+        accountButton.addEventListener('click', () => {
+            window.location.href = '/account';
+        });
+    }
 
     meditationCustomizeButton.addEventListener('click', () => {
         window.location.href = '/customize';
     });
-    
+
 });
