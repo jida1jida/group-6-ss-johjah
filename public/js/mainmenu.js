@@ -112,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        showNonCurrentDate: false,
+        fixedWeekCount: false,
         height: 500,
         events: [],
         eventContent: function(arg) {
