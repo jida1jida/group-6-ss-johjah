@@ -119,6 +119,11 @@ button:hover {
     background-color: #7c6e8c;
     color: white; }
 
+.fc .fc-button {
+    width: 60px;
+    height: 50px;
+}
+
 .med-time-btn.selected {
     background-color: #572984;
     color: white; }
