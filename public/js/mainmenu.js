@@ -106,7 +106,30 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchWeeklyMeditation(); // display weekly meditation stats
         })
 
-    }
+    };
+
+    // calendar things
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        showNonCurrentDate: false,
+        fixedWeekCount: false,
+        height: 500,
+        events: [],
+        eventContent: function(arg) {
+            return { html: '<span style="font-size: 1.2em;">🔥</span>' };
+        }
+    });
+    fetchUserMedDays().then(days => {
+        const events = days.map(date => ({
+            title: '', // or "Meditated"
+            start: date,
+            allDay: true
+        }));
+        calendar.addEventSource(events);
+    });
+    calendar.render();
+
     //////////////////////////////////////////
     //END CODE THAT NEEDS TO RUN IMMEDIATELY AFTER PAGE LOADS
     //////////////////////////////////////////
@@ -278,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function fetchUserMedDays() {
+    async function fetchUserMedDays() { //
         const token = localStorage.getItem('jwtToken');
         try {
             const response = await fetch ('/api/med-days', {
