@@ -11,8 +11,7 @@ body {
     padding: 0; }
 
 /* content will not appear until loading page is done */
-.content {
-    display: none; }
+.content { display: none; }
 
 /* this is the loading page */
 .loading-overlay {
@@ -99,8 +98,7 @@ header {
     grid-column: 1 / 4;
     grid-row: 3 / 4; }
 
-h1 {
-    margin: 0; }
+h1 { margin: 0; }
 
 p {
     margin: 75px;
@@ -151,8 +149,7 @@ button:hover {
 #refreshButton:hover {
     background-color: #5b9aa0; }
 
-.user-list {
-    margin-top: 20px; }
+.user-list { margin-top: 20px; }
 
 .user-item {
     padding: 10px;

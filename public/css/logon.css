@@ -44,13 +44,9 @@ h1 {
     color: white;
 }
 
-form {
-    display: none;
-}
+form { display: none; }
 
-form.active-form {
-    display: block;
-}
+form.active-form { display: block; }
 
 label {
     display: block;
@@ -75,9 +71,7 @@ input {
     cursor: pointer;
 }
 
-.button:hover {
-    background-color: #5b9aa0;
-}
+.button:hover { background-color: #5b9aa0; }
 
 .message {
     margin-top: 10px;
@@ -85,10 +79,6 @@ input {
     font-size: 14px;
 }
 
-.success {
-    color: green;
-}
+.success { color: green; }
 
-.error {
-    color: red;
-}
+.error { color: red; }
