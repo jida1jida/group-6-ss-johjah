@@ -345,19 +345,27 @@ button:hover {
     margin-top: 40px;
   }
 
-  .website-link {
-    font-size: 18px;
-    display: block;
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    background-color: #b8a9c9;
-    color: black;
-    text-decoration: none;
-    border-radius: 8px;
-    width: fit-content;
-  }
+  .website-link,
+.resource-link {
+  display: inline-block;
+  margin: 8px 0;
+  padding: 12px 20px;
+  background-color: #b8a9c9;
+  color: black;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%; /* Full width for cards */
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
 
-  .website-link:hover {
-    background-color: #7c6e8c;
-    color: white;
-  }
+.website-link:hover,
+.resource-link:hover {
+  background-color: #7c6e8c;
+  color: white;
+}
