@@ -56,6 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('meditationDuration', duration);
         });
       });
+
+      const patternButtons = document.querySelectorAll('.phase-pattern-btn');
+      if (patternButtons.length > 0) {
+        patternButtons.forEach(button => {
+          button.addEventListener('click', event => {
+            // Remove selected class if you want a visual cue
+            patternButtons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+      
+            // Store the breathing phase durations
+            const phaseDurations = event.target.getAttribute('data-phase-durations');
+            localStorage.setItem('breathPhaseDurations', phaseDurations);
+      
+            console.log("Saved breathing pattern:", phaseDurations);
+          });
+        });
+      }
   
       // (Optional) If you want a file input for the background
       const backgroundUpload = document.getElementById('backgroundUpload');
@@ -141,7 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (breathInterval) return;
       
         const phases = ["Breathe In", "Hold Breath", "Breathe Out", "Rest"];
-        const durations = [4000, 4000, 4000, 4000]; // durations in ms for each phase
+        const savedDurations = localStorage.getItem('breathPhaseDurations');
+        const durations = savedDurations ? JSON.parse(savedDurations) : [4000, 4000, 4000, 4000];
       
         function nextPhase() {
           if (breathingPaused) return; // Don't proceed if paused
@@ -292,20 +310,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 // Fade html elements when start button pressed
-// function fadeOutContainers() {
-//     // Grab whichever elements you want to fade
-//     // Example: ALL elements with class "container" AND the .header
-//     const fadeTargets = document.querySelectorAll('.fade-target');
+function fadeOutContainers() {
+    // Grab whichever elements you want to fade
+    // Example: ALL elements with class "container" AND the .header
+    const fadeTargets = document.querySelectorAll('.fade-target');
   
-//     fadeTargets.forEach(el => {
-//       el.classList.add('faded'); // Add the .faded class to fade them out
-//     });
-//   }
+    fadeTargets.forEach(el => {
+      el.classList.add('faded'); // Add the .faded class to fade them out
+    });
+  }
   
-//   function fadeInContainers() {
-//     const fadeTargets = document.querySelectorAll('.fade-target');
+  function fadeInContainers() {
+    const fadeTargets = document.querySelectorAll('.fade-target');
   
-//     fadeTargets.forEach(el => {
-//       el.classList.remove('faded'); // Remove .faded to fade back in
-//     });
-//   }
+    fadeTargets.forEach(el => {
+      el.classList.remove('faded'); // Remove .faded to fade back in
+    });
+  }

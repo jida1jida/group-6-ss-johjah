@@ -122,7 +122,7 @@ button:hover {
     height: 50px;
 }
 
-.med-time-btn.selected {
+.med-time-btn.selected, .phase-pattern-btn.selected {
     background-color: #572984;
     color: white; }
 
