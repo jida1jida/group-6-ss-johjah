@@ -360,3 +360,23 @@ function fadeOutContainers() {
       el.classList.remove('faded'); // Remove .faded to fade back in
     });
   }
+
+      // MESSAGE BOX TEST //
+      const modal = document.getElementById("myModal");
+      const openModalBtn = document.getElementById("openModal");
+      const cancelBtn = document.getElementById("cancelBtn");
+      
+      openModalBtn.addEventListener("click", () => {
+          modal.style.display = "block";
+      });
+      
+      cancelButton.addEventListener("click", () => {
+          modal.style.display = "none";
+      });
+      
+      // Close if clicking outside modal
+      window.addEventListener("click", (event) => {
+          if (event.target === modal) {
+              modal.style.display = "none";
+          }
+      });
