@@ -101,6 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const resetBtn = document.getElementById('resetBtn');
     const progressCircle = document.getElementById('progressCircle');
     const breathText = document.getElementById('breathText');
+
+    let breathingPaused = false;
+    let currentBreathingPhase = 0;
+    let phaseTimeout = null;
   
     // Only initialize timer code if these elements exist
     if (timerDisplay && startStopBtn && resetBtn && progressCircle && breathText) {
@@ -135,21 +139,32 @@ document.addEventListener('DOMContentLoaded', () => {
   
       function startBreathingCycle() {
         if (breathInterval) return;
-  
-        let phase = 0; // 0=Inhale, 1=Hold, 2=Exhale, 3=Hold
-        const phases = ["Breathe In", "Hold Breath", "Breathe Out", "Pause"];
-  
-        breathText.textContent = phases[phase];
-        breathText.style.opacity = 1;
-  
-        breathInterval = setInterval(() => {
-          breathText.style.opacity = 0;
-          setTimeout(() => {
-            phase = (phase + 1) % phases.length;
-            breathText.textContent = phases[phase];
-            breathText.style.opacity = 1;
-          }, 1000);
-        }, 4000); // Each phase lasts 4s
+      
+        const phases = ["Breathe In", "Hold Breath", "Breathe Out", "Rest"];
+        const durations = [4000, 4000, 4000, 4000]; // durations in ms for each phase
+      
+        function nextPhase() {
+          if (breathingPaused) return; // Don't proceed if paused
+          breathText.textContent = phases[currentBreathingPhase];
+          breathText.style.opacity = 1;
+      
+          // Clear previous timeout if there's any
+          if (phaseTimeout) clearTimeout(phaseTimeout);
+      
+          // Set new timeout for phase change
+          phaseTimeout = setTimeout(() => {
+            if (breathingPaused) return; // Stop immediately if paused
+            breathText.style.opacity = 0;
+      
+            // Set the next phase timeout
+            setTimeout(() => {
+              currentBreathingPhase = (currentBreathingPhase + 1) % phases.length;
+              nextPhase(); // Call again for the next phase
+            }, 1000);
+          }, durations[currentBreathingPhase]);
+        }
+      
+        nextPhase(); // Start the cycle
       }
   
       function animateTimer() {
@@ -181,41 +196,59 @@ document.addEventListener('DOMContentLoaded', () => {
           running = false;
           startStopBtn.textContent = "Start Timer";
           progressCircle.style.transition = "none";
-
-        // Fade elements back IN if you want them fully visible when paused
-        fadeInContainers();
+      
+          // Pause breathing cycle
+          breathingPaused = true;
+      
+          // Clear the phase timeout to avoid any active fade/phase after pause
+          if (phaseTimeout) clearTimeout(phaseTimeout);
+      
+          // Fade elements back IN if you want them fully visible when paused
+          fadeInContainers();
         } else {
           // Start
           startTime = Date.now();
           progressCircle.style.transition = "stroke-dashoffset 0s linear";
-  
+      
+          // Restart breathing cycle from where it left off
+          breathingPaused = false;
           startBreathingCycle();
           requestAnimationFrame(animateTimer);
-  
+      
           running = true;
           startStopBtn.textContent = "Stop Timer";
-
-        // Fade elements OUT when meditation starts
-        fadeOutContainers();
+      
+          // Fade elements OUT when meditation starts
+          fadeOutContainers();
         }
       }
   
       function resetTimer() {
         clearInterval(breathInterval);
         breathInterval = null;
-  
+      
         timeLeft = userTimer;
         elapsedTime = 0;
         startTime = null;
         running = false;
-  
-        updateDisplay();
-        updateCircle();
-  
+      
+        // Reset breathing cycle and phase
+        currentBreathingPhase = 0; // Reset to the first phase
+        breathingPaused = false; // Ensure it's not paused
+      
+        // Clear phase timeout when resetting
+        if (phaseTimeout) clearTimeout(phaseTimeout);
+      
+        // Restart the breathing cycle from the beginning
         breathText.textContent = "Breathe In";
         breathText.style.opacity = 1;
+      
+        // Re-initialize the timer display and circle
+        updateDisplay();
+        updateCircle();
+      
         startStopBtn.textContent = "Start Timer";
-
+      
         // Fade elements back in
         fadeInContainers();
       }
@@ -259,20 +292,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 // Fade html elements when start button pressed
-function fadeOutContainers() {
-    // Grab whichever elements you want to fade
-    // Example: ALL elements with class "container" AND the .header
-    const fadeTargets = document.querySelectorAll('.fade-target');
+// function fadeOutContainers() {
+//     // Grab whichever elements you want to fade
+//     // Example: ALL elements with class "container" AND the .header
+//     const fadeTargets = document.querySelectorAll('.fade-target');
   
-    fadeTargets.forEach(el => {
-      el.classList.add('faded'); // Add the .faded class to fade them out
-    });
-  }
+//     fadeTargets.forEach(el => {
+//       el.classList.add('faded'); // Add the .faded class to fade them out
+//     });
+//   }
   
-  function fadeInContainers() {
-    const fadeTargets = document.querySelectorAll('.fade-target');
+//   function fadeInContainers() {
+//     const fadeTargets = document.querySelectorAll('.fade-target');
   
-    fadeTargets.forEach(el => {
-      el.classList.remove('faded'); // Remove .faded to fade back in
-    });
-  }
+//     fadeTargets.forEach(el => {
+//       el.classList.remove('faded'); // Remove .faded to fade back in
+//     });
+//   }
