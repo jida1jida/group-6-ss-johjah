@@ -153,6 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const progress = timeLeft / userTimer;
         progressCircle.style.strokeDashoffset = 377 * progress;
       }
+
+      const audioCues = {
+        "Breathe In": new Audio('audio/Breathe_in.mp3'),
+        "Hold Breath": new Audio('audio/Hold_it.mp3'),
+        "Breathe Out": new Audio('audio/Breathe_out.mp3'),
+        "Rest": new Audio('audio/Rest.mp3')
+      };
   
       function startBreathingCycle() {
         if (breathInterval) return;
@@ -164,6 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
         function nextPhase() {
           if (breathingPaused) return; // Don't proceed if paused
           breathText.textContent = phases[currentBreathingPhase];
+
+          const currentPhase = phases[currentBreathingPhase];
+          if (audioCues[currentPhase]) {
+            audioCues[currentPhase].currentTime = 0; // rewind if still playing
+            audioCues[currentPhase].play().catch(err => {
+              console.warn("Audio playback failed:", err);
+            });
+          }
+
           breathText.style.opacity = 1;
       
           // Clear previous timeout if there's any
