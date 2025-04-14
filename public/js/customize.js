@@ -73,6 +73,21 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
       }
+
+      const enableAudioBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent === "Enable");
+      const disableAudioBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent === "Disable");
+      
+      if (enableAudioBtn && disableAudioBtn) {
+        enableAudioBtn.addEventListener('click', () => {
+          localStorage.setItem('audioEnabled', 'true');
+          alert("Audio cues enabled!");
+        });
+      
+        disableAudioBtn.addEventListener('click', () => {
+          localStorage.setItem('audioEnabled', 'false');
+          alert("Audio cues disabled!");
+        });
+      }
   
       // (Optional) If you want a file input for the background
       const backgroundUpload = document.getElementById('backgroundUpload');
@@ -173,8 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
           breathText.textContent = phases[currentBreathingPhase];
 
           const currentPhase = phases[currentBreathingPhase];
-          if (audioCues[currentPhase]) {
-            audioCues[currentPhase].currentTime = 0; // rewind if still playing
+          const audioEnabled = localStorage.getItem('audioEnabled') !== 'false'; // default to true
+          
+          if (audioEnabled && audioCues[currentPhase]) {
+            audioCues[currentPhase].currentTime = 0;
             audioCues[currentPhase].play().catch(err => {
               console.warn("Audio playback failed:", err);
             });
