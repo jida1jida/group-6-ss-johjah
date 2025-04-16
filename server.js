@@ -430,6 +430,56 @@ app.post('/api/verify-password', authenticateToken, async(req, res) => {
     }
 });
 
+// Route: update user name or email
+app.put('/api/update-user', authenticateToken, async (req, res) => {
+    const { field, value } = req.body;
+    const userEmail = req.user.email;
+
+    if (!['prefname', 'email'].includes(field)) {
+        return res.status(400).json({ message: 'Invalid field update.' });
+    }
+
+    try {
+        const connection = await createConnection();
+        await connection.execute(
+            `UPDATE user SET ${field} = ? WHERE email = ?`,
+            [value, userEmail]
+        );
+        await connection.end();
+
+        res.status(200).json({ message: `${field} updated.` });
+    } catch (error) {
+        console.error('Update error:', error);
+        res.status(500).json({ message: 'Failed to update user info.' });
+    }
+});
+
+// Route: update user's password
+app.put('/api/update-password', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+        return res.status(400).json({ message: 'New password required.' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const connection = await createConnection();
+
+        await connection.execute(
+            'UPDATE user SET password = ? WHERE email = ?',
+            [hashedPassword, userEmail]
+        );
+
+        await connection.end();
+        res.status(200).json({ message: 'Password updated successfully.' });
+    } catch (error) {
+        console.error('Password update error:', error);
+        res.status(500).json({ message: 'Failed to update password.' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

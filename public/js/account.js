@@ -23,9 +23,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const editButtons = document.querySelectorAll(".editButton");
     const saveButton = document.getElementById("saveButton");
+    saveButton.addEventListener('click', () => {
+        saveChanges();
+    })
     const cancelButton = document.getElementById("cancelButton");
-    cancelButton.addEventListener('click', () => { // return to home
-        window.location.href = '/mainmenu';
+    cancelButton.addEventListener('click', () => {
+        window.location.href = '/mainmenu'; // return to home
     });
 
     // Password Modal
@@ -150,7 +153,46 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Function to save any changes
-    async function saveChanges(field, newValue) {
-        
+    async function saveChanges() {
+        const token = localStorage.getItem('jwtToken');
+
+        if (nameInput.value){
+            field = 'prefname';
+            newValue = nameInput.value;
+        } else if (emailInput.value){
+            field = 'email';
+            newValue = emailInput.value;
+        }
+
+        try {
+            const response = await fetch('/api/update-user', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    field,
+                    value: newValue
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`${field === 'prefname' ? 'Name' : 'Email'} updated successfully!`);
+                if (field === 'email') {
+                    localStorage.removeItem('jwtToken'); // if email was changed, log user out
+                    window.location.href = '/';
+                } else if (field === 'prefname') {
+                    window.location.reload(); // refresh the page to reflect changes
+                }
+            } else {
+                alert(`Error updating ${field}: ${data.message}`);
+            }
+        } catch (error) {
+            console.error("Error updating user info:", error);
+            alert("Server error.");
+        }
     }
 });
