@@ -25,10 +25,10 @@
 
         <!-- Name Section -->
         <div class="account-section">
-            <label for="nameInput">Name:</label>
+            <label for="nameInput">Preferred Name:</label>
             <span id="nameDisplay"></span>
             <input type="text" id="nameInput" style="display: none;">
-            <button class="editButton" data-field="name">Edit</button>
+            <button class="editButton" data-field="name">Edit Name</button>
         </div>
         <br>
         <!-- Email Section-->
@@ -36,14 +36,15 @@
             <label for="emailInput">Email:</label>
             <span id="emailDisplay"></span>
             <input type="email" id="emailInput" style="display: none;">
-            <button class="editButton" data-field="email">Edit</button>
+            <button class="editButton" data-field="email">Edit Email</button>
         </div>
         <br>
         <!-- Password Section -->
         <div class="account-section">
             <label for="verifyPassword">Password:</label>
-            <span>********</span> <!-- Hidden password -->
-            <button class="editButton" data-field="password">Edit</button>
+            <span id="passwordDisplay"></span>
+            <input type="password" id="passwordInput" placeholder="Enter new password" style="display: none;">
+            <button class="editButton" data-field="password">Edit Password</button>
         </div>
         <br>
         <!-- Password Prompt Modal -->
@@ -58,7 +59,13 @@
         </div>
 
         <p id="message"></p>
+
+        <button id="saveButton" style="display: none;">Save Changes</button>
+        <button id="cancelButton" style="display: none;">Cancel</button>
+
     </div>
+
+    
 
     <footer>
         <p>&copy; S. S. JOHJAH 2025</p>

@@ -391,6 +391,45 @@ app.get('/api/med-days', authenticateToken, async(req, res) => {
     }
 });
 
+// Route: verify user's password to allow account changes
+app.post('/api/verify-password', authenticateToken, async(req, res) => {
+    const userEmail = req.user.email;
+    const { password } = req.body;
+
+    if (!password) {
+        return res.status(400).json({ message: 'Password is required.' });
+    }
+
+    try {
+        const connection = await createConnection();
+
+        const [rows] = await connection.execute(
+            'SELECT password FROM user WHERE email = ?',
+            [userEmail]
+        );
+
+        await connection.end();
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+            console.log('User not found');
+        }
+
+        const storedHashedPassword = rows[0].password;
+        const isValid = await bcrypt.compare(password, storedHashedPassword);
+
+        if (isValid) {
+            res.status(200).json({ message: 'Password verified.' });
+        } else {
+            res.status(401).json({ message: 'Incorrect password.' });
+        }
+
+    } catch (error) {
+        console.error('Error: ', error);
+        res.status(500).json({ message: 'Server error!' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
