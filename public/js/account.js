@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", async function () {
+    
+    // check for token, and redirect if it doesn't exist
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+        window.location.href = '/';
+    };
+    
     // Navigation buttons
     const logoutButton = document.getElementById('logoutButton');
     const homeButton = document.getElementById('homeButton');

@@ -50,6 +50,11 @@ app.get('/customize', (req, res) => {
     res.sendFile(__dirname + '/public/customize.html');
 })
 
+// Route to serve resources.html
+app.get('/resources', (req, res) => {
+    res.sendFile(__dirname + '/public/resources.html');
+})
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
