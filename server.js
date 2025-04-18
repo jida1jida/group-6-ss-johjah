@@ -436,26 +436,84 @@ app.post('/api/verify-password', authenticateToken, async(req, res) => {
 });
 
 // Route: update user name or email
-app.put('/api/update-user', authenticateToken, async (req, res) => {
-    const { field, value } = req.body;
-    const userEmail = req.user.email;
+// app.put('/api/update-user', authenticateToken, async (req, res) => {
+//     const { field, value } = req.body;
+//     const userEmail = req.user.email;
 
-    if (!['prefname', 'email'].includes(field)) {
-        return res.status(400).json({ message: 'Invalid field update.' });
-    }
+//     if (!['prefname', 'email'].includes(field)) {
+//         return res.status(400).json({ message: 'Invalid field update.' });
+//     }
+
+//     try {
+//         const connection = await createConnection();
+//         await connection.execute(
+//             `UPDATE user SET ${field} = ? WHERE email = ?`,
+//             [value, userEmail]
+//         );
+//         await connection.end();
+
+//         res.status(200).json({ message: `${field} updated.` });
+//     } catch (error) {
+//         console.error('Update error:', error);
+//         res.status(500).json({ message: 'Failed to update user info.' });
+//     }
+// });
+
+app.post('/api/update-user', authenticateToken, async (req, res) => {
+    const oldEmail = req.user.email;
+    const { newEmail, newName, newPassword } = req.body;
 
     try {
         const connection = await createConnection();
-        await connection.execute(
-            `UPDATE user SET ${field} = ? WHERE email = ?`,
-            [value, userEmail]
-        );
-        await connection.end();
 
-        res.status(200).json({ message: `${field} updated.` });
+        // Check if the new email is different
+        if (newEmail && newEmail !== oldEmail) {
+            const [existingEmailRows] = await connection.execute(
+                'SELECT email FROM user WHERE email = ?',
+                [newEmail]
+            );
+
+            if (existingEmailRows.length > 0) {
+                await connection.end();
+                return res.status(409).json({ message: 'An account with this email already exists. Please try again!' });
+            }
+        }
+
+        // Update user info
+        if (newName) {
+            await connection.execute(
+                'UPDATE user SET prefname = ? WHERE email = ?',
+                [newName, newEmail || oldEmail]
+            );
+        }
+
+        if (newPassword) {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await connection.execute(
+                'UPDATE user SET password = ? WHERE email = ?',
+                [hashedPassword, newEmail || oldEmail]
+            );
+        }
+
+        if (newEmail && newEmail !== oldEmail) {
+            await connection.execute(
+                'UPDATE user SET email = ? WHERE email = ?',
+                [newEmail, oldEmail]
+            );
+
+            // update session_log if email is changing
+            await connection.execute(
+                'UPDATE session_log SET email = ? WHERE email = ?',
+                [newEmail, oldEmail]
+            );
+        }
+
+        await connection.end();
+        res.status(200).json({ message: 'Account updated successfully.' });
+
     } catch (error) {
         console.error('Update error:', error);
-        res.status(500).json({ message: 'Failed to update user info.' });
+        res.status(500).json({ message: 'Server error while updating account.' });
     }
 });
 

@@ -160,46 +160,120 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Function to save any changes
+    // async function saveChanges() {
+    //     const token = localStorage.getItem('jwtToken');
+
+    //     if (nameInput.value){
+    //         field = 'prefname';
+    //         newValue = nameInput.value;
+    //     } else if (emailInput.value){
+    //         field = 'email';
+    //         newValue = emailInput.value;
+    //     }
+
+    //     try {
+    //         const response = await fetch('/api/update-user', {
+    //             method: 'PUT',
+    //             headers: {
+    //                 'Authorization': token,
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 field,
+    //                 value: newValue
+    //             }),
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (response.ok) {
+    //             alert(`${field === 'prefname' ? 'Name' : 'Email'} updated successfully!`);
+    //             if (field === 'email') {
+    //                 localStorage.removeItem('jwtToken'); // if email was changed, log user out
+    //                 window.location.href = '/';
+    //             } else if (field === 'prefname') {
+    //                 window.location.reload(); // refresh the page to reflect changes
+    //             }
+    //         } else {
+    //             alert(`Error updating ${field}: ${data.message}`);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error updating user info:", error);
+    //         alert("Server error.");
+    //     }
+    // }
+
     async function saveChanges() {
         const token = localStorage.getItem('jwtToken');
-
-        if (nameInput.value){
-            field = 'prefname';
-            newValue = nameInput.value;
-        } else if (emailInput.value){
-            field = 'email';
-            newValue = emailInput.value;
+        const newName = nameInput.value.trim();
+        const newEmail = emailInput.value.trim();
+        const newPassword = document.getElementById('passwordInput')?.value.trim(); // optional password input
+    
+        if (!newName && !newEmail && !newPassword) {
+            message.textContent = "No changes to save.";
+            message.style.color = "orange";
+            return;
         }
-
+    
         try {
             const response = await fetch('/api/update-user', {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Authorization': token,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    field,
-                    value: newValue
+                    newName,
+                    newEmail,
+                    newPassword,
                 }),
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
-                alert(`${field === 'prefname' ? 'Name' : 'Email'} updated successfully!`);
-                if (field === 'email') {
-                    localStorage.removeItem('jwtToken'); // if email was changed, log user out
-                    window.location.href = '/';
-                } else if (field === 'prefname') {
-                    window.location.reload(); // refresh the page to reflect changes
+                message.style.color = "green";
+    
+                // If the email was updated, update the JWT token or force logout
+                if (newEmail && newEmail !== emailDisplay.textContent.trim()) {
+                    localStorage.removeItem('jwtToken');
+                    // alert("Email updated. Please log in again.");
+                    message.textContent = "Email updated successfully! Please log in again.";
+                    setTimeout(function() {
+                        window.location.href = '/logon';
+                    }, 3000);
+                    return;
                 }
+
+                if (newPassword) {
+                    localStorage.removeItem('jwtToken');
+                    message.textContent = "Password updated successfully! Please log in again.";
+                    setTimeout(function() {
+                        window.location.href = '/logon';
+                    }, 3000);
+                    return;
+                }
+
+                message.textContent = "Account updated successfully!";
+
+    
+                // Refresh fields visually
+                nameDisplay.textContent = newName || nameDisplay.textContent;
+                emailDisplay.textContent = newEmail || emailDisplay.textContent;
+                nameDisplay.style.display = "inline";
+                emailDisplay.style.display = "inline";
+                nameInput.style.display = "none";
+                emailInput.style.display = "none";
             } else {
-                alert(`Error updating ${field}: ${data.message}`);
+                message.textContent = data.message || "Failed to update account.";
+                message.style.color = "red";
             }
+    
         } catch (error) {
-            console.error("Error updating user info:", error);
-            alert("Server error.");
+            console.error("Error saving changes:", error);
+            message.textContent = "An unexpected error occurred.";
+            message.style.color = "red";
         }
     }
+
 });
