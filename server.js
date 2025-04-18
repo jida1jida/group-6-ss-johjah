@@ -383,7 +383,7 @@ app.get('/api/med-days', authenticateToken, async(req, res) => {
     try{
         const connection = await createConnection();
         const [rows] = await connection.execute(
-            'select distinct date(session_time) as med_session_date from session_log where email = ?',
+            'select distinct date(session_date) as med_session_date from session_log where email = ?',
             [userEmail]
         );
         await connection.end();
