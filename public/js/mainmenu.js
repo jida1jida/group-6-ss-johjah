@@ -70,17 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
         height: 500,
         events: [],
         eventContent: function(arg) {
-            return { html: '<span style="font-size: 1.2em;">🔥</span>' };
+            return { html: `<span style="font-size: 1.2em;">${arg.event.title}</span>` };
         }
     });
-    fetchUserMedDays().then(days => {
-        const events = days.map(date => ({
-            title: '', // or "Meditated"
-            start: date,
-            allDay: true
-        }));
+
+    // Helper: convert mood to emoji
+    function moodToEmoji(mood) {
+        switch (mood) {
+            case 'happy': return '😊';
+            case 'okay': return '😐';
+            case 'sad': return '😢';
+            default: return '🧘';
+        }
+}
+    // Load user meditation sessions with moods
+    fetchUserMedDays().then(sessions => {
+        const events = sessions.flatMap(session => [
+            { title: '🔥', start: session.date, allDay: true },
+            { title: moodToEmoji(session.mood), start: session.date, allDay: true }
+        ]);
         calendar.addEventSource(events);
     });
+
     calendar.render();
 
     //////////////////////////////////////////
@@ -254,19 +265,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function fetchUserMedDays() { //
+    async function fetchUserMedDays() {
         const token = localStorage.getItem('jwtToken');
         try {
-            const response = await fetch ('/api/med-days', {
+            const response = await fetch('/api/med-days', {
                 method: 'GET',
                 headers: {
                     'Authorization': token
                 }
             });
             const data = await response.json();
-            return data.dates;
+            return data.sessions;  // <--- Must match backend
         } catch (error) {
-            console.error('Error fetching calendar data! ', error)
+            console.error('Error fetching calendar data!', error);
             return [];
         }
     }

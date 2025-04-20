@@ -254,9 +254,12 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         );
         
         // log session
+        const moodToInsert = (typeof mood === 'string' && mood.trim() !== '') ? mood: 'Unknown';
+        console.log("Inserting into session_log with mood:", moodToInsert);
+
         await connection.execute(
-            'insert into session_log (email, session_duration_seconds, session_type, mood) values (?, ?, ?)',
-            [userEmail, duration, type, mood || null]
+            'insert into session_log (email, session_duration_seconds, session_type, mood) values (?, ?, ?, ?)',
+            [userEmail, duration, type, moodToInsert]
         );
         await connection.end();
 
@@ -377,20 +380,36 @@ app.get('/api/weekly-med-stats', authenticateToken, async (req, res) => {
 
 });
 
-// Route: get a json list of the days the user meditated for the calendar
-app.get('/api/med-days', authenticateToken, async(req, res) => {
+// Route: get a json list of the days the user meditated, along with mood emojis
+app.get('/api/med-days', authenticateToken, async (req, res) => {
     const userEmail = req.user.email;
 
-    try{
+    try {
         const connection = await createConnection();
+
         const [rows] = await connection.execute(
-            'select distinct date(session_date) as med_session_date from session_log where email = ?',
-            [userEmail]
-        );
+            `SELECT sl.session_date, sl.session_time, sl.mood
+             FROM session_log sl
+             JOIN (
+                 SELECT session_date, MAX(session_time) AS latest_time
+                 FROM session_log
+                 WHERE email = ?
+                 GROUP BY session_date
+             ) latest
+               ON sl.session_date = latest.session_date AND sl.session_time = latest.latest_time
+             WHERE sl.email = ?
+             ORDER BY sl.session_date DESC`,
+            [userEmail, userEmail] // Replace userEmail with your actual variable
+          );
+
         await connection.end();
 
-        const dates = rows.map(row => row.med_session_date.toISOString().split('T')[0]);
-        res.json({ dates });
+        const sessions = rows.map(row => ({
+            date: new Date(row.session_date).toISOString().split('T')[0],
+            mood: row.mood
+        }));
+
+        res.json({ sessions });
     } catch (error) {
         console.error('Error fetching meditation days! ', error);
         res.status(500).json({ message: 'Server error!' });

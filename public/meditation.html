@@ -54,6 +54,15 @@
         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZqd5JICZI0u?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
+    <div id="emojiPopup" class="emoji-popup hidden">
+        <p>How are you feeling?</p>
+        <div class="emoji-options">
+          <button data-feeling="happy">😊</button>
+          <button data-feeling="okay">😐</button>
+          <button data-feeling="sad">😢</button>
+        </div>
+      </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const bg = localStorage.getItem('meditationBackground');
@@ -71,6 +80,7 @@
     <script src="/js/menubuttons.js"></script>
     <script src="/js/datamodel.js"></script>
     <script src="/js/customize.js"></script>
+    <script src="/js/meditation.js"></script>
 </body>
 
 </html>
