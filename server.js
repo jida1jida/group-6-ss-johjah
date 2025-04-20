@@ -546,6 +546,41 @@ app.put('/api/update-password', authenticateToken, async (req, res) => {
     }
 });
 
+// Route: Mood over time chart
+app.get('/api/mood-logs', authenticateToken, async (req, res) => {
+    const userEmail = req.user.email;
+
+    try {
+        const connection = await createConnection();
+        const [rows] = await connection.execute(
+            `
+            SELECT sl.session_date, sl.mood
+            FROM session_log sl
+            JOIN (
+                SELECT session_date, MAX(session_time) AS latest_time
+                FROM session_log
+                WHERE email = ?
+                GROUP BY session_date
+            ) latest
+              ON sl.session_date = latest.session_date AND sl.session_time = latest.latest_time
+            WHERE sl.email = ?
+            ORDER BY sl.session_date ASC
+            `,
+            [userEmail, userEmail]
+        );
+        await connection.end();
+
+        // 🔧 Format date cleanly for frontend
+        res.json(rows.map(row => ({
+            date: new Date(row.session_date).toISOString().split('T')[0],
+            mood: row.mood
+        })));
+    } catch (err) {
+        console.error('Error fetching mood logs:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////

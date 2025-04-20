@@ -52,13 +52,27 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/';
     } else {
         DataModel.setToken(token);
+        console.log("✅ Token set.");
+    
         getUserName();
-        fetchAIQuote(); // Fetch the AI-generated quote when the page loads
-        resetStreakIfNeeded().then(() => { // resets streak to 0 if needed, then...
-            console.log('Reset check done, now fetching streak');
-            fetchUserStreak(); // display streak info on main menu
-            fetchWeeklyMeditation(); // display weekly meditation stats
-        })
+        console.log("✅ Called getUserName");
+    
+        fetchAIQuote();
+        console.log("✅ Called fetchAIQuote");
+    
+        resetStreakIfNeeded().then(() => {
+            console.log('✅ Reset streak check complete');
+            fetchUserStreak();
+            console.log("✅ Called fetchUserStreak");
+    
+            fetchWeeklyMeditation();
+            console.log("✅ Called fetchWeeklyMeditation");
+    
+            renderMoodChart();
+            console.log("✅ Called renderMoodChart");
+        }).catch((err) => {
+            console.error("❌ Error in resetStreakIfNeeded or later chain:", err);
+        });
 
     };
 
@@ -303,6 +317,83 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.style.display = "none";
         }
     });
+
+// chart.js
+function moodToValue(mood) {
+    switch (mood) {
+        case 'sad': return 1;
+        case 'okay': return 2;
+        case 'happy': return 3;
+        default: return 0;
+    }
+}
+
+function moodToLabel(val) {
+    switch (val) {
+        case 1: return "😢 Sad";
+        case 2: return "😐 Okay";
+        case 3: return "😊 Happy";
+        default: return "";
+    }
+}
+
+async function renderMoodChart() {
+    const token = localStorage.getItem('jwtToken');
+    console.log("🔁 renderMoodChart() called!");
+
+    const res = await fetch('/api/mood-logs', {
+        headers: { 'Authorization': token }
+    });
+    const moodData = await res.json();
+
+    const labels = moodData.map(d => d.date);
+    const data = moodData.map(d => moodToValue(d.mood));
+
+    new Chart(document.getElementById("moodChart"), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Mood Over Time',
+                data,
+                borderColor: '#572984',
+                backgroundColor: 'rgba(87, 41, 132, 0.1)',
+                tension: 0.3,
+                pointRadius: 6,
+                pointBackgroundColor: data.map(v => {
+                    if (v === 1) return '#3498db';     // sad - blue
+                    if (v === 2) return '#f1c40f';     // okay - yellow
+                    if (v === 3) return '#2ecc71';     // happy - green
+                    return '#bdc3c7';                  // undefined - gray
+                })
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    min: 0,
+                    max: 3,
+                    stepSize: 1,
+                    ticks: {
+                        callback: function(val) {
+                            return moodToLabel(val);
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Mood'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                }
+            }
+        }
+    });
+}
 
 //////////////////////////////////////////
 // END FUNCTIONS TO MANIPULATE THE DOM
