@@ -387,3 +387,18 @@ function fadeOutContainers() {
               modal.style.display = "none";
           }
       });
+  const musicSelect = document.getElementById('musicSelect');
+  if (musicSelect) {
+    musicSelect.addEventListener('change', (event) => {
+      const embedUrl = event.target.value;
+      if (embedUrl) {
+        localStorage.setItem('spotifyEmbedUrl', embedUrl);
+        alert("Music selection saved!");
+      } else {
+        localStorage.removeItem('spotifyEmbedUrl');
+        alert("Music disabled.");
+      }
+    });
+  }
+
+      

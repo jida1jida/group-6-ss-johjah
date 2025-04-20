@@ -178,6 +178,12 @@ document.addEventListener('DOMContentLoaded', () => {
         popupShown = false;
       }
     });
+    const spotifyEmbedUrl = localStorage.getItem('spotifyEmbedUrl');
+    const spotifyPlayer = document.getElementById('spotifyPlayer');
+    if (spotifyEmbedUrl && spotifyPlayer) {
+      spotifyPlayer.src = spotifyEmbedUrl;
+    }
+
   
     // Initial setup
     updateDisplay();

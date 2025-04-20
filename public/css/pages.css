@@ -405,3 +405,27 @@ button:hover {
     from { opacity: 0; transform: translate(-50%, -60%); }
     to { opacity: 1; transform: translate(-50%, -50%); }
   }
+
+  .styled-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 250px;
+    height: 50px;
+    background-color: #b8a9c9;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align-last: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .styled-select:hover {
+    background-color: #7c6e8c;
+    color: white;
+  }
+  
