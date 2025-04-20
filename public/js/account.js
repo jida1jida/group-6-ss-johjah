@@ -22,11 +22,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fields
     const nameDisplay = document.getElementById("nameDisplay");
     const emailDisplay = document.getElementById("emailDisplay");
-    const passwordDisplay = document.getElementById("passwordDisplay")
+    const passwordDisplay = document.getElementById("passwordDisplay");
+    const typeDisplay = document.getElementById("typeDisplay");
 
     const nameInput = document.getElementById("nameInput");
     const emailInput = document.getElementById("emailInput");
     const passwordInput = document.getElementById("passwordInput");
+    const typeInput = document.getElementById("typeInput")
 
     const editButtons = document.querySelectorAll(".editButton");
     const saveButton = document.getElementById("saveButton");
@@ -71,7 +73,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             nameDisplay.textContent = user.prefname || "N/A";
             emailDisplay.textContent = user.email || "N/A";
-            passwordDisplay.textContent = "**********" // doesn't actually show password
+            passwordDisplay.textContent = "**********"; // doesn't actually show password
+            typeDisplay.textContent = user.type || "N/A";
 
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -121,14 +124,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (field === "name") {
             nameDisplay.style.display = "none";
             nameInput.style.display = "inline";
-            nameInput.value = userData.prefname;
         } else if (field === "email") {
             emailDisplay.style.display = "none";
             emailInput.style.display = "inline";
-            emailInput.value = userData.email;
         } else if (field === "password") {
             passwordDisplay.style.display = "none";
             passwordInput.style.display = "inline";
+        } else if (field === "type") {
+            typeDisplay.style.display = "none";
+            typeInput.style.display = "inline";
         }
     }
 
@@ -159,57 +163,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    // Function to save any changes
-    // async function saveChanges() {
-    //     const token = localStorage.getItem('jwtToken');
-
-    //     if (nameInput.value){
-    //         field = 'prefname';
-    //         newValue = nameInput.value;
-    //     } else if (emailInput.value){
-    //         field = 'email';
-    //         newValue = emailInput.value;
-    //     }
-
-    //     try {
-    //         const response = await fetch('/api/update-user', {
-    //             method: 'PUT',
-    //             headers: {
-    //                 'Authorization': token,
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 field,
-    //                 value: newValue
-    //             }),
-    //         });
-
-    //         const data = await response.json();
-
-    //         if (response.ok) {
-    //             alert(`${field === 'prefname' ? 'Name' : 'Email'} updated successfully!`);
-    //             if (field === 'email') {
-    //                 localStorage.removeItem('jwtToken'); // if email was changed, log user out
-    //                 window.location.href = '/';
-    //             } else if (field === 'prefname') {
-    //                 window.location.reload(); // refresh the page to reflect changes
-    //             }
-    //         } else {
-    //             alert(`Error updating ${field}: ${data.message}`);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error updating user info:", error);
-    //         alert("Server error.");
-    //     }
-    // }
-
     async function saveChanges() {
         const token = localStorage.getItem('jwtToken');
         const newName = nameInput.value.trim();
         const newEmail = emailInput.value.trim();
-        const newPassword = document.getElementById('passwordInput')?.value.trim(); // optional password input
+        const newPassword = document.getElementById('passwordInput')?.value.trim();
+        const newType = document.getElementById('typeInput').value.trim();
     
-        if (!newName && !newEmail && !newPassword) {
+        if (!newName && !newEmail && !newPassword && !newType) {
             message.textContent = "No changes to save.";
             message.style.color = "orange";
             return;
@@ -226,6 +187,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     newName,
                     newEmail,
                     newPassword,
+                    newType,
                 }),
             });
     
@@ -234,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             if (response.ok) {
                 message.style.color = "green";
     
-                // If the email was updated, update the JWT token or force logout
+                // If the email was updated, force logout
                 if (newEmail && newEmail !== emailDisplay.textContent.trim()) {
                     localStorage.removeItem('jwtToken');
                     // alert("Email updated. Please log in again.");
@@ -245,6 +207,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     return;
                 }
 
+                // If the password was updated, force logout
                 if (newPassword) {
                     localStorage.removeItem('jwtToken');
                     message.textContent = "Password updated successfully! Please log in again.";
@@ -255,6 +218,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
 
                 message.textContent = "Account updated successfully!";
+                setTimeout(function() {
+                    window.location.href = '/account';
+                }, 3000);
 
     
                 // Refresh fields visually

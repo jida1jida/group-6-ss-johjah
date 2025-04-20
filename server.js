@@ -195,14 +195,15 @@ app.get('/api/users', authenticateToken, async (req, res) => {
         const connection = await createConnection();
 
         // Fetch both email and prefname from the database
-        const [rows] = await connection.execute('SELECT email, prefname FROM user');
+        const [rows] = await connection.execute('SELECT email, prefname, type FROM user');
 
         await connection.end();  // Close connection
 
         // Map the result to include both email and prefname
         const usersList = rows.map((row) => ({
             email: row.email,
-            prefname: row.prefname || ""  // In case prefname is not set, return an empty string
+            prefname: row.prefname,
+            type: row.type,
         }));
 
         res.status(200).json({ users: usersList });
@@ -212,9 +213,9 @@ app.get('/api/users', authenticateToken, async (req, res) => {
     }
 });
 
-// Route: log a meditation session
+// Route: log a meditation session (duration, type, mood)
 app.post('/api/med-session', authenticateToken, async (req, res) => {
-    const { duration, type } = req.body;
+    const { duration, type, mood } = req.body;
     const userEmail = req.user.email;
 
     // get session info
@@ -254,8 +255,8 @@ app.post('/api/med-session', authenticateToken, async (req, res) => {
         
         // log session
         await connection.execute(
-            'insert into session_log (email, session_duration_seconds, session_type) values (?, ?, ?)',
-            [userEmail, duration, type || null]
+            'insert into session_log (email, session_duration_seconds, session_type, mood) values (?, ?, ?)',
+            [userEmail, duration, type, mood || null]
         );
         await connection.end();
 
@@ -437,7 +438,7 @@ app.post('/api/verify-password', authenticateToken, async(req, res) => {
 
 app.post('/api/update-user', authenticateToken, async (req, res) => {
     const oldEmail = req.user.email;
-    const { newEmail, newName, newPassword } = req.body;
+    const { newEmail, newName, newPassword, newType } = req.body;
 
     try {
         const connection = await createConnection();
@@ -468,6 +469,13 @@ app.post('/api/update-user', authenticateToken, async (req, res) => {
             await connection.execute(
                 'UPDATE user SET password = ? WHERE email = ?',
                 [hashedPassword, newEmail || oldEmail]
+            );
+        }
+
+        if (newType) {
+            await connection.execute(
+                'UPDATE user SET type = ? WHERE email = ?',
+                [newType, newEmail || oldEmail]
             );
         }
 

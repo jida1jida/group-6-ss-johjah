@@ -47,6 +47,17 @@
             <button class="editButton" data-field="password">Edit Password</button>
         </div>
         <br>
+        <!-- Account Type Section -->
+        <div class="form-group">
+            <label for="type">Account Type:</label>
+            <span id="typeDisplay"></span>
+            <select id="typeInput" class="form-control" style="display: none;">
+                <option value="Regular">Regular</option>
+                <option value="Premium">Premium</option>
+            </select>
+            <button class="editButton" data-field="type">Edit Account Type</button>
+        </div>
+        <br>
         <!-- Password Prompt Modal -->
         <div id="passwordModal" class="modal" style="display: none;">
             <div class="modal-content">
