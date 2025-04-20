@@ -119,7 +119,7 @@ async function authenticateToken(req, res, next) {
 //////////////////////////////////////
 // Route: Create Account
 app.post('/api/create-account', async (req, res) => {
-    const { email, password, name } = req.body;
+    const { email, password, name, type } = req.body;
 
     if (!email || !password  || !name) {
         return res.status(400).json({ message: 'Email, password, and name are required.' });
@@ -130,8 +130,8 @@ app.post('/api/create-account', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);  // Hash password
 
         const [result] = await connection.execute(
-            'INSERT INTO user (email, password, prefname) VALUES (?, ?, ?)',
-            [email, hashedPassword, name]
+            'INSERT INTO user (email, password, prefname, type) VALUES (?, ?, ?, ?)',
+            [email, hashedPassword, name, type]
         );
 
         await connection.end();  // Close connection
@@ -434,30 +434,6 @@ app.post('/api/verify-password', authenticateToken, async(req, res) => {
         res.status(500).json({ message: 'Server error!' });
     }
 });
-
-// Route: update user name or email
-// app.put('/api/update-user', authenticateToken, async (req, res) => {
-//     const { field, value } = req.body;
-//     const userEmail = req.user.email;
-
-//     if (!['prefname', 'email'].includes(field)) {
-//         return res.status(400).json({ message: 'Invalid field update.' });
-//     }
-
-//     try {
-//         const connection = await createConnection();
-//         await connection.execute(
-//             `UPDATE user SET ${field} = ? WHERE email = ?`,
-//             [value, userEmail]
-//         );
-//         await connection.end();
-
-//         res.status(200).json({ message: `${field} updated.` });
-//     } catch (error) {
-//         console.error('Update error:', error);
-//         res.status(500).json({ message: 'Failed to update user info.' });
-//     }
-// });
 
 app.post('/api/update-user', authenticateToken, async (req, res) => {
     const oldEmail = req.user.email;
