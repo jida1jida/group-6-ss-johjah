@@ -83,16 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const enableAudioBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent === "Enable");
       const disableAudioBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent === "Disable");
-      
+      const audioButtons = document.querySelectorAll('.med-aud-btn');
       if (enableAudioBtn && disableAudioBtn) {
         enableAudioBtn.addEventListener('click', () => {
-          localStorage.setItem('audioEnabled', 'true');
-          alert("Audio cues enabled!");
-        });
+        audioButtons.forEach(btn => btn.classList.remove('selected'));
+        event.target.classList.add('selected');
+        localStorage.setItem('audioEnabled', 'true');
+        // alert("Audio cues enabled!");
+      });
       
         disableAudioBtn.addEventListener('click', () => {
+          audioButtons.forEach(btn => btn.classList.remove('selected'));
+          event.target.classList.add('selected');
           localStorage.setItem('audioEnabled', 'false');
-          alert("Audio cues disabled!");
+          // alert("Audio cues disabled!");
         });
       }
   

@@ -154,7 +154,7 @@ button:hover {
     height: 50px;
 }
 
-.med-time-btn.selected, .phase-pattern-btn.selected {
+.med-time-btn.selected, .phase-pattern-btn.selected, .med-aud-btn.selected {
     background-color: #572984;
     color: white; }
 
