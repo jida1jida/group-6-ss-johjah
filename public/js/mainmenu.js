@@ -369,30 +369,30 @@ async function renderMoodChart() {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,  // ✅ allows full container use
             scales: {
-                y: {
-                    min: 0,
-                    max: 3,
-                    stepSize: 1,
-                    ticks: {
-                        callback: function(val) {
-                            return moodToLabel(val);
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Mood'
-                    }
+              y: {
+                min: 0,
+                max: 3,
+                ticks: {
+                  stepSize: 1,
+                  callback: (val) => moodToLabel(val)
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                }
+                title: { display: true, text: 'Mood' }
+              },
+              x: {
+                ticks: {
+                  maxRotation: 45,
+                  minRotation: 30,
+                  autoSkip: true,
+                  maxTicksLimit: 10
+                },
+                title: { display: true, text: 'Date' }
+              }
             }
-        }
-    });
+          }
+        });
 }
 
 //////////////////////////////////////////
