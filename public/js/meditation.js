@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bgContainer.style.backgroundPosition = 'center';
         bgContainer.style.backgroundRepeat = 'no-repeat';
         bgContainer.style.zIndex = 0;
-        bgContainer.style.opacity = 0.3; // Optional fade effect
+        bgContainer.style.opacity = 0.5; // Optional fade effect
       }
     }
   

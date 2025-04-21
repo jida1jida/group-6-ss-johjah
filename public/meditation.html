@@ -12,7 +12,7 @@
 <body>
     <div id="backgroundImageContainer"></div>
 
-    <div class="container fade-target">
+    <div class="container content-on-top fade-target">
         <div class="header">
             <h1>Meditation</h1>
             <div>
@@ -29,19 +29,20 @@
         </div>
     </div>
 
-    <div class="container fade-target">
-        <p>Start the timer to begin meditating.</p>
-        <!-- Circular Timer Visualization  TESTING DO NOT DELETE -->
-
-        <div class="timer-container">
+    <!-- Fading background layer -->
+    <div class="container container-bg fade-target"></div>
+    <!-- Content stays visible -->
+    <div>
+        <div class="timer-container content-on-top">
+            <!-- Timer SVG -->
             <svg class="timer-svg" width="150" height="150">
                 <circle class="background-circle" cx="75" cy="75" r="60"/>
                 <circle id="progressCircle" class="progress-circle" cx="75" cy="75" r="60"/>
-                <text id="timer" class="timer-text" x="50%" y="50%" text-anchor="middle" dy="8px">01:00</text>
+                <text id="timer" class="timer-text" x="50%" y="50%" text-anchor="middle" dy="8px">60s</text>
             </svg>
+
             <p id="breathText" class="breath-text">Breathe In</p>
-    
-            <!-- Timer Buttons -->
+
             <div class="buttonDiv">
                 <button id="startStopBtn">Start Timer</button>
                 <button id="resetBtn">End Timer</button>
@@ -49,14 +50,7 @@
         </div>
     </div>
 
-    <div class="container fade-target">
-        <h2>Relaxing Music</h2>
-        <div id="musicPlayerContainer">
-            <iframe id="spotifyPlayer" style="border-radius:12px" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-          </div>
-          
-    </div>
-
+    
     <div id="emojiPopup" class="emoji-popup hidden">
         <p>How are you feeling?</p>
         <div class="emoji-options">
@@ -78,7 +72,7 @@
         });
     </script>
 
-    <footer> <p>&copy; S. S. JOHJAH 2025</p> </footer>
+    <footer class="fade-target"> <p>&copy; S. S. JOHJAH 2025</p> </footer>
 
     <script src="/js/menubuttons.js"></script>
     <script src="/js/datamodel.js"></script>
