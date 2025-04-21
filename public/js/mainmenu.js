@@ -300,23 +300,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById("myModal");
     const openModalBtn = document.getElementById("openModal");
     const cancelBtn = document.getElementById("cancelBtn");
-    
-    openModalBtn.addEventListener("click", () => {
-        localStorage.setItem('meditationDuration', 60); // override to default 60-second session
-        modal.style.display = "block";
-    });
-    
-    cancelButton.addEventListener("click", () => {
+    const customizeBtn = document.getElementById("meditationCustomizeButton");
+    const startMeditationBtn = document.getElementById("meditationButton");
+  
+    // Open modal
+    if (openModalBtn && modal) {
+      openModalBtn.addEventListener("click", () => {
+        localStorage.setItem('meditationDuration', 60);
+        modal.style.display = "flex";
+      });
+    }
+  
+    // Close modal (cancel)
+    if (cancelBtn && modal) {
+      cancelBtn.addEventListener("click", () => {
         modal.style.display = "none";
-    });
-    
-    
-    // Close if clicking outside modal
+      });
+    }
+  
+    // Start meditation
+    if (startMeditationBtn) {
+      startMeditationBtn.addEventListener("click", () => {
+        modal.style.display = "none"; // optional
+        window.location.href = "/meditation";
+      });
+    }
+  
+    // Click outside modal to close
     window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
     });
+  
+    // Go to customize settings
+    if (customizeBtn) {
+      customizeBtn.addEventListener("click", () => {
+        window.location.href = "/customize";
+      });
+    }
+  });
+
 
 // chart.js
 function moodToValue(mood) {
@@ -398,4 +422,3 @@ async function renderMoodChart() {
 //////////////////////////////////////////
 // END FUNCTIONS TO MANIPULATE THE DOM
 //////////////////////////////////////////
-})
