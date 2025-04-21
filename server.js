@@ -389,16 +389,16 @@ app.get('/api/med-days', authenticateToken, async (req, res) => {
 
         const [rows] = await connection.execute(
             `SELECT sl.session_date, sl.session_time, sl.mood
-             FROM session_log sl
-             JOIN (
-                 SELECT session_date, MAX(session_time) AS latest_time
-                 FROM session_log
-                 WHERE email = ?
-                 GROUP BY session_date
-             ) latest
-               ON sl.session_date = latest.session_date AND sl.session_time = latest.latest_time
-             WHERE sl.email = ?
-             ORDER BY sl.session_date DESC`,
+            FROM session_log sl
+            JOIN (
+                SELECT session_date, MAX(session_id) AS latest_session_id
+                FROM session_log
+                WHERE email = ?
+                GROUP BY session_date
+            ) latest
+              ON sl.session_date = latest.session_date AND sl.session_id = latest.latest_session_id
+            WHERE sl.email = ?
+            ORDER BY sl.session_date DESC;`,
             [userEmail, userEmail] // Replace userEmail with your actual variable
           );
 
