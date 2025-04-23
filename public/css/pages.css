@@ -10,6 +10,7 @@ body {
     margin: 0;
     padding: 0; }
 
+
 /* content will not appear until loading page is done */
 .content { display: none; }
 
