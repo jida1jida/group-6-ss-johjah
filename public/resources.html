@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Purple Peace</title>
-  <link rel="stylesheet" href="css/pages.css" />
-  <link rel="icon" type="image/png" href="./images/PurplePeaceLogo.png" />
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" type="image/png" href="./images/PurplePeaceLogo.png">
 </head>
 <body>
   <div class="content" id="content">
@@ -13,7 +13,14 @@
       <div class="grid-item container header">
         <h1>Meditation Resources</h1>
         <div>
-          <a href="mainmenu.html"><button class="dropdown-button">Back to Home</button></a>
+          <div class="dropdown">
+              <button class="dropdown-button" onclick="toggleDropdown()">User Settings</button>
+              <div class="dropdown-content" id="dropdown-menu">
+                  <a id="accountButton">Edit Account</a>
+                  <a id="logoutButton">Logout</a>
+              </div>
+          </div>
+          <button id="homeButton">Back to Home Page</button>
         </div>
       </div>
 
@@ -80,16 +87,16 @@
               <!-- Trusted Websites Card -->
               <div class="resource-card">
                 <div class="resource-title">🌐 Trusted Meditation Platforms</div>
-                <a class="resource-link" href="https://www.headspace.com/meditation" target="_blank">🧠 Headspace – Learn to Meditate</a><br />
-                <a class="resource-link" href="https://www.mindful.org/how-to-meditate/" target="_blank">📘 Mindful.org – How to Meditate</a><br />
+                <a class="resource-link" href="https://www.headspace.com/meditation" target="_blank">🧠 Headspace – Learn to Meditate</a><br>
+                <a class="resource-link" href="https://www.mindful.org/how-to-meditate/" target="_blank">📘 Mindful.org – How to Meditate</a><br>
                 <a class="resource-link" href="https://www.calm.com/" target="_blank">🌙 Calm – Meditation and Sleep App</a>
               </div>
           
               <!-- Breathing Techniques Card -->
               <div class="resource-card">
                 <div class="resource-title">🌬️ Breathing Techniques</div>
-                <a class="resource-link" href="https://www.healthline.com/health/box-breathing" target="_blank">🔲 Box Breathing – Healthline Guide</a><br />
-                <a class="resource-link" href="https://www.medicalnewstoday.com/articles/324417" target="_blank">🧘 4-7-8 Breathing – Medical News Today</a><br />
+                <a class="resource-link" href="https://www.healthline.com/health/box-breathing" target="_blank">🔲 Box Breathing – Healthline Guide</a><br>
+                <a class="resource-link" href="https://www.medicalnewstoday.com/articles/324417" target="_blank">🧘 4-7-8 Breathing – Medical News Today</a><br>
                 <a class="resource-link" href="https://maidenlanemedical.com/blog/bellows-breath-exercises/" target="_blank">🌪️ Bellow's Breath (Bhastrika) – Maiden Lane</a>
               </div>
           
@@ -110,5 +117,6 @@
     });
   </script>
   <script src="/js/resources.js"></script>
+  <script src="js/menubuttons.js"></script>
 </body>
 </html>
