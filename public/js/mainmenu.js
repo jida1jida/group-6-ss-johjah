@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initialView: 'dayGridMonth',
         fixedWeekCount: false,
         height: 500,
+        eventColor: '#572984',
         events: [],
         eventContent: function(arg) {
             return { html: `<span style="font-size: 1.2em;">${arg.event.title}</span>` };
