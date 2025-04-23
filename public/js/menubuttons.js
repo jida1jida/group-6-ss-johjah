@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
     const logoutButton = document.getElementById('logoutButton');
+    const accountButton = document.getElementById('accountButton');
     const refreshButton = document.getElementById('refreshButton');
     const meditationButton = document.getElementById('meditationButton');
     const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
@@ -36,12 +37,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Redirect to the meditation page when the Meditation button is clicked
-    meditationButton.addEventListener('click', () => {
-        window.location.href = '/meditation'; // Adjust the path if necessar
-    });
+    if (meditationButton) { // Check if the button exists
+        meditationButton.addEventListener('click', () => {
+            window.location.href = '/meditation'; // Adjust the path if necessar
+        });
+    }
+    
 
-    if (accountButton) {
+    if (accountButton) { // Check if the button exists
         accountButton.addEventListener('click', () => {
+            console.log('CLICK');
             window.location.href = '/account';
         });
     }
