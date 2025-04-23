@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const logoutButton = document.getElementById('logoutButton');
     const accountButton = document.getElementById('accountButton');
-    const refreshButton = document.getElementById('refreshButton');
     const meditationButton = document.getElementById('meditationButton');
     const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
+    const ResourceButton = document.getElementById('resourceButton');
+
 
     // Dropdown menu
     function toggleDropdown() {
@@ -53,6 +54,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     meditationCustomizeButton.addEventListener('click', () => {
         window.location.href = '/customize';
+    });
+
+    ResourceButton.addEventListener('click', () => {
+        window.location.href = '/resources';
     });
 
 });
