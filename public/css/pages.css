@@ -10,7 +10,6 @@ body {
     margin: 0;
     padding: 0; }
 
-
 /* content will not appear until loading page is done */
 .content { display: none; }
 
@@ -170,17 +169,6 @@ button:hover {
 #logoutButton:hover {
     background-color: #5b9aa0;
     color: white; }
-
-#refreshButton {
-    background-color: #73cad2; /* Same green color from logon button */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer; }
-
-#refreshButton:hover {
-    background-color: #5b9aa0; }
 
 .user-list { margin-top: 20px; }
 
