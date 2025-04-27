@@ -52,21 +52,21 @@ document.addEventListener('DOMContentLoaded', () => {
       progressCircle.style.strokeDashoffset = 377 * progress;
     }
   
-    function startBreathingCycle() {
-      if (breathInterval) return;
-      let inhale = true;
-      breathText.textContent = "Breathe In";
-      breathText.style.opacity = 1;
+    // function startBreathingCycle() {
+    //   if (breathInterval) return;
+    //   let inhale = true;
+    //   breathText.textContent = "Breathe In";
+    //   breathText.style.opacity = 1;
   
-      breathInterval = setInterval(() => {
-        inhale = !inhale;
-        breathText.style.opacity = 0;
-        setTimeout(() => {
-          breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
-          breathText.style.opacity = 1;
-        }, 1000);
-      }, 4000);
-    }
+    //   breathInterval = setInterval(() => {
+    //     inhale = !inhale;
+    //     breathText.style.opacity = 0;
+    //     setTimeout(() => {
+    //       breathText.textContent = inhale ? "Breathe In" : "Breathe Out";
+    //       breathText.style.opacity = 1;
+    //     }, 1000);
+    //   }, 4000);
+    // }
   
     function animateTimer() {
       if (!running) return;
