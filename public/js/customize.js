@@ -209,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           breathText.style.opacity = 1;
+
+          console.log(`Current phase: ${currentPhase}, Duration: ${durations[currentBreathingPhase]}ms`);
       
           // Clear previous timeout if there's any
           if (phaseTimeout) clearTimeout(phaseTimeout);
