@@ -192,7 +192,13 @@
         <header>
             <h1>Customize Meditation</h1>
             <div>
-                <button id="logoutButton">Log Out</button>
+              <div class="dropdown">
+                <button class="dropdown-button">User Settings</button>
+                <div class="dropdown-content" id="dropdown-menu">
+                    <a id="accountButton">Edit Account</a>
+                    <a id="logoutButton">Logout</a>
+                </div>
+              </div>
                 <button id="homeButton">Back to Home Page</button>
                 <button id="openModal">Start Meditation</button>
             </div>
@@ -287,6 +293,8 @@
     <footer> <p>&copy; S. S. JOHJAH 2025</p> </footer>
 
     <script src="js/customize.js"></script>
+    <script src="/js/menubuttons.js" defer></script>
+
 </body>
 </html>
 
