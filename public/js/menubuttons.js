@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const meditationButton = document.getElementById('meditationButton');
     const meditationCustomizeButton = document.getElementById('meditationCustomizeButton');
     const ResourceButton = document.getElementById('resourceButton');
-
+    const DonateButton = document.getElementById('donateButton');
 
     // Dropdown menu
     function toggleDropdown() {
@@ -58,6 +58,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     ResourceButton.addEventListener('click', () => {
         window.location.href = '/resources';
+    });
+
+    DonateButton.addEventListener('click', () => {
+        window.open('https://www.paypal.com/us/home');
     });
 
 });
