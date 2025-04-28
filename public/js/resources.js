@@ -6,4 +6,10 @@ if (!token) {
     window.location.href = '/';
 };
 
+if (homeButton) {
+    homeButton.addEventListener('click', () => {
+      window.location.href = '/mainmenu';
+    });
+  }
+
 });
